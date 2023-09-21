@@ -15,7 +15,6 @@ protected:
 
 class IndepStream: public Stream {
 public:
-    virtual Job popJob(real) = 0;
     void reset();
 protected:
     Distribution *inDist;
