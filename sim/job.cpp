@@ -8,7 +8,7 @@ Job::Job(Distribution *dist, real arrivalTime, jclass job_class) {
     this->job_class = job_class;
 }
 
-real Job::nextInterrupt(real time) {
+real Job::nextInterrupt() {
     return this->required - this->age;
 }
 

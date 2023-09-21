@@ -11,12 +11,12 @@ public:
     real arrivalTime;
     jclass job_class;
     real required;
-    real nextInterrupt(real time);
+    real nextInterrupt();
 };
 
 class DeadJob {
 public:
-    DeadJob(Job job, real finishTime);
+    DeadJob(Job, real);
     Distribution *dist;
     real required;
     real arrivalTime;
