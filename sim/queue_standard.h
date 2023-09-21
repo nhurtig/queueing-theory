@@ -3,7 +3,7 @@
 #include <cmath>
 
 typedef long double real;
-typedef int jclass;
+typedef unsigned int jclass;
 #define ln logl
 
 #endif
