@@ -12,6 +12,6 @@ int main(int argc, char **argv) {
 
     printf("Distribution sample: %Lf\n", dist.sample());
     printf("Job age: %Lf\n", job.age);
-    printf("Job required: %Lf\n", job.required);
+    printf("Job arrival time: %Lf\n", job.arrivalTime);
     return 0;
 }
