@@ -1,1 +1,1 @@
-[UML diagram](doc/uml.png)
+![UML diagram](doc/uml.png)
