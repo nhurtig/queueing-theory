@@ -26,3 +26,5 @@ DeadJob::DeadJob(Job job, real finishTime) {
 bool operator==(const Job& lhs, const Job& rhs) {
     return lhs.id == rhs.id;
 }
+
+IndexedJob::IndexedJob(real index, Job job) : index{index}, job{job} {}

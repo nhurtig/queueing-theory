@@ -16,13 +16,6 @@ protected:
     virtual real getIndex(Job job) = 0;
 };
 
-class IndexedJob {
-public:
-    IndexedJob(real, Job);
-    real index;
-    Job job;
-};
-
 bool compareJobs(IndexedJob a, IndexedJob b);
 
 #endif
