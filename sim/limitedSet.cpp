@@ -6,6 +6,10 @@ LimitedSet::LimitedSet(unsigned int k) {
     this->size = 0;
 }
 
+LimitedSet::~LimitedSet() {
+    free(this->arr);
+}
+
 void LimitedSet::insert(IndexedJob job) {
     real index = job.index;
     if (this->size == this->k && this->arr[this->size-1].index >= index) {

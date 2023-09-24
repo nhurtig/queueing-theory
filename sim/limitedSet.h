@@ -9,6 +9,7 @@ public:
     LimitedSet(unsigned int k);
     void insert(IndexedJob job);
     std::vector<unsigned int> toVector();
+    ~LimitedSet();
 private:
     IndexedJob* arr;
     unsigned int k;
