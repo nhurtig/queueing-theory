@@ -12,8 +12,13 @@ public:
 class IndexPolicy: public Policy {
 public:
     std::unordered_set<Job, JobHash> choose(std::unordered_set<Job, JobHash> jobs, unsigned int k);
-protected:
+private:
     virtual real getIndex(Job job) = 0;
+};
+
+class FCFSPolicy: public IndexPolicy {
+private:
+    real getIndex(Job job);
 };
 
 bool compareJobs(IndexedJob a, IndexedJob b);

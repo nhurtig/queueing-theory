@@ -16,3 +16,7 @@ std::unordered_set<Job, JobHash> IndexPolicy::choose(std::unordered_set<Job, Job
 
     return chosen.toSet();
 }
+
+real FCFSPolicy::getIndex(Job job) {
+    return job.arrivalTime;
+}

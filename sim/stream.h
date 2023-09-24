@@ -22,7 +22,7 @@ protected:
 
 class FiniteIndepStream: public IndepStream {
 public:
-    FiniteIndepStream(Distribution*, std::vector<Distribution*>, std::vector<real>);
+    FiniteIndepStream(Distribution* in, std::vector<Distribution*> serv, std::vector<real> probs);
     Job popJob(real);
 private:
     std::vector<Distribution*> dists;
@@ -32,7 +32,7 @@ private:
 
 class SingleIndepStream: public IndepStream {
 public:
-    SingleIndepStream(Distribution*, Distribution*);
+    SingleIndepStream(Distribution* in, Distribution* serv);
     Job popJob(real);
 private:
     Distribution *dist;
