@@ -3,21 +3,20 @@
 #include "limitedSet.h"
 #include <set>
 
-std::vector<Job*> IndexPolicy::choose(std::unordered_set<Job, JobHash> jobs, unsigned int k) {
+std::vector<unsigned int> IndexPolicy::choose(std::map<unsigned int, Job> jobs, unsigned int k) {
     if (k >= jobs.size()) {
-        return std::vector<Job*>();
+        return std::vector<unsigned int>();
     }
 
     LimitedSet chosen(k);
-    for (const Job& j : jobs) {
-        IndexedJob ijob(getIndex(j), &const_cast<Job&>(j));
+    for (const auto& pair : jobs) {
+        IndexedJob ijob(getIndex(pair.second), pair.first);
         chosen.insert(ijob);
     }
 
-    debug_print("chosen size is %ld, jobs size is %ld, k is %d\n", chosen.toVector().size(), jobs.size(), k);
     return chosen.toVector();
 }
 
 real FCFSPolicy::getIndex(Job job) {
-    return job.arrivalTime;
+    return -job.arrivalTime;
 }

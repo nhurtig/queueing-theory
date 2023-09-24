@@ -19,13 +19,17 @@ void Job::serve(real time) {
     this->age += time;
 }
 
+real Job::getRequired() {
+    return this->required;
+}
+
 std::string DeadJob::sep = ",";
 std::string DeadJob::lineSep = "\n";
 std::string DeadJob::header = "FinishTime" + DeadJob::sep + "ArrivalTime" + DeadJob::sep + "ServiceTime" + DeadJob::sep + "JobClass" + DeadJob::lineSep;
 
 DeadJob::DeadJob(Job job, real finishTime) {
     this->dist = job.dist;
-    this->required = job.required;
+    this->required = job.getRequired();
     this->arrivalTime = job.arrivalTime;
     this->finishTime = finishTime;
     this->job_class = job.job_class;
@@ -40,4 +44,4 @@ bool operator==(const Job& lhs, const Job& rhs) {
     return lhs.id == rhs.id;
 }
 
-IndexedJob::IndexedJob(real index, Job* job) : index{index}, job{job} {}
+IndexedJob::IndexedJob(real index, unsigned int id): index{index}, id{id} {}

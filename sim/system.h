@@ -6,6 +6,7 @@
 #include "stream.h"
 #include "job.h"
 #include <string>
+#include <map>
 
 class System {
 public:
@@ -14,14 +15,14 @@ public:
     std::list<DeadJob> getData();
     void toCSV(std::string fname);
 private:
-    std::unordered_set<Job, JobHash> jobs;
+    std::map<unsigned int, Job> jobs;
     Stream *stream;
     Policy *policy;
     unsigned int k;
     real time;
     DataStore data;
     void run(real time, bool record);
-    void serveJobs(std::vector<Job*> toRun, bool record);
+    void serveJobs(std::vector<unsigned int> toRun, bool record);
 };
 
 #endif

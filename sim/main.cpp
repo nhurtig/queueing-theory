@@ -38,15 +38,9 @@ int main(int argc, char **argv) {
     printf("Stream til interrupt: %Lf\n", stream.nextInterrupt());
 */
 
-    unsigned int k = 1;
+    unsigned int k = 5;
     FCFSPolicy policy;
-    ExponentialDistribution in(0.9);
-
-    real sum = 0;
-    for (int i = 0; i < 1000000; i++) {
-        sum += in.sample();
-    }
-    debug_print("Average time between arrivals=%Lf\n", sum/1000000);
+    ExponentialDistribution in(0.99);
 
     std::vector<real> vals { 1.0 };
     std::vector<real> probs { 1.0 };
@@ -54,8 +48,9 @@ int main(int argc, char **argv) {
     SingleIndepStream stream(&in, &serv);
     System system(&stream, &policy, k);
 
-    debug_print("Experiment start\n");
+    printf("Experiment start\n");
     system.runFor(100, 10000);
+    printf("Experiment end\n");
 
     system.toCSV("results/out.csv");
 

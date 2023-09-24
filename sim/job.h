@@ -13,10 +13,12 @@ public:
     real age;
     real arrivalTime;
     jclass job_class;
-    real required;
     unsigned int id;
     real nextInterrupt();
+    real getRequired();
     void serve(real time);
+private:
+    real required;
 };
 
 class DeadJob {
@@ -41,9 +43,9 @@ struct JobHash {
 
 class IndexedJob {
 public:
-    IndexedJob(real, Job*);
+    IndexedJob(real index, unsigned int id);
     real index;
-    Job* job;
+    unsigned int id;
 };
 
 bool operator==(const Job& lhs, const Job& rhs);

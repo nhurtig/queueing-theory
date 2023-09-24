@@ -2,7 +2,7 @@
 
 LimitedSet::LimitedSet(unsigned int k) {
     this->k = k;
-    this->arr = (IndexedJob*) malloc(k*sizeof(IndexedJob*));
+    this->arr = (IndexedJob*) malloc(k*sizeof(IndexedJob));
     this->size = 0;
 }
 
@@ -31,7 +31,6 @@ void LimitedSet::insert(IndexedJob job) {
 }
 
 void LimitedSet::insertInternal(IndexedJob job, unsigned int i) {
-    debug_print("insertInternal called, i=%d\n", i);
     if (i == k) { // bumped out
         return;
     }
@@ -41,11 +40,11 @@ void LimitedSet::insertInternal(IndexedJob job, unsigned int i) {
     insertInternal(moved, i+1);
 }
 
-std::vector<Job*> LimitedSet::toVector() {
-    std::vector<Job*> vector;
+std::vector<unsigned int> LimitedSet::toVector() {
+    std::vector<unsigned int> vector;
 
     for (unsigned int i = 0; i < this->size; i++) {
-        vector.push_back((this->arr[i]).job);
+        vector.push_back((this->arr[i]).id);
     }
 
     return vector;
