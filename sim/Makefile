@@ -13,8 +13,8 @@ memcheck: main
 clean:
 	rm *.o main
 
-main: main.o distribution.o job.o dataStore.o stream.o policy.o limitedSet.o
-	$(CC) $(CFLAGS) -o main main.o distribution.o job.o dataStore.o stream.o policy.o limitedSet.o
+main: main.o distribution.o job.o dataStore.o stream.o policy.o limitedSet.o system.o
+	$(CC) $(CFLAGS) -o main main.o distribution.o job.o dataStore.o stream.o policy.o limitedSet.o system.o
 
 main.o: distribution.h job.h main.cpp queue_standard.h dataStore.h
 	$(CC) $(CFLAGS) -c main.cpp
@@ -36,3 +36,6 @@ policy.o: queue_standard.h policy.h job.h policy.cpp
 
 limitedSet.o: queue_standard.h limitedSet.h job.h limitedSet.cpp
 	$(CC) $(CFLAGS) -c limitedSet.cpp
+
+system.o: system.h queue_standard.h job.h stream.h policy.h dataStore.h system.cpp
+	$(CC) $(CFLAGS) -c system.cpp

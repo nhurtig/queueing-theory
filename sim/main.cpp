@@ -33,5 +33,8 @@ int main(int argc, char **argv) {
     printf("Stream til interrupt: %Lf\n", stream.nextInterrupt());
     printf("Stream's job pop til interrupt: %Lf\n", stream.popJob(3).nextInterrupt());
     printf("Stream til interrupt: %Lf\n", stream.nextInterrupt());
+
+
+
     return 0;
 }

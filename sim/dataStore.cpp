@@ -1,8 +1,6 @@
 #include "dataStore.h"
 
-DataStore::DataStore() {
-    
-}
+DataStore::DataStore() {}
 
 std::list<DeadJob> DataStore::getJobs() {
     return this->jobs;
