@@ -9,7 +9,7 @@
 #define debug_print(...) fprintf(stderr, __VA_ARGS__)
 #endif
 #ifndef DEBUG_MODE
-#define debug_print(x...)
+#define debug_print(...)
 #endif
 
 typedef long double real;
