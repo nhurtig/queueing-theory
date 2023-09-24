@@ -40,9 +40,16 @@ int main(int argc, char **argv) {
 
     unsigned int k = 1;
     FCFSPolicy policy;
-    ExponentialDistribution in(1.6);
-    std::vector<real> vals { 1.0, 2.0 };
-    std::vector<real> probs { 0.5, 0.5 };
+    ExponentialDistribution in(0.9);
+
+    real sum = 0;
+    for (int i = 0; i < 1000000; i++) {
+        sum += in.sample();
+    }
+    debug_print("Average time between arrivals=%Lf\n", sum/1000000);
+
+    std::vector<real> vals { 1.0 };
+    std::vector<real> probs { 1.0 };
     DiscreteDistribution serv(vals, probs);
     SingleIndepStream stream(&in, &serv);
     System system(&stream, &policy, k);

@@ -41,9 +41,9 @@ struct JobHash {
 
 class IndexedJob {
 public:
-    IndexedJob(real, Job);
+    IndexedJob(real, Job*);
     real index;
-    Job job;
+    Job* job;
 };
 
 bool operator==(const Job& lhs, const Job& rhs);

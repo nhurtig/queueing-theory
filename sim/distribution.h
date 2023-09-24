@@ -35,4 +35,13 @@ class DiscreteDistribution: public Distribution {
         std::vector<real> probs;
 };
 
+class DegenerateDistribution: public Distribution {
+    public:
+        DegenerateDistribution(real x);
+        real cdf(real);
+        real sample();
+    private:
+        real x;
+};
+
 #endif

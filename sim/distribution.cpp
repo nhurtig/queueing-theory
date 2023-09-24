@@ -80,3 +80,19 @@ real DiscreteDistribution::sample() {
 
     throw std::out_of_range("Did probs not add to 1?");
 }
+
+DegenerateDistribution::DegenerateDistribution(real x) {
+    this->x = x;
+}
+
+real DegenerateDistribution::cdf(real y) {
+    if (y < x) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+real DegenerateDistribution::sample() {
+    return x;
+}

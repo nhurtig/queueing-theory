@@ -21,7 +21,7 @@ private:
     real time;
     DataStore data;
     void run(real time, bool record);
-    void serveJobs(std::unordered_set<Job, JobHash> toRun, bool record);
+    void serveJobs(std::vector<Job*> toRun, bool record);
 };
 
 #endif
