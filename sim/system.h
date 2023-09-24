@@ -14,11 +14,14 @@ public:
     std::list<DeadJob> getData();
     void toCSV(std::string fname);
 private:
+    std::unordered_set<Job, JobHash> jobs;
     Stream *stream;
     Policy *policy;
     unsigned int k;
     real time;
     DataStore data;
+    void run(real time, bool record);
+    void serveJobs(std::unordered_set<Job, JobHash> toRun, bool record);
 };
 
 #endif

@@ -7,6 +7,10 @@ real Stream::nextInterrupt() {
     return this->timeLeft;
 }
 
+void Stream::serve(real time) {
+    this->timeLeft -= time;
+}
+
 FiniteIndepStream::FiniteIndepStream(Distribution *inDist, std::vector<Distribution*> dists, std::vector<real> probs) {
     real sum = std::accumulate(probs.begin(), probs.end(), 0.0);
     std::for_each(probs.begin(), probs.end(), [sum](real x){return x/sum;});

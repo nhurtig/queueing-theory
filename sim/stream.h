@@ -7,6 +7,7 @@
 class Stream {
 public:
     real nextInterrupt();
+    void serve(real time);
     virtual Job popJob(real) = 0;
     virtual void reset() = 0;
 protected:

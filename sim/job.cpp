@@ -15,6 +15,10 @@ real Job::nextInterrupt() {
     return this->required - this->age;
 }
 
+void Job::serve(real time) {
+    this->age += time;
+}
+
 std::string DeadJob::sep = ",";
 std::string DeadJob::lineSep = "\n";
 std::string DeadJob::header = "FinishTime" + DeadJob::sep + "ArrivalTime" + DeadJob::sep + "ServiceTime" + DeadJob::sep + "JobClass" + DeadJob::lineSep;

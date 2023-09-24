@@ -16,6 +16,7 @@ public:
     real required;
     unsigned int id;
     real nextInterrupt();
+    void serve(real time);
 };
 
 class DeadJob {
