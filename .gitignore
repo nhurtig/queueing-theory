@@ -1,6 +1,3 @@
 main
-Doxyfile
-sim/html
-sim/latex
 *.o
 sim/results
