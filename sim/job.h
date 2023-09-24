@@ -35,19 +35,11 @@ public:
     static std::string header;
 };
 
-struct JobHash {
-    size_t operator() (const Job& j) const {
-        return j.id;
-    }
-};
-
 class IndexedJob {
 public:
     IndexedJob(real index, unsigned int id);
     real index;
     unsigned int id;
 };
-
-bool operator==(const Job& lhs, const Job& rhs);
 
 #endif
