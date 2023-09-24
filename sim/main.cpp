@@ -47,6 +47,7 @@ int main(int argc, char **argv) {
     SingleIndepStream stream(&in, &serv);
     System system(&stream, &policy, k);
 
+    debug_print("Experiment start\n");
     system.runFor(100, 10000);
 
     system.toCSV("results/out.csv");

@@ -25,6 +25,7 @@ System::System(Stream *s, Policy *p, unsigned int k) {
 
 void System::runFor(real ignore_time, real record_time) {
     this->run(ignore_time, false);
+    debug_print("now recording\n");
     this->run(record_time, true);
 }
 
@@ -32,14 +33,18 @@ void System::run(real runtime, bool record) {
     real stopTime = time + runtime;
 
     while (time < stopTime) {
+        debug_print("time is %Lf\n", time);
         serveJobs(policy->choose(jobs, k), record);
     }
 }
 
 void System::serveJobs(std::unordered_set<Job, JobHash> toRun, bool record) {
     // find next interrupt
-    Job closestJob = *std::min_element(toRun.begin(), toRun.end(), [](Job a, Job b){return a.nextInterrupt() < b.nextInterrupt();});
-    real timeTilJob = closestJob.required*k;
+    real timeTilJob = infinity;
+    auto closestJob = std::min_element(toRun.begin(), toRun.end(), [](Job a, Job b){return a.nextInterrupt() < b.nextInterrupt();});
+    if (toRun.size() > 0) {
+        timeTilJob = closestJob->required*k;
+    }
     real timeTilArrive = stream->nextInterrupt();
 
     real timeToRun = std::min(timeTilJob, timeTilArrive);
@@ -50,14 +55,13 @@ void System::serveJobs(std::unordered_set<Job, JobHash> toRun, bool record) {
     // manage side effects
     time += timeToRun;
     if (timeTilJob < timeTilArrive) { // job completed
-        jobs.erase(closestJob);
+        jobs.erase(*closestJob);
         if (record) {
-            data.addJob(closestJob, time);
+            data.addJob(*closestJob, time);
         }
     } else { // job arrived
         jobs.insert(stream->popJob(time));
     }
-
 }
 
 std::list<DeadJob> System::getData() {
