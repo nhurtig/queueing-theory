@@ -1,0 +1,242 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class DataStore {
+	+DataStore()
+	+dumpJobs() : std::list<DeadJob>
+	+getJobs() : std::list<DeadJob>
+	-jobs : std::list<DeadJob>
+	+addJob(Job, real) : void
+	+toCSV(std::string fname) : void
+}
+
+
+class DeadJob {
+	+DeadJob(Job, real)
+	+dist : Distribution*
+	+job_class : jclass
+	+arrivalTime : real
+	+finishTime : real
+	+required : real
+	+{static} header : static std::string
+	+{static} lineSep : static std::string
+	+{static} sep : static std::string
+	+toCSV(std::ofstream* stream) : void
+}
+
+
+class DegenerateDistribution {
+	+DegenerateDistribution(real x)
+	+cdf(real) : real
+	+sample() : real
+	-x : real
+}
+
+
+class DiscreteDistribution {
+	+DiscreteDistribution(std::vector<real> vals, std::vector<real> probs)
+	+cdf(real) : real
+	+sample() : real
+	-probs : std::vector<real>
+	-vals : std::vector<real>
+	-size : unsigned int
+}
+
+
+abstract class Distribution {
+	+{abstract} cdf(real) : real
+	+{abstract} sample() : real
+}
+
+
+class ExponentialDistribution {
+	+ExponentialDistribution(real)
+	+cdf(real) : real
+	-lambda : real
+	+sample() : real
+}
+
+
+class FCFSPolicy {
+	-getIndex(Job job) : real
+}
+
+
+class FiniteIndepStream {
+	+FiniteIndepStream(Distribution* in, std::vector<Distribution*> serv, std::vector<real> probs)
+	+popJob(real) : Job
+	-classSize : jclass
+	-dists : std::vector<Distribution*>
+	-probs : std::vector<real>
+}
+
+
+abstract class IndepStream {
+	#inDist : Distribution*
+	+reset() : void
+}
+
+
+abstract class IndexPolicy {
+	-{abstract} getIndex(Job job) : real
+	+choose(std::map<unsigned int, Job> jobs, unsigned int k) : std::vector<unsigned int>
+}
+
+
+class IndexedJob {
+	+IndexedJob(real index, unsigned int id)
+	+index : real
+	+id : unsigned int
+}
+
+
+class Job {
+	+Job(Distribution*, real, jclass)
+	+dist : Distribution*
+	+job_class : jclass
+	+age : real
+	+arrivalTime : real
+	+getRequired() : real
+	+nextInterrupt() : real
+	-required : real
+	+{static} nextID : static unsigned int
+	+id : unsigned int
+	+serve(real time) : void
+}
+
+
+class LimitedSet {
+	+LimitedSet(unsigned int k)
+	+~LimitedSet()
+	-arr : IndexedJob*
+	+toVector() : std::vector<unsigned int>
+	-k : unsigned int
+	-size : unsigned int
+	+insert(IndexedJob job) : void
+	-insertInternal(IndexedJob job, unsigned int i) : void
+}
+
+
+abstract class Policy {
+	+{abstract} choose(std::map<unsigned int, Job> jobs, unsigned int k) : std::vector<unsigned int>
+}
+
+
+class SingleIndepStream {
+	+SingleIndepStream(Distribution* in, Distribution* serv)
+	-dist : Distribution*
+	+popJob(real) : Job
+}
+
+
+abstract class Stream {
+	+{abstract} popJob(real) : Job
+	+nextInterrupt() : real
+	#timeLeft : real
+	+{abstract} reset() : void
+	+serve(real time) : void
+}
+
+
+class System {
+	+System(Stream* stream, Policy* policy, unsigned int k)
+	-data : DataStore
+	-policy : Policy*
+	-stream : Stream*
+	-time : real
+	+getData() : std::list<DeadJob>
+	-jobs : std::map<unsigned int, Job>
+	-k : unsigned int
+	-run(real time, bool record) : void
+	+runFor(real ignore_time, real record_time) : void
+	-serveJobs(std::vector<unsigned int> toRun, bool record) : void
+	+toCSV(std::string fname) : void
+}
+
+
+class JobHash {
+	+operator()(const Job& j) : size_t {query}
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.Distribution <|-- .DegenerateDistribution
+
+
+.Distribution <|-- .DiscreteDistribution
+
+
+.Distribution <|-- .ExponentialDistribution
+
+
+.IndepStream <|-- .FiniteIndepStream
+
+
+.IndepStream <|-- .SingleIndepStream
+
+
+.IndexPolicy <|-- .FCFSPolicy
+
+
+.Policy <|-- .IndexPolicy
+
+
+.Stream <|-- .IndepStream
+
+
+
+
+
+/' Aggregation relationships '/
+
+.DataStore *-- .DeadJob
+
+
+.DeadJob o-- .Distribution
+
+
+.FiniteIndepStream o-- .Distribution
+
+
+.IndepStream o-- .Distribution
+
+
+.Job o-- .Distribution
+
+
+.LimitedSet o-- .IndexedJob
+
+
+.SingleIndepStream o-- .Distribution
+
+
+.System *-- .DataStore
+
+
+.System *-- .Job
+
+
+.System o-- .Policy
+
+
+.System o-- .Stream
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
