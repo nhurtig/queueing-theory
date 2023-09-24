@@ -5,12 +5,14 @@
 #include "policy.h"
 #include "stream.h"
 #include "job.h"
+#include <string>
 
 class System {
 public:
     System(Stream *stream, Policy *policy, unsigned int k);
     void runFor(real ignore_time, real record_time);
     std::list<DeadJob> getData();
+    void toCSV(std::string fname);
 private:
     Stream *stream;
     Policy *policy;

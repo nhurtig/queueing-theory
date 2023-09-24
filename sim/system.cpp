@@ -27,3 +27,7 @@ void System::runFor(real ignore_time, real record_time) {
 std::list<DeadJob> System::getData() {
     return this->data.getJobs();
 }
+
+void System::toCSV(std::string fname) {
+    this->data.toCSV(fname);
+}

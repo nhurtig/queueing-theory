@@ -49,5 +49,7 @@ int main(int argc, char **argv) {
 
     system.runFor(100, 10000);
 
+    system.toCSV("results/out.csv");
+
     return 0;
 }

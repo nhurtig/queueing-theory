@@ -1,4 +1,5 @@
 #include "dataStore.h"
+#include <fstream>
 
 DataStore::DataStore() {}
 
@@ -14,4 +15,17 @@ std::list<DeadJob> DataStore::dumpJobs() {
 
 void DataStore::addJob(Job job, real finishTime) {
     this->jobs.push_back(DeadJob(job, finishTime));
+}
+
+void DataStore::toCSV(std::string fname) {
+    std::ofstream file;
+    file.open(fname);
+
+    file << DeadJob::header;
+
+    for (auto& job : this->jobs) {
+        job.toCSV(&file);
+    }
+
+    file.close();
 }

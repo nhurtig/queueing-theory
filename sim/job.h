@@ -2,6 +2,8 @@
 #define JOB_H
 #include "queue_standard.h"
 #include "distribution.h"
+#include <string>
+#include <fstream>
 
 class Job {
 public:
@@ -19,11 +21,15 @@ public:
 class DeadJob {
 public:
     DeadJob(Job, real);
+    void toCSV(std::ofstream *stream);
     Distribution *dist;
     real required;
     real arrivalTime;
     real finishTime;
     jclass job_class;
+    static std::string sep;
+    static std::string lineSep;
+    static std::string header;
 };
 
 struct JobHash {
