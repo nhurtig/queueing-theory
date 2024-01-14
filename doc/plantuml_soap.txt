@@ -159,11 +159,6 @@ class System {
 }
 
 
-class JobHash {
-	+operator()(const Job& j) : size_t {query}
-}
-
-
 
 
 
