@@ -10,6 +10,7 @@ public:
     virtual real getRequired() const = 0;
     bool done() const;
     virtual void serve(real time) = 0;
+    virtual void show() const = 0;
 
     struct HashFunction {
         std::size_t operator()(const JobInterface& job) const;
@@ -28,6 +29,7 @@ public:
     real nextInterrupt() const;
     real getRequired() const;
     void serve(real time);
+    void show() const;
 
     unsigned int getID() const;
 private:
@@ -38,9 +40,10 @@ class DeadJob {
 public:
     DeadJob(Job*, real);
     void toCSV(std::ofstream *stream);
-    real required;
+    real serviceReq;
     real arrivalTime;
     real finishTime;
+    unsigned int id;
     static std::string sep;
     static std::string lineSep;
     static std::string header;

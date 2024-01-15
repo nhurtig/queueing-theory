@@ -13,6 +13,7 @@ public:
     real nextInterrupt() const;
     real getRequired() const;
     void serve(real time);
+    void show() const;
 
     bool closeTo(const IndexedJob other) const;
 

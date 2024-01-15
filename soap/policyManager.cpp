@@ -1,14 +1,17 @@
 #include "policyManager.h"
 #include "policy.h"
 #include "job.h"
+#include <iostream>
 
 PolicyManager::PolicyManager(unsigned int k, Policy *policy) : k(k), policy(policy) {
     this->hasChanged = false;
 }
 
 void PolicyManager::addJob(Job job) {
+    debug_print("addJob start: %d\n", size());
     this->hasChanged = true;
     this->queued.push(IndexedJob(this->policy, job));
+    debug_print("addJob end: %d\n", size());
 }
 
 bool PolicyManager::hasJob() {
@@ -16,8 +19,8 @@ bool PolicyManager::hasJob() {
 }
 
 Job PolicyManager::getJob() {
-    Job job = *completedJobs.begin();
-    completedJobs.erase(completedJobs.begin());
+    Job job = completedJobs.back();
+    completedJobs.pop_back();
     return job;
 }
 
@@ -35,13 +38,20 @@ real PolicyManager::nextInterrupt() {
 
     real interrupt = infinity;
     for (const auto& ijob : serving) {
-        interrupt = std::min(ijob.getRequired(), std::min(policy->timeTil(&(ijob.job), bound), interrupt));
+        interrupt = std::min(interrupt, k*std::min(policy->timeTil(&(ijob.job), bound), ijob.getRequired()));
+    }
+
+    unsigned int sharedServers = k - serving.size();
+    real multipilier = k * (sharedServing.size()/sharedServers);
+    for (const auto& ijob : sharedServing) {
+        interrupt = std::min(interrupt, multipilier*std::min(policy->timeTil(&(ijob.job), bound), ijob.getRequired()));
     }
 
     return interrupt;
 }
 
 void PolicyManager::serve(real time) {
+    debug_print("serve before: %d\n", size());
     if (hasChanged) {
         recalculate();
     }
@@ -55,14 +65,17 @@ void PolicyManager::serve(real time) {
     int shareCount = sharedServing.size();
     if (shareCount != 0) { // shared jobs exist
         int serveCount = serving.size();
-        real shareTime = (time/(k-serveCount))/shareCount;
+        real shareTime = time*(k-serveCount)/(shareCount*k);
         serveEach(sharedServing, shareTime);
     }
 
+    debug_print("serve after: %d\n", size());
     return;
 }
 
 void PolicyManager::recalculate() {
+    debug_print("recalc before: %d\n", size());
+    show();
     hasChanged = false;
 
     // obvious case: < k jobs
@@ -76,6 +89,8 @@ void PolicyManager::recalculate() {
             serving.push_back(std::move(queued.top()));
             queued.pop();
         }
+        debug_print("recalc after: %d\n", size());
+        show();
         return;
     }
 
@@ -142,13 +157,21 @@ void PolicyManager::recalculate() {
         sharedServing.push_back(std::move(queued.top()));
         queued.pop();
     }
+
+    debug_print("recalc after: %d\n", size());
+    show();
 }
 
-void PolicyManager::serveEach(std::vector<IndexedJob> toServe, real time) {
+unsigned int PolicyManager::size() const {
+    return serving.size() + sharedServing.size() + queued.size() + completedJobs.size();
+}
+
+void PolicyManager::serveEach(std::vector<IndexedJob>& toServe, real time) {
+    debug_print("serveEach start\n");
+    show();
     auto it = toServe.begin();
     while (it != toServe.end()) {
         it->serve(time);
-        debug_print("serving\n");
         if (it->done()) {
             debug_print("job done!\n");
             completedJobs.push_back(it->job);
@@ -158,5 +181,35 @@ void PolicyManager::serveEach(std::vector<IndexedJob> toServe, real time) {
         }
     }
 
+    debug_print("serveEach end\n");
+    show();
+
     return;
+}
+
+void PolicyManager::show() {
+    std::cout << "serving: {";
+    for (const auto& job : serving) {
+        job.show();
+        std::cout << ", ";
+    }
+    std::cout << "}\n";
+    std::cout << "shared: {";
+    for (const auto& job : sharedServing) {
+        job.show();
+        std::cout << ", ";
+    }
+    std::cout << "}\n";
+    // std::cout << "queued: {";
+    // for (const auto& job : queued) {
+    //     job.show();
+    //     std::cout << ", ";
+    // }
+    // std::cout << "}\n";
+    std::cout << "completed: {";
+    for (const auto& job : completedJobs) {
+        job.show();
+        std::cout << ", ";
+    }
+    std::cout << "}\n";
 }

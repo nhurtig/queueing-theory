@@ -46,18 +46,21 @@ int main(int argc, char **argv) {
 */
 
 
+    // server characteristics
     unsigned int k = 5;
     FCFSPolicy policy;
-    ExponentialDistribution in(0.99);
 
+    // input characteristics
+    ExponentialDistribution in(2); // mean is 1/lambda
     std::vector<real> vals { 1.0 };
     std::vector<real> probs { 1.0 };
     DiscreteDistribution serv(vals, probs);
     SingleIndepStream stream(&in, &serv);
+
     System system(&stream, &policy, k);
 
     printf("Experiment start\n");
-    system.runFor(100, 10000);
+    system.runFor(0, 10);
     printf("Experiment end\n");
 
     system.toCSV("results/out.csv");

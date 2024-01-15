@@ -2,7 +2,7 @@
 #include "job.h"
 
 real FCFSPolicy::getIndex(Job *job) {
-    return -job->arrivalTime;
+    return job->arrivalTime;
 }
 
 real FCFSPolicy::timeTil(const Job *job, real bound) {

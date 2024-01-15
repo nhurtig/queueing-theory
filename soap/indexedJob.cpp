@@ -1,4 +1,5 @@
 #include "indexedJob.h"
+#include <iostream>
 
 IndexedJob::IndexedJob(Policy *p, Job job): job{job}, p{p} {
     rank = p->getIndex(&job);
@@ -24,6 +25,12 @@ bool IndexedJob::closeTo(const IndexedJob other) const {
 
 unsigned int IndexedJob::getID() const {
     return job.getID();
+}
+
+void IndexedJob::show() const {
+    std::cout << "(";
+    job.show();
+    std::cout << ", " << rank << ")";
 }
 
 bool IndexedJob::operator<(const IndexedJob& other) const {

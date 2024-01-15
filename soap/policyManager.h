@@ -22,8 +22,10 @@ private:
     std::vector<IndexedJob> sharedServing;
     std::priority_queue<IndexedJob> queued;
     std::vector<Job> completedJobs;
+    unsigned int size() const;
     void recalculate();
-    void serveEach(std::vector<IndexedJob> toServe, real time);
+    void serveEach(std::vector<IndexedJob>& toServe, real time);
+    void show();
 };
 
 #endif
