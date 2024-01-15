@@ -3,7 +3,7 @@
 #include "queue_standard.h"
 #include "job.h"
 #include "policy.h"
-#include <unordered_set>
+// #include <vector>
 #include <queue>
 
 class PolicyManager {
@@ -18,12 +18,12 @@ private:
     unsigned int k; // how many servers
     bool hasChanged; // whether the served set needs recalculated
     Policy *policy;
-    std::unordered_set<IndexedJob, IndexedJob::HashFunction> serving;
-    std::unordered_set<IndexedJob, IndexedJob::HashFunction> sharedServing;
+    std::vector<IndexedJob> serving;
+    std::vector<IndexedJob> sharedServing;
     std::priority_queue<IndexedJob> queued;
-    std::unordered_set<Job, Job::HashFunction> completedJobs;
+    std::vector<Job> completedJobs;
     void recalculate();
-    void serveEach(std::unordered_set<IndexedJob, IndexedJob::HashFunction> toServe, real time);
+    void serveEach(std::vector<IndexedJob> toServe, real time);
 };
 
 #endif

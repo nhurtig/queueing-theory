@@ -33,6 +33,10 @@ real Job::getRequired() const {
     return this->required;
 }
 
+unsigned int Job::getID() const {
+    return id;
+}
+
 std::string DeadJob::sep = ",";
 std::string DeadJob::lineSep = "\n";
 std::string DeadJob::header = "FinishTime" + DeadJob::sep + "ArrivalTime" + DeadJob::sep + "ServiceTime" + DeadJob::sep + DeadJob::lineSep;
@@ -61,6 +65,10 @@ real IndexedJob::getRequired() const {
 void IndexedJob::serve(real time) {
     job.serve(time);
     return;
+}
+
+unsigned int IndexedJob::getID() const {
+    return job.getID();
 }
 
 bool IndexedJob::operator<(const IndexedJob& other) const {

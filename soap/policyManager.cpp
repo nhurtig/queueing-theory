@@ -51,17 +51,18 @@ void PolicyManager::serve(real time) {
 }
 
 void PolicyManager::recalculate() {
+    hasChanged = false;
     // put all jobs into a reverse-ordered priority queue
     std::priority_queue<IndexedJob, std::vector<IndexedJob>, IndexedJob::ReverseComparator> reverseQueue;
     // TODO
 }
 
-void PolicyManager::serveEach(std::unordered_set<IndexedJob, IndexedJob::HashFunction> toServe, real time) {
+void PolicyManager::serveEach(std::vector<IndexedJob> toServe, real time) {
     auto it = toServe.begin();
     while (it != toServe.end()) {
         it->serve(time);
         if (it->done()) {
-            completedJobs.insert(it->job);
+            completedJobs.push_back(it->job);
             it = toServe.erase(it);
         } else {
             it++;
