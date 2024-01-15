@@ -142,7 +142,6 @@ void PolicyManager::serveEach(std::vector<IndexedJob> toServe, real time) {
         } else {
             it++;
         }
-        it++;
     }
 
     return;
