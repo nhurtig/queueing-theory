@@ -59,12 +59,12 @@ void PolicyManager::serve(real time) {
     hasChanged = true;
 
     // serve regular jobs
+    int serveCount = serving.size();
     serveEach(serving, time/k);
 
     // serve shared jobs
     int shareCount = sharedServing.size();
     if (shareCount != 0) { // shared jobs exist
-        int serveCount = serving.size();
         real shareTime = time*(k-serveCount)/(shareCount*k);
         serveEach(sharedServing, shareTime);
     }

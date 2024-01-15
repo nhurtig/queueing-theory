@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     FCFSPolicy policy;
 
     // input characteristics
-    ExponentialDistribution in(2); // mean is 1/lambda
+    ExponentialDistribution in(0.5); // mean is 1/lambda
     std::vector<real> vals { 1.0 };
     std::vector<real> probs { 1.0 };
     DiscreteDistribution serv(vals, probs);
@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
     System system(&stream, &policy, k);
 
     printf("Experiment start\n");
-    system.runFor(0, 10);
+    system.runFor(0, 700);
     printf("Experiment end\n");
 
     system.toCSV("results/out.csv");
