@@ -4,32 +4,34 @@
 #include "distribution.h"
 #include <string>
 #include <fstream>
+#include <cstddef>
 
 class Job {
 public:
     static unsigned int nextID;
-    Job(Distribution*, real, jclass);
-    Distribution *dist;
+    Job(real, Distribution*);
     real age;
     real arrivalTime;
-    jclass job_class;
     unsigned int id;
     real nextInterrupt();
     real getRequired();
     void serve(real time);
+
+    struct HashFunction {
+        std::size_t operator()(const Job& job) const;
+    };
+    bool operator==(const Job& other) const;
 private:
     real required;
 };
 
 class DeadJob {
 public:
-    DeadJob(Job, real);
+    DeadJob(Job*, real);
     void toCSV(std::ofstream *stream);
-    Distribution *dist;
     real required;
     real arrivalTime;
     real finishTime;
-    jclass job_class;
     static std::string sep;
     static std::string lineSep;
     static std::string header;
@@ -37,9 +39,15 @@ public:
 
 class IndexedJob {
 public:
-    IndexedJob(real index, unsigned int id);
-    real index;
-    unsigned int id;
+    IndexedJob(real rank, Job job);
+    real rank;
+    Job job;
+
+    struct HashFunction {
+        std::size_t operator()(const IndexedJob& job) const;
+    };
+    bool operator==(const IndexedJob& other) const;
+    bool operator<(const IndexedJob& other) const;
 };
 
 #endif

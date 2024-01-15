@@ -2,12 +2,10 @@
 
 unsigned int Job::nextID = 0;
 
-Job::Job(Distribution *dist, real arrivalTime, jclass job_class) {
-    this->dist = dist;
+Job::Job(real arrivalTime, Distribution *dist) {
     this->arrivalTime = arrivalTime;
     this->required = dist->sample();
     this->age = 0;
-    this->job_class = job_class;
     this->id = nextID++;
 }
 
@@ -23,25 +21,45 @@ real Job::getRequired() {
     return this->required;
 }
 
+std::size_t Job::HashFunction::operator()(const Job& job) const {
+    return job.id;
+}
+
+bool Job::operator==(const Job& other) const {
+    return this->id == other.id;
+}
+
 std::string DeadJob::sep = ",";
 std::string DeadJob::lineSep = "\n";
-std::string DeadJob::header = "FinishTime" + DeadJob::sep + "ArrivalTime" + DeadJob::sep + "ServiceTime" + DeadJob::sep + "JobClass" + DeadJob::lineSep;
+std::string DeadJob::header = "FinishTime" + DeadJob::sep + "ArrivalTime" + DeadJob::sep + "ServiceTime" + DeadJob::sep + DeadJob::lineSep;
 
-DeadJob::DeadJob(Job job, real finishTime) {
-    this->dist = job.dist;
-    this->required = job.getRequired();
-    this->arrivalTime = job.arrivalTime;
+DeadJob::DeadJob(Job *job, real finishTime) {
+    this->required = job->getRequired();
+    this->arrivalTime = job->arrivalTime;
     this->finishTime = finishTime;
-    this->job_class = job.job_class;
 }
 
 void DeadJob::toCSV(std::ofstream *stream) {
     *stream << this->finishTime << this->sep << this->arrivalTime << this->sep;
-    *stream << this->required << this->sep << this->job_class << this->lineSep;
+    *stream << this->required << this->lineSep;
 }
 
-bool operator==(const Job& lhs, const Job& rhs) {
-    return lhs.id == rhs.id;
+IndexedJob::IndexedJob(real rank, Job job): rank{rank}, job{job} {}
+
+std::size_t IndexedJob::HashFunction::operator()(const IndexedJob& ijob) const {
+    return ijob.job.id;
 }
 
-IndexedJob::IndexedJob(real index, unsigned int id): index{index}, id{id} {}
+bool IndexedJob::operator==(const IndexedJob& other) const {
+    return this->job == other.job;
+}
+
+bool IndexedJob::operator<(const IndexedJob& other) const {
+    if (this->rank < other.rank) {
+        return true;
+    } else if (this->rank > other.rank) {
+        return false;
+    } else {
+        return this->job.arrivalTime < other.job.arrivalTime;
+    }
+}

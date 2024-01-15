@@ -3,6 +3,7 @@
 #include "queue_standard.h"
 #include "dataStore.h"
 #include "policy.h"
+#include "policyManager.h"
 #include "stream.h"
 #include "job.h"
 #include <string>
@@ -15,14 +16,13 @@ public:
     std::list<DeadJob> getData();
     void toCSV(std::string fname);
 private:
-    std::map<unsigned int, Job> jobs;
     Stream *stream;
-    Policy *policy;
-    unsigned int k;
     real time;
     DataStore data;
+    PolicyManager policyManager;
+    unsigned int k;
     void run(real time, bool record);
-    void serveJobs(std::vector<unsigned int> toRun, bool record);
+    void runStep(bool record);
 };
 
 #endif

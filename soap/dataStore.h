@@ -11,7 +11,7 @@ public:
     std::list<DeadJob> getJobs();
     std::list<DeadJob> dumpJobs();
     void toCSV(std::string fname);
-    void addJob(Job, real);
+    void addJob(Job*, real);
 private:
     std::list<DeadJob> jobs;
 };

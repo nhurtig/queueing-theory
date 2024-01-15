@@ -13,7 +13,7 @@ std::list<DeadJob> DataStore::dumpJobs() {
     return jobs;
 }
 
-void DataStore::addJob(Job job, real finishTime) {
+void DataStore::addJob(Job *job, real finishTime) {
     this->jobs.push_back(DeadJob(job, finishTime));
 }
 

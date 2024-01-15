@@ -31,7 +31,7 @@ Job FiniteIndepStream::popJob(real time) {
     for (jclass i = 0; i < this->classSize; i++) {
         x -= probs[i];
         if (x < 0) {
-            return Job(dists[i], time, i);
+            return Job(time, dists[i]);
         }
     }
     throw std::out_of_range("Did probs not add to 1?");
@@ -49,5 +49,9 @@ SingleIndepStream::SingleIndepStream(Distribution *inDist, Distribution *dist) {
 
 Job SingleIndepStream::popJob(real time) {
     reset();
-    return Job(dist, time, 0);
+    return Job(time, dist);
+}
+
+bool SingleIndepStream::hasJob() {
+    return this->timeLeft <= 0;
 }

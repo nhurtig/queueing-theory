@@ -9,6 +9,7 @@ public:
     real nextInterrupt();
     void serve(real time);
     virtual Job popJob(real) = 0;
+    virtual bool hasJob() = 0;
     virtual void reset() = 0;
 protected:
     real timeLeft;
@@ -35,6 +36,7 @@ class SingleIndepStream: public IndepStream {
 public:
     SingleIndepStream(Distribution* in, Distribution* serv);
     Job popJob(real);
+    bool hasJob();
 private:
     Distribution *dist;
 };
