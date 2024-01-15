@@ -18,17 +18,23 @@ void IndexedJob::serve(real time) {
     return;
 }
 
+bool IndexedJob::closeTo(const IndexedJob other) const {
+    return rank == other.rank && job.age == other.job.age;
+}
+
 unsigned int IndexedJob::getID() const {
     return job.getID();
 }
 
 bool IndexedJob::operator<(const IndexedJob& other) const {
+    // returns TRUE if I'm less important (higher rank) than other,
+    // FALSE if other is more important
     if (this->rank < other.rank) {
-        return true;
-    } else if (this->rank > other.rank) {
         return false;
+    } else if (this->rank > other.rank) {
+        return true;
     } else {
-        return this->job.arrivalTime < other.job.arrivalTime;
+        return this->job.arrivalTime > other.job.arrivalTime;
     }
 }
 
