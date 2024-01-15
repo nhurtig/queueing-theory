@@ -1,5 +1,17 @@
 #include "job.h"
 
+bool JobInterface::done() const {
+    return getRequired() <= 0;
+}
+
+std::size_t JobInterface::HashFunction::operator()(const JobInterface& job) const {
+    return job.getID();
+}
+
+bool JobInterface::operator==(const JobInterface& other) const {
+    return this->getID() == other.getID();
+}
+
 unsigned int Job::nextID = 0;
 
 Job::Job(real arrivalTime, Distribution *dist) {
@@ -9,7 +21,7 @@ Job::Job(real arrivalTime, Distribution *dist) {
     this->id = nextID++;
 }
 
-real Job::nextInterrupt() {
+real Job::nextInterrupt() const {
     return this->required - this->age;
 }
 
@@ -17,16 +29,8 @@ void Job::serve(real time) {
     this->age += time;
 }
 
-real Job::getRequired() {
+real Job::getRequired() const {
     return this->required;
-}
-
-std::size_t Job::HashFunction::operator()(const Job& job) const {
-    return job.id;
-}
-
-bool Job::operator==(const Job& other) const {
-    return this->id == other.id;
 }
 
 std::string DeadJob::sep = ",";
@@ -46,12 +50,17 @@ void DeadJob::toCSV(std::ofstream *stream) {
 
 IndexedJob::IndexedJob(real rank, Job job): rank{rank}, job{job} {}
 
-std::size_t IndexedJob::HashFunction::operator()(const IndexedJob& ijob) const {
-    return ijob.job.id;
+real IndexedJob::nextInterrupt() const {
+    return job.nextInterrupt();
 }
 
-bool IndexedJob::operator==(const IndexedJob& other) const {
-    return this->job == other.job;
+real IndexedJob::getRequired() const {
+    return job.getRequired();
+}
+
+void IndexedJob::serve(real time) {
+    job.serve(time);
+    return;
 }
 
 bool IndexedJob::operator<(const IndexedJob& other) const {
@@ -62,4 +71,8 @@ bool IndexedJob::operator<(const IndexedJob& other) const {
     } else {
         return this->job.arrivalTime < other.job.arrivalTime;
     }
+}
+
+bool IndexedJob::ReverseComparator::operator()(const IndexedJob& lhs, const IndexedJob& rhs) const {
+    return lhs < rhs;
 }

@@ -22,6 +22,8 @@ private:
     std::unordered_set<IndexedJob, IndexedJob::HashFunction> sharedServing;
     std::priority_queue<IndexedJob> queued;
     std::unordered_set<Job, Job::HashFunction> completedJobs;
+    void recalculate();
+    void serveEach(std::unordered_set<IndexedJob, IndexedJob::HashFunction> toServe, real time);
 };
 
 #endif

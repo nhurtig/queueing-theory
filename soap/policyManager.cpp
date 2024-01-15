@@ -22,11 +22,52 @@ Job PolicyManager::getJob() {
 }
 
 real PolicyManager::nextInterrupt() {
+    if (hasChanged) {
+        recalculate();
+    }
     // TODO
     return 1000;
 }
 
 void PolicyManager::serve(real time) {
+    if (hasChanged) {
+        recalculate();
+    }
+
+    hasChanged = true;
+
+    // serve regular jobs
+    serveEach(serving, time/k);
+
+    // serve shared jobs
+    int shareCount = sharedServing.size();
+    if (shareCount != 0) { // shared jobs exist
+        int serveCount = serving.size();
+        real shareTime = (time/(k-serveCount))/shareCount;
+        serveEach(sharedServing, shareTime);
+    }
+
+    return;
+}
+
+void PolicyManager::recalculate() {
+    // put all jobs into a reverse-ordered priority queue
+    std::priority_queue<IndexedJob, std::vector<IndexedJob>, IndexedJob::ReverseComparator> reverseQueue;
     // TODO
+}
+
+void PolicyManager::serveEach(std::unordered_set<IndexedJob, IndexedJob::HashFunction> toServe, real time) {
+    auto it = toServe.begin();
+    while (it != toServe.end()) {
+        it->serve(time);
+        if (it->done()) {
+            completedJobs.insert(it->job);
+            it = toServe.erase(it);
+        } else {
+            it++;
+        }
+        it++;
+    }
+
     return;
 }

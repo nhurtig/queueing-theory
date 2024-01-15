@@ -6,21 +6,32 @@
 #include <fstream>
 #include <cstddef>
 
-class Job {
+class JobInterface {
+public:
+    virtual real nextInterrupt() const = 0;
+    virtual real getRequired() const = 0;
+    bool done() const;
+    virtual void serve(real time) = 0;
+
+    struct HashFunction {
+        std::size_t operator()(const JobInterface& job) const;
+    };
+    bool operator==(const JobInterface& other) const;
+    virtual unsigned int getID() const = 0;
+};
+
+class Job : public JobInterface {
 public:
     static unsigned int nextID;
     Job(real, Distribution*);
     real age;
     real arrivalTime;
     unsigned int id;
-    real nextInterrupt();
-    real getRequired();
+    real nextInterrupt() const;
+    real getRequired() const;
     void serve(real time);
 
-    struct HashFunction {
-        std::size_t operator()(const Job& job) const;
-    };
-    bool operator==(const Job& other) const;
+    unsigned int getID() const;
 private:
     real required;
 };
@@ -37,17 +48,21 @@ public:
     static std::string header;
 };
 
-class IndexedJob {
+class IndexedJob : public JobInterface {
 public:
     IndexedJob(real rank, Job job);
     real rank;
     Job job;
 
-    struct HashFunction {
-        std::size_t operator()(const IndexedJob& job) const;
-    };
-    bool operator==(const IndexedJob& other) const;
+    real nextInterrupt() const;
+    real getRequired() const;
+    void serve(real time);
+
     bool operator<(const IndexedJob& other) const;
+    struct ReverseComparator {
+        bool operator()(const IndexedJob& lhs, const IndexedJob &rhs) const;
+    };
+    unsigned int getID() const;
 };
 
 #endif
