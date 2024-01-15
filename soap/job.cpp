@@ -39,7 +39,7 @@ unsigned int Job::getID() const {
 
 std::string DeadJob::sep = ",";
 std::string DeadJob::lineSep = "\n";
-std::string DeadJob::header = "FinishTime" + DeadJob::sep + "ArrivalTime" + DeadJob::sep + "ServiceTime" + DeadJob::sep + DeadJob::lineSep;
+std::string DeadJob::header = "FinishTime" + DeadJob::sep + "ArrivalTime" + DeadJob::sep + "ServiceTime"  + DeadJob::lineSep;
 
 DeadJob::DeadJob(Job *job, real finishTime) {
     this->required = job->getRequired();
