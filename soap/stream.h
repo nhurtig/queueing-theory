@@ -2,6 +2,7 @@
 #define STREAM_H
 #include "queue_standard.h"
 #include "job.h"
+#include "distribution.h"
 #include <vector>
 
 class Stream {

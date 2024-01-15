@@ -13,14 +13,17 @@ memcheck: main
 clean:
 	rm *.o main
 
-main: main.o distribution.o job.o dataStore.o stream.o policy.o system.o policyManager.o
-	$(CC) $(CFLAGS) -o main main.o distribution.o job.o dataStore.o stream.o policy.o system.o policyManager.o
+main: main.o distribution.o job.o indexedJob.o dataStore.o stream.o policy.o system.o policyManager.o
+	$(CC) $(CFLAGS) -o main main.o distribution.o job.o indexedJob.o dataStore.o stream.o policy.o system.o policyManager.o
 
 main.o: distribution.h job.h main.cpp queue_standard.h dataStore.h
 	$(CC) $(CFLAGS) -c main.cpp
 
 job.o: job.h job.cpp distribution.h queue_standard.h
 	$(CC) $(CFLAGS) -c job.cpp
+
+indexedJob.o: indexedJob.h indexedJob.cpp policy.h job.h
+	$(CC) $(CFLAGS) -c indexedJob.cpp
 
 distribution.o: distribution.h distribution.cpp queue_standard.h
 	$(CC) $(CFLAGS) -c distribution.cpp
@@ -34,7 +37,7 @@ stream.o: stream.h queue_standard.h stream.cpp distribution.h
 policy.o: queue_standard.h policy.h job.h policy.cpp
 	$(CC) $(CFLAGS) -c policy.cpp
 
-policyManager.o: policyManager.h job.h policy.h policyManager.cpp
+policyManager.o: policyManager.h job.h indexedJob.h policy.h policyManager.cpp
 	$(CC) $(CFLAGS) -c policyManager.cpp
 
 system.o: system.h queue_standard.h job.h stream.h policy.h dataStore.h system.cpp

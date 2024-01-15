@@ -1,10 +1,8 @@
 #ifndef JOB_H
 #define JOB_H
 #include "queue_standard.h"
-#include "distribution.h"
 #include <string>
 #include <fstream>
-#include <cstddef>
 
 class JobInterface {
 public:
@@ -23,7 +21,7 @@ public:
 class Job : public JobInterface {
 public:
     static unsigned int nextID;
-    Job(real, Distribution*);
+    Job(real age, real required);
     real age;
     real arrivalTime;
     unsigned int id;
@@ -46,23 +44,6 @@ public:
     static std::string sep;
     static std::string lineSep;
     static std::string header;
-};
-
-class IndexedJob : public JobInterface {
-public:
-    IndexedJob(real rank, Job job);
-    real rank;
-    Job job;
-
-    real nextInterrupt() const;
-    real getRequired() const;
-    void serve(real time);
-
-    bool operator<(const IndexedJob& other) const;
-    struct ReverseComparator {
-        bool operator()(const IndexedJob& lhs, const IndexedJob &rhs) const;
-    };
-    unsigned int getID() const;
 };
 
 #endif

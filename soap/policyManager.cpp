@@ -8,7 +8,7 @@ PolicyManager::PolicyManager(unsigned int k, Policy *policy) : k(k), policy(poli
 
 void PolicyManager::addJob(Job job) {
     this->hasChanged = true;
-    this->queued.push(IndexedJob(this->policy->getIndex(&job), job));
+    this->queued.push(IndexedJob(this->policy, job));
 }
 
 bool PolicyManager::hasJob() {

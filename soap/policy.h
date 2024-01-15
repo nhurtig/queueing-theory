@@ -13,6 +13,4 @@ private:
     real getIndex(Job *job);
 };
 
-bool compareJobs(IndexedJob a, IndexedJob b);
-
 #endif
