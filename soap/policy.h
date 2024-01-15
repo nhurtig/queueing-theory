@@ -6,11 +6,13 @@
 class Policy {
 public:
     virtual real getIndex(Job *job) = 0;
+    virtual real timeTil(const Job *job, real bound) = 0;
 };
 
 class FCFSPolicy: public Policy {
 private:
     real getIndex(Job *job);
+    real timeTil(const Job *job, real bound);
 };
 
 #endif

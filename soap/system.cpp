@@ -23,6 +23,7 @@ void System::runStep(bool record) {
     // find next interrupt
     real streamInterrupt = this->stream->nextInterrupt();
     real jobInterrupt = this->policyManager.nextInterrupt();
+    debug_print("stream interrupt: %Lf, job interrupt: %Lf\n", streamInterrupt, jobInterrupt);
     real timeToRun = std::min(streamInterrupt, jobInterrupt);
 
     // serve jobs, stream
@@ -33,6 +34,7 @@ void System::runStep(bool record) {
     time += timeToRun;
 
     while(this->policyManager.hasJob()) {
+        debug_print("collect dead job\n");
         Job job = this->policyManager.getJob();
         if (record) {
             data.addJob(&job, time);

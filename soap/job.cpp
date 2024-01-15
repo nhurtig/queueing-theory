@@ -1,6 +1,7 @@
 #include "job.h"
 
 bool JobInterface::done() const {
+    debug_print("done: req is %Lf\n", getRequired());
     return getRequired() <= 0;
 }
 
@@ -27,6 +28,7 @@ real Job::nextInterrupt() const {
 
 void Job::serve(real time) {
     this->age += time;
+    this->required -= time;
 }
 
 real Job::getRequired() const {

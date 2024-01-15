@@ -25,8 +25,20 @@ real PolicyManager::nextInterrupt() {
     if (hasChanged) {
         recalculate();
     }
-    // TODO
-    return 1000;
+
+    real bound;
+    if (queued.empty()) {
+        bound = infinity;
+    } else {
+        bound = queued.top().rank;
+    }
+
+    real interrupt = infinity;
+    for (const auto& ijob : serving) {
+        interrupt = std::min(ijob.getRequired(), std::min(policy->timeTil(&(ijob.job), bound), interrupt));
+    }
+
+    return interrupt;
 }
 
 void PolicyManager::serve(real time) {
@@ -136,7 +148,9 @@ void PolicyManager::serveEach(std::vector<IndexedJob> toServe, real time) {
     auto it = toServe.begin();
     while (it != toServe.end()) {
         it->serve(time);
+        debug_print("serving\n");
         if (it->done()) {
+            debug_print("job done!\n");
             completedJobs.push_back(it->job);
             it = toServe.erase(it);
         } else {
