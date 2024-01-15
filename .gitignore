@@ -2,3 +2,4 @@ main
 *.o
 sim/results
 doc/*.h
+.vscode
