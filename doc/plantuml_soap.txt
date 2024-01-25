@@ -11,21 +11,20 @@ class DataStore {
 	+dumpJobs() : std::list<DeadJob>
 	+getJobs() : std::list<DeadJob>
 	-jobs : std::list<DeadJob>
-	+addJob(Job, real) : void
+	+addJob(Job*, real) : void
 	+toCSV(std::string fname) : void
 }
 
 
 class DeadJob {
-	+DeadJob(Job, real)
-	+dist : Distribution*
-	+job_class : jclass
+	+DeadJob(Job*, real)
 	+arrivalTime : real
 	+finishTime : real
-	+required : real
+	+serviceReq : real
 	+{static} header : static std::string
 	+{static} lineSep : static std::string
 	+{static} sep : static std::string
+	+id : unsigned int
 	+toCSV(std::ofstream* stream) : void
 }
 
@@ -63,7 +62,8 @@ class ExponentialDistribution {
 
 
 class FCFSPolicy {
-	-getIndex(Job job) : real
+	-getIndex(Job* job) : real
+	-timeTil(const Job* job, real bound) : real
 }
 
 
@@ -82,48 +82,71 @@ abstract class IndepStream {
 }
 
 
-abstract class IndexPolicy {
-	-{abstract} getIndex(Job job) : real
-	+choose(std::map<unsigned int, Job> jobs, unsigned int k) : std::vector<unsigned int>
-}
-
-
 class IndexedJob {
-	+IndexedJob(real index, unsigned int id)
-	+index : real
-	+id : unsigned int
+	+IndexedJob(Policy* p, Job job)
+	+job : Job
+	-p : Policy*
+	+closeTo(const IndexedJob other) : bool {query}
+	+operator<(const IndexedJob& other) : bool {query}
+	+getRequired() : real {query}
+	+nextInterrupt() : real {query}
+	+rank : real
+	+getID() : unsigned int {query}
+	+serve(real time) : void
+	+show() : void {query}
 }
 
 
 class Job {
-	+Job(Distribution*, real, jclass)
-	+dist : Distribution*
-	+job_class : jclass
+	+Job(real age, real required)
 	+age : real
 	+arrivalTime : real
-	+getRequired() : real
-	+nextInterrupt() : real
+	+getRequired() : real {query}
+	+nextInterrupt() : real {query}
 	-required : real
 	+{static} nextID : static unsigned int
+	+getID() : unsigned int {query}
 	+id : unsigned int
 	+serve(real time) : void
+	+show() : void {query}
 }
 
 
-class LimitedSet {
-	+LimitedSet(unsigned int k)
-	+~LimitedSet()
-	-arr : IndexedJob*
-	+toVector() : std::vector<unsigned int>
-	-k : unsigned int
-	-size : unsigned int
-	+insert(IndexedJob job) : void
-	-insertInternal(IndexedJob job, unsigned int i) : void
+abstract class JobInterface {
+	+done() : bool {query}
+	+operator==(const JobInterface& other) : bool {query}
+	+{abstract} getRequired() : real {query}
+	+{abstract} nextInterrupt() : real {query}
+	+{abstract} getID() : unsigned int {query}
+	+{abstract} serve(real time) : void
+	+{abstract} show() : void {query}
 }
 
 
 abstract class Policy {
-	+{abstract} choose(std::map<unsigned int, Job> jobs, unsigned int k) : std::vector<unsigned int>
+	+{abstract} getIndex(Job* job) : real
+	+{abstract} timeTil(const Job* job, real bound) : real
+}
+
+
+class PolicyManager {
+	+PolicyManager(unsigned int k, Policy* policy)
+	+getJob() : Job
+	-policy : Policy*
+	-hasChanged : bool
+	+hasJob() : bool
+	+nextInterrupt() : real
+	-queued : std::priority_queue<IndexedJob>
+	-serving : std::vector<IndexedJob>
+	-sharedServing : std::vector<IndexedJob>
+	-completedJobs : std::vector<Job>
+	-k : unsigned int
+	-size() : unsigned int {query}
+	+addJob(Job job) : void
+	-recalculate() : void
+	+serve(real time) : void
+	-serveEach(std::vector<IndexedJob>& toServe, real time) : void
+	-show() : void
 }
 
 
@@ -131,11 +154,13 @@ class SingleIndepStream {
 	+SingleIndepStream(Distribution* in, Distribution* serv)
 	-dist : Distribution*
 	+popJob(real) : Job
+	+hasJob() : bool
 }
 
 
 abstract class Stream {
 	+{abstract} popJob(real) : Job
+	+{abstract} hasJob() : bool
 	+nextInterrupt() : real
 	#timeLeft : real
 	+{abstract} reset() : void
@@ -146,16 +171,25 @@ abstract class Stream {
 class System {
 	+System(Stream* stream, Policy* policy, unsigned int k)
 	-data : DataStore
-	-policy : Policy*
+	-policyManager : PolicyManager
 	-stream : Stream*
 	-time : real
 	+getData() : std::list<DeadJob>
-	-jobs : std::map<unsigned int, Job>
 	-k : unsigned int
 	-run(real time, bool record) : void
 	+runFor(real ignore_time, real record_time) : void
-	-serveJobs(std::vector<unsigned int> toRun, bool record) : void
+	-runStep(bool record) : void
 	+toCSV(std::string fname) : void
+}
+
+
+class IndexedJob::ReverseComparator {
+	+operator()(const IndexedJob& lhs, const IndexedJob& rhs) : bool {query}
+}
+
+
+class JobInterface::HashFunction {
+	+operator()(const JobInterface& job) : std :: size_t {query}
 }
 
 
@@ -179,10 +213,13 @@ class System {
 .IndepStream <|-- .SingleIndepStream
 
 
-.IndexPolicy <|-- .FCFSPolicy
+.JobInterface <|-- .IndexedJob
 
 
-.Policy <|-- .IndexPolicy
+.JobInterface <|-- .Job
+
+
+.Policy <|-- .FCFSPolicy
 
 
 .Stream <|-- .IndepStream
@@ -196,19 +233,25 @@ class System {
 .DataStore *-- .DeadJob
 
 
-.DeadJob o-- .Distribution
-
-
 .FiniteIndepStream o-- .Distribution
 
 
 .IndepStream o-- .Distribution
 
 
-.Job o-- .Distribution
+.IndexedJob *-- .Job
 
 
-.LimitedSet o-- .IndexedJob
+.IndexedJob o-- .Policy
+
+
+.PolicyManager "3" *-- .IndexedJob
+
+
+.PolicyManager *-- .Job
+
+
+.PolicyManager o-- .Policy
 
 
 .SingleIndepStream o-- .Distribution
@@ -217,10 +260,7 @@ class System {
 .System *-- .DataStore
 
 
-.System *-- .Job
-
-
-.System o-- .Policy
+.System *-- .PolicyManager
 
 
 .System o-- .Stream
@@ -231,6 +271,12 @@ class System {
 
 
 /' Nested objects '/
+
+.IndexedJob +-- .IndexedJob::ReverseComparator
+
+
+.JobInterface +-- .JobInterface::HashFunction
+
 
 
 

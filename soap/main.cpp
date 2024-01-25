@@ -8,7 +8,7 @@
 #include "policy.h"
 
 int main(int argc, char **argv) {
-    seed_rand(44);
+    seed_rand(4);
 
 /*
     ExponentialDistribution dist = ExponentialDistribution(4.0);
@@ -47,20 +47,21 @@ int main(int argc, char **argv) {
 
 
     // server characteristics
-    unsigned int k = 5;
+    unsigned int k = 1;
     FCFSPolicy policy;
 
     // input characteristics
-    ExponentialDistribution in(0.5); // mean is 1/lambda
-    std::vector<real> vals { 1.0 };
-    std::vector<real> probs { 1.0 };
-    DiscreteDistribution serv(vals, probs);
+    ExponentialDistribution in(1); // mean is 1/lambda
+    // std::vector<real> vals { 1.0 };
+    // std::vector<real> probs { 1.0 };
+    // DiscreteDistribution serv(vals, probs);
+    ExponentialDistribution serv(1.01);
     SingleIndepStream stream(&in, &serv);
 
     System system(&stream, &policy, k);
 
     printf("Experiment start\n");
-    system.runFor(0, 700);
+    system.runFor(0, 100000);
     printf("Experiment end\n");
 
     system.toCSV("results/out.csv");

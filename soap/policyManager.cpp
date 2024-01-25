@@ -188,6 +188,7 @@ void PolicyManager::serveEach(std::vector<IndexedJob>& toServe, real time) {
 }
 
 void PolicyManager::show() {
+    return;
     std::cout << "serving: {";
     for (const auto& job : serving) {
         job.show();

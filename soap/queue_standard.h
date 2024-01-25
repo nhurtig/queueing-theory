@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <cfloat>
 
-#define DEBUG_MODE
+// #define DEBUG_MODE
 #ifdef DEBUG_MODE
 #define debug_print(...) fprintf(stderr, __VA_ARGS__)
 #endif
