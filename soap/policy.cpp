@@ -35,6 +35,7 @@ DiscreteGittinsPolicy::DiscreteGittinsPolicy(std::vector<real> vals, std::vector
 }
 
 real DiscreteGittinsPolicy::getIndex(Job *job) {
+    // debug_print("DGP gI start\n");
     real a = job->age;
     unsigned int istar = 0;
     for (; istar < this->size; istar++) {
@@ -43,6 +44,8 @@ real DiscreteGittinsPolicy::getIndex(Job *job) {
         }
     }
     if (istar >= this->size) {
+        debug_print("a=%Lf\n", a);
+        debug_print("done=%d\n", job->done());
         throw std::invalid_argument("Job is impossibly old!");
     }
     
@@ -54,7 +57,8 @@ real DiscreteGittinsPolicy::getIndex(Job *job) {
     real Ga = 0;
     for (unsigned int j = 0; j < this->size - istar; j++) {
         real num = 0;
-        for (unsigned int i = istar; i < istar - j; i++) {
+// debug_print("DGP gI canary j=%d\n", j);
+        for (unsigned int i = istar; i < istar + j; i++) {
             num += this->probs[i];
         }
         num /= Pprime;
@@ -64,8 +68,11 @@ real DiscreteGittinsPolicy::getIndex(Job *job) {
             denom += this->probs[i];
         }
         denom *= this->vals[istar + j];
-        for (unsigned int i = 0; i < istar + j - 1; i++) {
-            denom += this->probs[i]*this->vals[i];
+// debug_print("DGP gI canary istar+j-1=%d\n", istar+j-1);
+        if (istar + j > 0) {
+            for (unsigned int i = 0; i < istar + j - 1; i++) {
+                denom += this->probs[i]*this->vals[i];
+            }
         }
         denom /= Pprime;
         denom -= a;
@@ -76,8 +83,9 @@ real DiscreteGittinsPolicy::getIndex(Job *job) {
         }
     }
     
+    // debug_print("DGP gI end\n");
+    debug_print("a=%Lf->%Lf\n", a, Ga);
     return Ga;
-    // return job->arrivalTime;
 }
 
 real DiscreteGittinsPolicy::timeTil(const Job *job, real bound) {

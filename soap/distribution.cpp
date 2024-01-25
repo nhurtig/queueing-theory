@@ -71,7 +71,7 @@ real DiscreteDistribution::cdf(real x) {
 
 real DiscreteDistribution::sample() {
     real x = rand_real();
-    debug_print("x=%Lf\n", x);
+    // debug_print("x=%Lf\n", x);
     for (unsigned int i = 0; i < this->size; i++) {
         if (x < probs[i]) {
             return vals[i];
@@ -79,7 +79,7 @@ real DiscreteDistribution::sample() {
         x -= probs[i];
     }
 
-    debug_print("after x=%Lf\n", x);
+    // debug_print("after x=%Lf\n", x);
     throw std::out_of_range("Did probs not add to 1?");
 }
 

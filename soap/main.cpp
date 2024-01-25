@@ -57,8 +57,8 @@ int main(int argc, char **argv) {
     // ExponentialDistribution serv(1.01);
     SingleIndepStream stream(&in, &serv);
 
-    // DiscreteGittinsPolicy policy(vals, probs);
-    FCFSPolicy policy;
+    DiscreteGittinsPolicy policy(vals, probs);
+    // FCFSPolicy policy;
 
     System system(&stream, &policy, k);
 

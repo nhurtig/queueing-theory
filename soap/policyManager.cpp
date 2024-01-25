@@ -8,10 +8,10 @@ PolicyManager::PolicyManager(unsigned int k, Policy *policy) : k(k), policy(poli
 }
 
 void PolicyManager::addJob(Job job) {
-    debug_print("addJob start: %d\n", size());
+    // debug_print("addJob start: %d\n", size());
     this->hasChanged = true;
     this->queued.push(IndexedJob(this->policy, job));
-    debug_print("addJob end: %d\n", size());
+    // debug_print("addJob end: %d\n", size());
 }
 
 bool PolicyManager::hasJob() {
@@ -51,7 +51,7 @@ real PolicyManager::nextInterrupt() {
 }
 
 void PolicyManager::serve(real time) {
-    debug_print("serve before: %d\n", size());
+    // debug_print("serve before: %d\n", size());
     if (hasChanged) {
         recalculate();
     }
@@ -69,12 +69,12 @@ void PolicyManager::serve(real time) {
         serveEach(sharedServing, shareTime);
     }
 
-    debug_print("serve after: %d\n", size());
+    // debug_print("serve after: %d\n", size());
     return;
 }
 
 void PolicyManager::recalculate() {
-    debug_print("recalc before: %d\n", size());
+    // debug_print("recalc before: %d\n", size());
     show();
     hasChanged = false;
 
@@ -89,7 +89,7 @@ void PolicyManager::recalculate() {
             serving.push_back(std::move(queued.top()));
             queued.pop();
         }
-        debug_print("recalc after: %d\n", size());
+        // debug_print("recalc after: %d\n", size());
         show();
         return;
     }
@@ -158,7 +158,7 @@ void PolicyManager::recalculate() {
         queued.pop();
     }
 
-    debug_print("recalc after: %d\n", size());
+    // debug_print("recalc after: %d\n", size());
     show();
 }
 
@@ -167,21 +167,22 @@ unsigned int PolicyManager::size() const {
 }
 
 void PolicyManager::serveEach(std::vector<IndexedJob>& toServe, real time) {
-    debug_print("serveEach start\n");
+    // debug_print("serveEach start\n");
     show();
     auto it = toServe.begin();
     while (it != toServe.end()) {
         it->serve(time);
         if (it->done()) {
-            debug_print("job done!\n");
+            // debug_print("job done!\n");
             completedJobs.push_back(it->job);
             it = toServe.erase(it);
         } else {
+            // debug_print("job not done!\n");
             it++;
         }
     }
 
-    debug_print("serveEach end\n");
+    // debug_print("serveEach end\n");
     show();
 
     return;

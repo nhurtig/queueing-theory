@@ -15,7 +15,9 @@ real IndexedJob::getRequired() const {
 
 void IndexedJob::serve(real time) {
     job.serve(time);
-    rank = p->getIndex(&job);
+    if (!job.done()) {
+        rank = p->getIndex(&job);
+    }
     return;
 }
 

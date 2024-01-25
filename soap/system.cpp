@@ -6,7 +6,7 @@ System::System(Stream *s, Policy *p, unsigned int k)
 
 void System::runFor(real ignore_time, real record_time) {
     this->run(ignore_time, false);
-    debug_print("now recording\n");
+    // debug_print("now recording\n");
     this->run(record_time, true);
 }
 
@@ -23,7 +23,7 @@ void System::runStep(bool record) {
     // find next interrupt
     real streamInterrupt = this->stream->nextInterrupt();
     real jobInterrupt = this->policyManager.nextInterrupt();
-    debug_print("stream interrupt: %Lf, job interrupt: %Lf\n", streamInterrupt, jobInterrupt);
+    // debug_print("stream interrupt: %Lf, job interrupt: %Lf\n", streamInterrupt, jobInterrupt);
     real timeToRun = std::min(streamInterrupt, jobInterrupt);
 
     // serve jobs, stream
@@ -34,7 +34,7 @@ void System::runStep(bool record) {
     time += timeToRun;
 
     while(this->policyManager.hasJob()) {
-        debug_print("collect dead job\n");
+        // debug_print("collect dead job\n");
         Job job = this->policyManager.getJob();
         if (record) {
             data.addJob(&job, time);
