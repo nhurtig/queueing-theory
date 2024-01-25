@@ -54,11 +54,11 @@ real DiscreteGittinsPolicy::getIndex(Job *job) {
         Pprime += this->probs[i];
     }
 
-    real Ga = 0;
+    real Ga = infinity;
     for (unsigned int j = 0; j < this->size - istar; j++) {
         real num = 0;
-// debug_print("DGP gI canary j=%d\n", j);
-        for (unsigned int i = istar; i < istar + j; i++) {
+        // debug_print("DGP gI canary j=%d\n", j);
+        for (unsigned int i = istar; i <= istar + j; i++) {
             num += this->probs[i];
         }
         num /= Pprime;
@@ -68,23 +68,24 @@ real DiscreteGittinsPolicy::getIndex(Job *job) {
             denom += this->probs[i];
         }
         denom *= this->vals[istar + j];
-// debug_print("DGP gI canary istar+j-1=%d\n", istar+j-1);
-        if (istar + j > 0) {
-            for (unsigned int i = 0; i < istar + j - 1; i++) {
-                denom += this->probs[i]*this->vals[i];
-            }
+        // debug_print("DGP gI canary istar+j-1=%d\n", istar+j-1);
+        // if (istar + j > 0) {
+        for (unsigned int i = istar; i < istar + j; i++) {
+            denom += this->probs[i]*this->vals[i];
         }
+        // }
         denom /= Pprime;
         denom -= a;
 
-        real frac = num/denom;
-        if (frac > Ga) {
+        real frac = denom/num;
+        // debug_print("j=%d: frac=%Lf, num=%Lf, denom=%Lf\n", j, frac, num, denom);
+        if (frac < Ga) {
             Ga = frac;
         }
     }
     
     // debug_print("DGP gI end\n");
-    debug_print("a=%Lf->%Lf\n", a, Ga);
+    // debug_print("a=%Lf->%Lf\n", a, Ga);
     return Ga;
 }
 
