@@ -1,5 +1,6 @@
 #include "dataStore.h"
 #include <fstream>
+#include <iomanip>
 
 DataStore::DataStore() {}
 
@@ -20,6 +21,8 @@ void DataStore::addJob(Job *job, real finishTime) {
 void DataStore::toCSV(std::string fname) {
     std::ofstream file;
     file.open(fname);
+
+    file << std::scientific << std::setprecision(15);
 
     file << DeadJob::header;
 

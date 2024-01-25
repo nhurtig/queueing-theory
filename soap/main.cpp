@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 
 
     // server characteristics
-    // unsigned int k = 5;
+    unsigned int k = 5;
 
     // input characteristics
     ExponentialDistribution in(1/1.43); // mean is 1/lambda
@@ -57,20 +57,20 @@ int main(int argc, char **argv) {
     // ExponentialDistribution serv(1.01);
     SingleIndepStream stream(&in, &serv);
 
-    Policy *policy = new DiscreteGittinsPolicy(vals, probs);
+    DiscreteGittinsPolicy policy(vals, probs);
     // FCFSPolicy policy;
 
-    // System system(&stream, &policy, k);
+    System system(&stream, &policy, k);
 
-    Job j = stream.popJob(0);
-    j.serve(2.8);
-    printf("0->%Lf\n", policy->getIndex(&j));
+    // Job j = stream.popJob(0);
+    // j.serve(2.8);
+    // printf("0->%Lf\n", policy->getIndex(&j));
 
-    // printf("Experiment start\n");
-    // system.runFor(0, 100000);
-    // printf("Experiment end\n");
+    printf("Experiment start\n");
+    system.runFor(1000, 100000);
+    printf("Experiment end\n");
 
-    // system.toCSV("results/out.csv");
+    system.toCSV("results/out.csv");
 
     return 0;
 }
