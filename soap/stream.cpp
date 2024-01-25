@@ -34,7 +34,7 @@ Job FiniteIndepStream::popJob(real time) {
             return Job(time, dists[i]->sample());
         }
     }
-    throw std::out_of_range("Did probs not add to 1?");
+    throw std::out_of_range("Did probs not add to 1?\n");
 }
 
 void IndepStream::reset() {

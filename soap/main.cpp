@@ -47,16 +47,18 @@ int main(int argc, char **argv) {
 
 
     // server characteristics
-    unsigned int k = 1;
-    FCFSPolicy policy;
+    unsigned int k = 5;
 
     // input characteristics
-    ExponentialDistribution in(1); // mean is 1/lambda
-    // std::vector<real> vals { 1.0 };
-    // std::vector<real> probs { 1.0 };
-    // DiscreteDistribution serv(vals, probs);
-    ExponentialDistribution serv(1.01);
+    ExponentialDistribution in(1/1.43); // mean is 1/lambda
+    std::vector<real> vals { 1, 2, 3 };
+    std::vector<real> probs { 0.72, 0.14, 0.14 }; // mean is 1.42
+    DiscreteDistribution serv(vals, probs);
+    // ExponentialDistribution serv(1.01);
     SingleIndepStream stream(&in, &serv);
+
+    // DiscreteGittinsPolicy policy(vals, probs);
+    FCFSPolicy policy;
 
     System system(&stream, &policy, k);
 
