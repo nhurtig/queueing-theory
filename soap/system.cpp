@@ -25,6 +25,7 @@ void System::runStep(bool record) {
     real jobInterrupt = this->policyManager.nextInterrupt();
     // debug_print("stream interrupt: %Lf, job interrupt: %Lf\n", streamInterrupt, jobInterrupt);
     real timeToRun = std::min(streamInterrupt, jobInterrupt);
+    // timeToRun = 0.01;
 
     // serve jobs, stream
     this->policyManager.serve(timeToRun);
