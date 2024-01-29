@@ -29,6 +29,9 @@ real PolicyManager::nextInterrupt() {
         recalculate();
     }
 
+    // how long until someone on the bench becomes good enough?
+    // not using because we assume almost always weakly decreasing policy
+    /*
     real bound;
     if (queued.empty()) {
         bound = infinity;
@@ -45,6 +48,29 @@ real PolicyManager::nextInterrupt() {
     real multipilier = k * (sharedServing.size()/sharedServers);
     for (const auto& ijob : sharedServing) {
         interrupt = std::min(interrupt, multipilier*std::min(policy->timeTil(&(ijob.job), bound), ijob.getRequired()));
+    }
+    */
+
+    unsigned int sharedServers = k - serving.size();
+    real multiplier = k * (sharedServing.size()/sharedServers);
+
+    // how long until a served job hits an increase?
+    real interrupt = infinity;
+    for (const auto& ijob : serving) {
+        interrupt = std::min(interrupt, k*policy->timeTilIncrease(&(ijob.job)));
+    }
+
+    for (const auto& ijob : sharedServing) {
+        interrupt = std::min(interrupt, multiplier*policy->timeTilIncrease(&(ijob.job)));
+    }
+
+    // how long until a served job finishes?
+    for (const auto& ijob : serving) {
+        interrupt = std::min(interrupt, k*ijob.getRequired());
+    }
+
+    for (const auto& ijob : sharedServing) {
+        interrupt = std::min(interrupt, multiplier*ijob.getRequired());
     }
 
     return interrupt;

@@ -13,6 +13,10 @@ real FCFSPolicy::timeTil(const Job *job, real bound) {
     return infinity;
 }
 
+real FCFSPolicy::timeTilIncrease(const Job *job) {
+    return infinity;
+}
+
 DiscreteGittinsPolicy::DiscreteGittinsPolicy(std::vector<real> vals, std::vector<real> probs) {
     real sum = std::accumulate(probs.begin(), probs.end(), 0.0);
     std::for_each(probs.begin(), probs.end(), [sum](real x){return x/sum;});
@@ -91,5 +95,14 @@ real DiscreteGittinsPolicy::getIndex(Job *job) {
 
 real DiscreteGittinsPolicy::timeTil(const Job *job, real bound) {
     //TODO
-    return infinity;
+    throw std::invalid_argument("TODO: Not yet implemented!");
+}
+
+real DiscreteGittinsPolicy::timeTilIncrease(const Job *job) {
+    for (real val : this->vals) {
+        if (job->age < val) {
+            return val - job->age;
+        }
+    }
+    throw std::invalid_argument("Job is impossibly old!");
 }

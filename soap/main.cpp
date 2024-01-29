@@ -1,5 +1,6 @@
 #include "distribution.h"
 #include <stdio.h>
+#include <sstream>
 #include "queue_standard.h"
 #include "dataStore.h"
 #include "job.h"
@@ -8,8 +9,6 @@
 #include "policy.h"
 
 int main(int argc, char **argv) {
-    seed_rand(5);
-
 /*
     ExponentialDistribution dist = ExponentialDistribution(4.0);
 
@@ -47,31 +46,57 @@ int main(int argc, char **argv) {
 
 
     // server characteristics
-    unsigned int k = 5;
+    unsigned int k = 3;
+
+    unsigned int RUN_TIME = 10000;
+    unsigned int TRIALS = 100;
+    real MAX_N = 3; // 1-10^-3 = 0.999
+    real step = 0.1;
 
     // input characteristics
     // used to be 1.43
-    ExponentialDistribution in(1.0/1.43); // mean is 1/lambda
-    std::vector<real> vals { 1, 2, 3 };
-    std::vector<real> probs { 0.72, 0.14, 0.14 }; // mean is 1.42
+    std::vector<real> vals { 10.0/17, 20.0/17, 30.0/17 };
+    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1
     DiscreteDistribution serv(vals, probs);
     // ExponentialDistribution serv(1.01);
-    SingleIndepStream stream(&in, &serv);
 
-    // DiscreteGittinsPolicy policy(vals, probs);
-    FCFSPolicy policy;
+    DiscreteGittinsPolicy policyGittins(vals, probs);
+    FCFSPolicy policyFCFS;
 
-    System system(&stream, &policy, k);
+    long int seed = 4;
+    for (real n = 0; n < MAX_N; n += step) {
+        real load = 1.0 - powl(10.0, -n);
 
+        for (unsigned int i = 0; i < TRIALS; i++) {
+            seed_rand(seed);
+            ExponentialDistribution inFCFS(load);
+            SingleIndepStream streamFCFS(&inFCFS, &serv);
+            System systemFCFS(&streamFCFS, &policyFCFS, k);
+            systemFCFS.runFor(0, RUN_TIME);
+            std::ostringstream ossFCFS;
+            ossFCFS << "results/log/fcfs_" << n << "_" << load << "_" << i << ".csv";
+            systemFCFS.toCSV(ossFCFS.str());
+
+            seed_rand(seed);
+            ExponentialDistribution inGittins(load);
+            SingleIndepStream streamGittins(&inGittins, &serv);
+            System systemGittins(&streamGittins, &policyGittins, k);
+            systemGittins.runFor(0, RUN_TIME);
+            std::ostringstream ossGittins;
+            ossGittins << "results/log/gittins_" << n << "_" << load << "_" << i << ".csv";
+            systemGittins.toCSV(ossGittins.str());
+            seed++;
+        }
+    }
     // Job j = stream.popJob(0);
     // j.serve(2.8);
     // printf("0->%Lf\n", policy->getIndex(&j));
 
-    printf("Experiment start\n");
-    system.runFor(1000, 1000000);
-    printf("Experiment end\n");
+    // printf("Experiment start\n");
+    // system.runFor(0, 1000000);
+    // printf("Experiment end\n");
 
-    system.toCSV("results/out.csv");
+    // system.toCSV("results/out.csv");
 
     return 0;
 }
