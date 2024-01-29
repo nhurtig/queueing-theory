@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     mgr.serve(3);
 */
 
-
+/* LOG experiment (gittins vs FCFS in turnaround for WiQ presentation)
     // server characteristics
     unsigned int k = 3;
 
@@ -88,9 +88,74 @@ int main(int argc, char **argv) {
             seed++;
         }
     }
-    // Job j = stream.popJob(0);
-    // j.serve(2.8);
-    // printf("0->%Lf\n", policy->getIndex(&j));
+
+*/
+
+/*
+    // gittins vs slowdown gittins
+    // server characteristics
+    std::vector<unsigned int> ks;
+    ks.push_back(1);
+    ks.push_back(5);
+    ks.push_back(20);
+
+    unsigned int RUN_TIME = 10000;
+    unsigned int TRIALS = 100;
+    real MAX_N = 3; // 1-10^-3 = 0.999
+    real step = 0.1;
+
+    // input characteristics
+    // used to be 1.43
+    std::vector<real> vals { 10.0/17, 20.0/17, 30.0/17 };
+    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1
+    DiscreteDistribution serv(vals, probs);
+    // ExponentialDistribution serv(1.01);
+
+    DiscreteGittinsPolicy policyTurn(vals, probs);
+    DiscreteGittinsSlowdownPolicy policySlow(vals, probs);
+
+    long int seed = 4;
+    for (const auto& k : ks) {
+    for (real n = 2.9; n < MAX_N; n += step) {
+        real load = 1.0 - powl(10.0, -n);
+
+        for (unsigned int i = 0; i < TRIALS; i++) {
+            seed_rand(seed);
+            ExponentialDistribution inTurn(load);
+            SingleIndepStream streamTurn(&inTurn, &serv);
+            System systemTurn(&streamTurn, &policyTurn, k);
+            systemTurn.runFor(0, RUN_TIME);
+            std::ostringstream ossTurn;
+            ossTurn << "results/gittcomp/turn_" << k << "_" << n << "_" << load << "_" << i << ".csv";
+            systemTurn.toCSV(ossTurn.str());
+
+            seed_rand(seed);
+            ExponentialDistribution inSlow(load);
+            SingleIndepStream streamSlow(&inSlow, &serv);
+            System systemSlow(&streamSlow, &policySlow, k);
+            systemSlow.runFor(0, RUN_TIME);
+            std::ostringstream ossSlow;
+            ossSlow << "results/gittcomp/slow_" << k << "_" << n << "_" << load << "_" << i << ".csv";
+            systemSlow.toCSV(ossSlow.str());
+            seed++;
+        }
+    }
+    }
+*/
+
+
+    std::vector<real> vals { 10.0/17, 20.0/17, 30.0/17 };
+    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1
+    DiscreteDistribution serv(vals, probs);
+    ExponentialDistribution in(1.0);
+
+    SingleIndepStream stream(&in, &serv);
+
+    Policy *policy = new DiscreteGittinsSlowdownPolicy(vals, probs);
+
+    Job j = stream.popJob(0);
+    j.serve(15.0/17.0);
+    printf("0->%Lf\n", policy->getIndex(&j));
 
     // printf("Experiment start\n");
     // system.runFor(0, 1000000);

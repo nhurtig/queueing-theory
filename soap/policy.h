@@ -30,4 +30,16 @@ private:
     unsigned int size;
 };
 
+class DiscreteGittinsSlowdownPolicy: public Policy {
+public:
+    DiscreteGittinsSlowdownPolicy(std::vector<real> vals, std::vector<real> probs);
+private:
+    real getIndex(Job *job);
+    real timeTil(const Job *job, real bound);
+    real timeTilIncrease(const Job *job);
+    std::vector<real> vals;
+    std::vector<real> probs;
+    unsigned int size;
+};
+
 #endif
