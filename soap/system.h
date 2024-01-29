@@ -22,7 +22,8 @@ private:
     PolicyManager policyManager;
     unsigned int k;
     void run(real time, bool record);
-    void runStep(bool record);
+    void finishQueuedJobs();
+    void runStep(bool record, bool allowArrivals);
 };
 
 #endif

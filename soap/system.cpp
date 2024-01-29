@@ -8,20 +8,32 @@ void System::runFor(real ignore_time, real record_time) {
     this->run(ignore_time, false);
     // debug_print("now recording\n");
     this->run(record_time, true);
+    this->finishQueuedJobs();
 }
 
 void System::run(real runtime, bool record) {
     real stopTime = time + runtime;
 
     while (time < stopTime) {
-        runStep(record);
+        runStep(record, true);
         // debug_print("%ld jobs in queue\n", jobs.size());
     }
 }
 
-void System::runStep(bool record) {
+void System::finishQueuedJobs() {
+    while (this->policyManager.size() > 0) {
+        runStep(true, false);
+    }
+}
+
+void System::runStep(bool record, bool allowArrivals) {
     // find next interrupt
-    real streamInterrupt = this->stream->nextInterrupt();
+    real streamInterrupt = 0;
+    if (allowArrivals) {
+        streamInterrupt = this->stream->nextInterrupt();
+    } else {
+        streamInterrupt = infinity;
+    }
     real jobInterrupt = this->policyManager.nextInterrupt();
     // debug_print("stream interrupt: %Lf, job interrupt: %Lf\n", streamInterrupt, jobInterrupt);
     real timeToRun = std::min(streamInterrupt, jobInterrupt);
@@ -29,7 +41,9 @@ void System::runStep(bool record) {
 
     // serve jobs, stream
     this->policyManager.serve(timeToRun);
-    this->stream->serve(timeToRun);
+    if (allowArrivals) {
+        this->stream->serve(timeToRun);
+    }
 
     // manage side effects
     time += timeToRun;
@@ -42,7 +56,7 @@ void System::runStep(bool record) {
         }
     }
 
-    while(stream->hasJob()) {
+    while(allowArrivals && stream->hasJob()) {
         this->policyManager.addJob(stream->popJob(time));
     }
 }

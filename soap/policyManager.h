@@ -13,6 +13,7 @@ public:
     bool hasJob();
     Job getJob();
     void serve(real time);
+    unsigned int size() const;
     real nextInterrupt();
 private:
     unsigned int k; // how many servers
@@ -22,7 +23,6 @@ private:
     std::vector<IndexedJob> sharedServing;
     std::priority_queue<IndexedJob> queued;
     std::vector<Job> completedJobs;
-    unsigned int size() const;
     void recalculate();
     void serveEach(std::vector<IndexedJob>& toServe, real time);
     void show();

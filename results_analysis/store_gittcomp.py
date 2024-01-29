@@ -35,8 +35,9 @@ for f in sorted(os.listdir(RESULTS)):
     #     plt.clf()
     T = df.Turnaround.mean()
     S = df.Slowdown.mean()
+    abandoned = -(df.shape[0] - (df.ID.max() - df.ID.min()))
     if k == "1" and n == "2.9":
-        print(f"{f}: mean turnaround {T}, slowdown {S}")
+        print(f"{f}: mean turnaround {T}, slowdown {S}, ab={abandoned}")
 
     mydict = None
     if 'turn' in f:

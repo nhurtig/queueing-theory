@@ -144,24 +144,29 @@ int main(int argc, char **argv) {
 */
 
 
-    std::vector<real> vals { 10.0/17, 20.0/17, 30.0/17 };
-    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1
+    seed_rand(4);
+    std::vector<real> vals { 1.0, 2.0, 3.0 };
+    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1.3
     DiscreteDistribution serv(vals, probs);
-    ExponentialDistribution in(1.0);
+    ExponentialDistribution in(1/1.4);
 
     SingleIndepStream stream(&in, &serv);
 
-    Policy *policy = new DiscreteGittinsSlowdownPolicy(vals, probs);
+    DiscreteGittinsPolicy policy(vals, probs);
+    // DiscreteGittinsSlowdownPolicy policy(vals, probs);
 
-    Job j = stream.popJob(0);
-    j.serve(15.0/17.0);
-    printf("0->%Lf\n", policy->getIndex(&j));
+    System system(&stream, &policy, 1);
 
-    // printf("Experiment start\n");
-    // system.runFor(0, 1000000);
-    // printf("Experiment end\n");
+    // Job j = stream.popJob(0);
+    // j.serve(15.0/17.0);
+    // printf("0->%Lf\n", policy->getIndex(&j));
 
-    // system.toCSV("results/out.csv");
+    printf("Experiment start\n");
+    system.runFor(0, 20);
+    printf("Experiment end\n");
+
+    system.toCSV("results/outturn.csv");
+    // system.toCSV("results/outslow.csv");
 
     return 0;
 }
