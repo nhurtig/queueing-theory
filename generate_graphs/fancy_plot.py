@@ -66,8 +66,8 @@ Y = np.vectorize(G_slowdown)(A)
 
 plt.plot(A,Y,color="#4285f4")
 plt.ylim(0,3)
-plt.xlabel("age")
-plt.ylabel("rank")
+plt.xlabel("Age")
+plt.ylabel("Rank")
 
 plt.legend(["Unmodified", "Slowdown"])
 
@@ -80,6 +80,6 @@ pts = y[:-1]
 pts.append(0)
 yGittins = np.vectorize(G_slowdown)(pts)
 plt.scatter(pts,yGittins,color="#4285f4")
-plt.title("Gittins indices for discrete distribution")
+# plt.title("Gittins indices for discrete distribution")
 
 plt.savefig('discrete_gittins_compare.png',dpi=1200)
