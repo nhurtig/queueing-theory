@@ -91,7 +91,6 @@ int main(int argc, char **argv) {
 
 */
 
-/*
     // gittins vs slowdown gittins
     // server characteristics
     std::vector<unsigned int> ks;
@@ -141,9 +140,9 @@ int main(int argc, char **argv) {
         }
     }
     }
-*/
 
 
+    /* Turnaround vs slowdown Gittins, simple example for debugging
     seed_rand(4);
     std::vector<real> vals { 1.0, 2.0, 3.0 };
     std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1.3
@@ -167,6 +166,7 @@ int main(int argc, char **argv) {
 
     system.toCSV("results/outturn.csv");
     // system.toCSV("results/outslow.csv");
+    */
 
     return 0;
 }

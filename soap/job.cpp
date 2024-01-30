@@ -20,7 +20,7 @@ Job::Job(real arrivalTime, real required) {
     this->required = required;
     this->age = 0;
     this->id = nextID++;
-    // debug_print("job with id %d created\n", id);
+    debug_print("job with id %d created\n", id);
 }
 
 real Job::nextInterrupt() const {
@@ -30,7 +30,7 @@ real Job::nextInterrupt() const {
 void Job::serve(real time) {
     this->age += time;
     this->required -= time;
-    // debug_print("id %d: %Lf remaining, done=%d\n", id, required, this->done());
+    debug_print("id %d: %Lf remaining, done=%d\n", id, required, this->done());
 }
 
 real Job::getRequired() const {

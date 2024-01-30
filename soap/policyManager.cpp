@@ -100,12 +100,13 @@ void PolicyManager::serve(real time) {
 }
 
 void PolicyManager::recalculate() {
-    // debug_print("recalc before: %d\n", size());
+    debug_print("recalc before: %d\n", size());
     show();
     hasChanged = false;
 
     // obvious case: < k jobs
     if (serving.size() + sharedServing.size() + queued.size() < k) {
+        debug_print("easy!\n");
         // move everything to serving
         while(!sharedServing.empty()) {
             serving.push_back(std::move(sharedServing.back()));
@@ -115,7 +116,7 @@ void PolicyManager::recalculate() {
             serving.push_back(std::move(queued.top()));
             queued.pop();
         }
-        // debug_print("recalc after: %d\n", size());
+        debug_print("recalc after: %d\n", size());
         show();
         return;
     }
@@ -132,21 +133,22 @@ void PolicyManager::recalculate() {
     }
 
     // now move best jobs into serving. Serving's back
-    // is now the worst of the best
+    // is now the worst of the best (possibly more or less
+    // than k things)
     while(!best.empty()) {
         serving.push_back(std::move(best.top()));
         best.pop();
     }
 
-    // pop off the least attractive served jobs until
-    // all jobs in serving are strictly better
-    // than all jobs in queued
-    while(!serving.empty() && serving.back() < queued.top()) {
-        queued.push(std::move(serving.back()));
-        serving.pop_back();
-    }
+    // bad and stupid step:
+    // // pop off the least attractive served jobs until
+    // // all jobs in serving are strictly better
+    // // than all jobs in queued
+    // while(!serving.empty() && serving.back() < queued.top()) {
+    //     queued.push(std::move(serving.back()));
+    //     serving.pop_back();
+    // }
 
-    // guaranteed that all jobs in serving are best.
     // now grow/shrink best to the best k things, no
     // ties considered (yet)
     while (serving.size() < k) {
@@ -154,16 +156,14 @@ void PolicyManager::recalculate() {
         queued.pop();
     }
 
-    std::vector<IndexedJob> between;
     while(serving.size() > k) {
-        between.push_back(std::move(serving.back()));
+        queued.push(std::move(serving.back()));
         serving.pop_back();
     }
 
-    // now guaranteed that serving has k things.
+    // now guaranteed that serving has exactly k things.
     // serving has the best stuff (with the back being
-    // the worst of the best), between has the next best
-    // stuff (with the back being the best), and queued
+    // the worst of the best) and queued
     // has the worst stuff (with the top being the best
     // of the worst).
 
@@ -184,7 +184,7 @@ void PolicyManager::recalculate() {
         queued.pop();
     }
 
-    // debug_print("recalc after: %d\n", size());
+    debug_print("recalc after: %d\n", size());
     show();
 }
 
@@ -199,7 +199,7 @@ void PolicyManager::serveEach(std::vector<IndexedJob>& toServe, real time) {
     while (it != toServe.end()) {
         it->serve(time);
         if (it->done()) {
-            // debug_print("job done!\n");
+            debug_print("job done! id %d\n", it->job.getID());
             completedJobs.push_back(it->job);
             it = toServe.erase(it);
         } else {
