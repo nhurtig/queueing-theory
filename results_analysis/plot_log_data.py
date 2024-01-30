@@ -7,13 +7,10 @@ def lists_to_quartiles(dict_lists):
     domain = sorted([1 - pow(10,-float(x)) for x in dict_lists.keys()])
     names = sorted(dict_lists.keys(), key=(lambda x: 1 - pow(10, -float(x))))
     qs = [np.quantile(dict_lists[x], [0.25,0.5,0.75]) for x in names]
-
     qs = np.transpose(np.array(qs))
-
     first = qs[0]
     median = qs[1]
     third = qs[2]
-
     return domain, names, first, median, third
 
 f = open("gittins_lists.json", "r")
@@ -34,12 +31,12 @@ g_names = [float(x) for x in g_names]
 g_color = "#8337be"
 f_color = "#444444"
 plt.plot(f_domain, f_median, color=f_color)
-plt.plot(g_domain, g_median, color=g_color)
-plt.legend(["FCFS", "Gittins"])
+# plt.plot(g_domain, g_median, color=g_color)
+# plt.legend(["FCFS", "Gittins"])
 plt.plot(f_domain, f_first, '--', color=f_color)
-plt.plot(g_domain, g_first, '--', color=g_color)
+# plt.plot(g_domain, g_first, '--', color=g_color)
 plt.plot(f_domain, f_third, '--', color=f_color)
-plt.plot(g_domain, g_third, '--', color=g_color)
+# plt.plot(g_domain, g_third, '--', color=g_color)
 
 plt.xlabel("Load")
 plt.ylabel("Average waiting time (seconds)")
@@ -55,12 +52,12 @@ f_domain = np.array(f_names)
 g_domain = np.array(g_names)
 
 plt.plot(f_domain, f_median, color=f_color)
-plt.plot(g_domain, g_median, color=g_color)
-plt.legend(["FCFS", "Gittins"])
+# plt.plot(g_domain, g_median, color=g_color)
+# plt.legend(["FCFS", "Gittins"])
 plt.plot(f_domain, f_first, '--', color=f_color)
-plt.plot(g_domain, g_first, '--', color=g_color)
+# plt.plot(g_domain, g_first, '--', color=g_color)
 plt.plot(f_domain, f_third, '--', color=f_color)
-plt.plot(g_domain, g_third, '--', color=g_color)
+# plt.plot(g_domain, g_third, '--', color=g_color)
 
 
 plt.ylabel("Average waiting time (seconds)")
@@ -122,9 +119,16 @@ plt.savefig("log_results_logx_gittins.png", dpi=1200)
 plt.cla()
 
 compare_color="#aa8030"
-plt.plot(g_domain, [f_median[i] / g_median[i] for i in range(len(g_median))], color=compare_color)
-plt.plot(g_domain, [f_first[i] / g_first[i] for i in range(len(g_median))], '--', color=compare_color)
-plt.plot(g_domain, [f_third[i] / g_third[i] for i in range(len(g_median))], '--', color=compare_color)
+
+# [np.quantile(np.array(fcfs_lists[i])/np.array(gittins_lists[i]),0.5) for i in gittins_lists.keys()]
+
+mykeys = [str(x) for x in sorted(g_names)]
+mykeys[mykeys.index("1.0")] = "1"
+mykeys[mykeys.index("2.0")] = "2"
+
+plt.plot(g_domain, [np.quantile(np.array(fcfs_lists[i])/np.array(gittins_lists[i]),0.5) for i in mykeys], color=compare_color)
+plt.plot(g_domain, [np.quantile(np.array(fcfs_lists[i])/np.array(gittins_lists[i]),0.25) for i in mykeys], '--', color=compare_color)
+plt.plot(g_domain, [np.quantile(np.array(fcfs_lists[i])/np.array(gittins_lists[i]),0.75) for i in mykeys], '--', color=compare_color)
 
 
 plt.ylabel("Ratio in average waiting time")

@@ -44,10 +44,10 @@ int main(int argc, char **argv) {
     mgr.serve(3);
 */
 
-/*
+///*
     // LOG experiment (gittins vs FCFS in turnaround for WiQ presentation)
     // server characteristics
-    unsigned int k = 20;
+    unsigned int k = 3;
 
     unsigned int RUN_TIME = 10000;
     unsigned int TRIALS = 100;
@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
     DiscreteGittinsPolicy policyGittins(vals, probs);
     FCFSPolicy policyFCFS;
 
-    long int seed = 4;
+    long int seed = 400000;
     for (real n = 0; n < MAX_N; n += step) {
         real load = 1.0 - powl(10.0, -n);
 
@@ -89,9 +89,9 @@ int main(int argc, char **argv) {
             seed++;
         }
     }
-*/
+//*/
 
-///*
+/*
     // gittins vs slowdown gittins
     // server characteristics
     std::vector<unsigned int> ks;
