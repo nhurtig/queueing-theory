@@ -106,6 +106,7 @@ int main(int argc, char **argv) {
     // input characteristics
     // used to be 1.43
     std::vector<real> vals { 10.0/17, 20.0/17, 30.0/17 };
+    // std::vector<real> vals { 1, 2, 3 };
     std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1
     DiscreteDistribution serv(vals, probs);
     // ExponentialDistribution serv(1.01);
@@ -115,8 +116,9 @@ int main(int argc, char **argv) {
 
     long int seed = 4;
     for (const auto& k : ks) {
-    for (real n = 2.9; n < MAX_N; n += step) {
+    for (real n = 0; n < MAX_N; n += step) {
         real load = 1.0 - powl(10.0, -n);
+        // real load = 1.3;
 
         for (unsigned int i = 0; i < TRIALS; i++) {
             seed_rand(seed);
@@ -136,6 +138,7 @@ int main(int argc, char **argv) {
             std::ostringstream ossSlow;
             ossSlow << "results/gittcomp/slow_" << k << "_" << n << "_" << load << "_" << i << ".csv";
             systemSlow.toCSV(ossSlow.str());
+
             seed++;
         }
     }

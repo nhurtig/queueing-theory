@@ -1,5 +1,6 @@
 main
 *.o
-sim/results
+sim/results/*
+soap/results/*
 doc/*.h
 .vscode

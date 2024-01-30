@@ -14,9 +14,12 @@ real IndexedJob::getRequired() const {
 }
 
 void IndexedJob::serve(real time) {
+    // real agebefore = job.age;
+    // real rankbefore = rank;
     job.serve(time);
     if (!job.done()) {
         rank = p->getIndex(&job);
+        // printf("id %d: was age %Lf, rank %Lf, now age %Lf, rank %Lf\n", getID(), agebefore, rankbefore, job.age, rank);
     }
     return;
 }

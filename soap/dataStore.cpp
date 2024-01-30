@@ -22,7 +22,7 @@ void DataStore::toCSV(std::string fname) {
     std::ofstream file;
     file.open(fname);
 
-    file << std::scientific << std::setprecision(15);
+    // file << std::scientific << std::setprecision(15);
 
     file << DeadJob::header;
 

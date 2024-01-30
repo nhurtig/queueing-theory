@@ -24,7 +24,7 @@ for f in sorted(os.listdir(RESULTS)):
     _,k,n,load,i = f.split("_")
     df = pd.read_csv(mypath)
     df['Turnaround'] = df.FinishTime - df.ArrivalTime
-    df['Slowdown'] = df.Turnaround / df.ServiceTime
+    df['Slowdown'] = df.Turnaround * df.ServiceTime
     # if k == "1" and n == "2.9":
     #     print(df)
     i = i.replace(".csv", "")
@@ -36,7 +36,7 @@ for f in sorted(os.listdir(RESULTS)):
     T = df.Turnaround.mean()
     S = df.Slowdown.mean()
     abandoned = -(df.shape[0] - (df.ID.max() - df.ID.min()))
-    if k == "1" and n == "2.9":
+    if k == "1" and n == "2.5":
         print(f"{f}: mean turnaround {T}, slowdown {S}, ab={abandoned}")
 
     mydict = None

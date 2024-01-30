@@ -153,7 +153,7 @@ real DiscreteGittinsSlowdownPolicy::getIndex(Job *job) {
         real num = 0;
         // debug_print("DGP gI canary j=%d\n", j);
         for (unsigned int i = istar; i <= istar + j; i++) {
-            num += this->probs[i]/this->vals[i];
+            num += this->probs[i]*this->vals[i];
         }
         num /= Pprime;
 

@@ -25,6 +25,7 @@ Job PolicyManager::getJob() {
 }
 
 real PolicyManager::nextInterrupt() {
+    // debug_print("nI start\n");
     if (hasChanged) {
         recalculate();
     }
@@ -52,7 +53,12 @@ real PolicyManager::nextInterrupt() {
     */
 
     unsigned int sharedServers = k - serving.size();
-    real multiplier = k * (sharedServing.size()/sharedServers);
+    real multiplier = infinity;
+    if (sharedServers != 0) {
+        multiplier = k * (sharedServing.size()/sharedServers);
+    } else {
+        multiplier = infinity;
+    }
 
     // how long until a served job hits an increase?
     real interrupt = infinity;
@@ -73,6 +79,8 @@ real PolicyManager::nextInterrupt() {
         interrupt = std::min(interrupt, multiplier*ijob.getRequired());
     }
 
+    // debug_print("nI end\n");
+    // printf("interrupt=%Lf\n", interrupt);
     return interrupt;
 }
 
@@ -100,13 +108,12 @@ void PolicyManager::serve(real time) {
 }
 
 void PolicyManager::recalculate() {
-    debug_print("recalc before: %d\n", size());
+    // printf("recalc before: %d\n", size());
     show();
     hasChanged = false;
 
     // obvious case: < k jobs
     if (serving.size() + sharedServing.size() + queued.size() < k) {
-        debug_print("easy!\n");
         // move everything to serving
         while(!sharedServing.empty()) {
             serving.push_back(std::move(sharedServing.back()));
@@ -122,22 +129,30 @@ void PolicyManager::recalculate() {
     }
 
     // put all served jobs into a priority queue
-    std::priority_queue<IndexedJob> best;
+    std::priority_queue<IndexedJob, std::vector<IndexedJob>, IndexedJob::ReverseComparator> prevServed;
     while(!serving.empty()) {
-        best.push(std::move(serving.back()));
+        prevServed.push(std::move(serving.back()));
         serving.pop_back();
     }
     while(!sharedServing.empty()) {
-        best.push(std::move(sharedServing.back()));
+        prevServed.push(std::move(sharedServing.back()));
         sharedServing.pop_back();
+    }
+
+    // move the things that got worse while serving
+    // back into the queue (ensure prevServed >= queue)
+    // printf("recalc canary: %d\n", size());
+    while (!prevServed.empty() && prevServed.top() < queued.top()) {
+        queued.push(std::move(prevServed.top()));
+        prevServed.pop();
     }
 
     // now move best jobs into serving. Serving's back
     // is now the worst of the best (possibly more or less
     // than k things)
-    while(!best.empty()) {
-        serving.push_back(std::move(best.top()));
-        best.pop();
+    while(!prevServed.empty()) {
+        serving.push_back(std::move(prevServed.top()));
+        prevServed.pop();
     }
 
     // bad and stupid step:
@@ -167,6 +182,8 @@ void PolicyManager::recalculate() {
     // has the worst stuff (with the top being the best
     // of the worst).
 
+    // NO SHARING CUZ DECREASING
+    /*
     // The worst thing in serving is in an equivalence class.
     // That class should go into sharedServing.
     sharedServing.push_back(std::move(serving.back()));
@@ -183,8 +200,9 @@ void PolicyManager::recalculate() {
         sharedServing.push_back(std::move(queued.top()));
         queued.pop();
     }
+    */
 
-    debug_print("recalc after: %d\n", size());
+    // printf("recalc after: %d\n", size());
     show();
 }
 
