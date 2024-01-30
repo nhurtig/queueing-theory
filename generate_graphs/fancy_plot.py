@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-y = [10/17,20/17,30/17]
-# y = [1, 2, 3]
-p = [6/10,1/10,3/10]
+# y = [10/17,20/17,30/17]
+y = [20/27, 40/27, 60/27]
+p = [80/100,5/100,15/100]
 p = np.array(p).astype(float)
 p /= sum(p)
 samples = 1000
@@ -65,22 +65,23 @@ plt.plot(A,Y,color="#8337be")
 A = np.linspace(0,max(y),samples)[:-1]
 Y = np.vectorize(G_slowdown)(A)
 
-# plt.plot(A,Y,color="#4285f4")
+plt.plot(A,Y,color="#4285f4")
 plt.ylim(0,3)
 plt.xlabel("Age")
 plt.ylabel("Rank")
 
-# plt.legend(["Unmodified", "Holding costs"])
+plt.legend(["Unmodified", "Holding costs"])
 
 pts = y[:-1]
 pts.append(0)
 yGittins = np.vectorize(G)(pts)
 plt.scatter(pts,yGittins,color="#8337be")
 
-# pts = y[:-1]
-# pts.append(0)
-# yGittins = np.vectorize(G_slowdown)(pts)
-# plt.scatter(pts,yGittins,color="#4285f4")
+pts = y[:-1]
+pts.append(0)
+yGittins = np.vectorize(G_slowdown)(pts)
+plt.scatter(pts,yGittins,color="#4285f4")
 # plt.title("Gittins indices for discrete distribution")
 
-plt.savefig('discrete_gittins_unmodified.png',dpi=1200)
+plt.savefig('discrete_gittins_compare.png',dpi=1200)
+# plt.savefig('discrete_gittins_unmodified.png',dpi=1200)

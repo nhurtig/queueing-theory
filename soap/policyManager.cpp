@@ -128,6 +128,24 @@ void PolicyManager::recalculate() {
         return;
     }
 
+    // let's do something stupid!
+    while(!serving.empty()) {
+        queued.push(std::move(serving.back()));
+        serving.pop_back();
+    }
+    while(!sharedServing.empty()) {
+        queued.push(std::move(sharedServing.back()));
+        sharedServing.pop_back();
+    }
+
+    while (serving.size() < k) {
+        serving.push_back(std::move(queued.top()));
+        queued.pop();
+    }
+
+    return;
+
+
     // put all served jobs into a priority queue
     std::priority_queue<IndexedJob, std::vector<IndexedJob>, IndexedJob::ReverseComparator> prevServed;
     while(!serving.empty()) {

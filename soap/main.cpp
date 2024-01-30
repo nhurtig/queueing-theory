@@ -44,9 +44,10 @@ int main(int argc, char **argv) {
     mgr.serve(3);
 */
 
-/* LOG experiment (gittins vs FCFS in turnaround for WiQ presentation)
+/*
+    // LOG experiment (gittins vs FCFS in turnaround for WiQ presentation)
     // server characteristics
-    unsigned int k = 3;
+    unsigned int k = 20;
 
     unsigned int RUN_TIME = 10000;
     unsigned int TRIALS = 100;
@@ -55,8 +56,8 @@ int main(int argc, char **argv) {
 
     // input characteristics
     // used to be 1.43
-    std::vector<real> vals { 10.0/17, 20.0/17, 30.0/17 };
-    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1
+    std::vector<real> vals { 20.0/27, 40.0/27, 60.0/27 };
+    std::vector<real> probs { 0.8, 0.05, 0.15 }; // mean is 1
     DiscreteDistribution serv(vals, probs);
     // ExponentialDistribution serv(1.01);
 
@@ -88,9 +89,9 @@ int main(int argc, char **argv) {
             seed++;
         }
     }
-
 */
 
+///*
     // gittins vs slowdown gittins
     // server characteristics
     std::vector<unsigned int> ks;
@@ -105,9 +106,9 @@ int main(int argc, char **argv) {
 
     // input characteristics
     // used to be 1.43
-    std::vector<real> vals { 10.0/17, 20.0/17, 30.0/17 };
+    std::vector<real> vals { 20.0/27, 40.0/27, 60.0/27 };
     // std::vector<real> vals { 1, 2, 3 };
-    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1
+    std::vector<real> probs { 0.8, 0.05, 0.15 }; // mean is 1
     DiscreteDistribution serv(vals, probs);
     // ExponentialDistribution serv(1.01);
 
@@ -143,6 +144,7 @@ int main(int argc, char **argv) {
         }
     }
     }
+//*/
 
 
     /* Turnaround vs slowdown Gittins, simple example for debugging

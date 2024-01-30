@@ -3,7 +3,7 @@ import pandas as pd
 import json
 # import matplotlib.pyplot as plt
 
-RESULTS = "../soap/results/gittcomp"
+RESULTS = "../soap/results/gittcomp_nice"
 
 turn_lists = {}
 slow_lists = {}

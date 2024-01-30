@@ -26,7 +26,7 @@ f.close()
 
 for metric in ['t', 's']:
     for k in ['1', '5', '20']:
-        print(turn_lists.keys())
+        # print(turn_lists.keys())
         g_domain, g_names, g_first, g_median, g_third = lists_to_quartiles(turn_lists[k][metric])
         f_domain, f_names, f_first, f_median, f_third = lists_to_quartiles(slow_lists[k][metric])
 
@@ -44,10 +44,10 @@ for metric in ['t', 's']:
         plt.plot(g_domain, g_median, color=g_color)
         plt.plot(f_domain, f_median, color=f_color)
         plt.legend(["Unmodified", "Holding costs"])
-        plt.plot(f_domain, f_first, '--', color=f_color)
         plt.plot(g_domain, g_first, '--', color=g_color)
-        plt.plot(f_domain, f_third, '--', color=f_color)
+        plt.plot(f_domain, f_first, '--', color=f_color)
         plt.plot(g_domain, g_third, '--', color=g_color)
+        plt.plot(f_domain, f_third, '--', color=f_color)
 
         plt.xlabel("Load (logarithmic)")
         if metric == 't':
@@ -76,8 +76,14 @@ for metric in ['t', 's']:
         plt.xticks(minor_ticks + major_ticks, minor_tick_names + major_tick_names)
 
         plt.xlabel("Load (logarithmic)")
-        plt.cla()
+        if int(k) != 1:
+            plt.title(f"{k} servers")
+        else:
+            plt.title(f"{k} server")
         plt.savefig(f"comp_{metric}_k{k}.png", dpi=1200)
+        plt.cla()
+        plt.clf()
+        plt.close()
 
         # plt.plot(g_domain, g_median, color=g_color)
         # plt.legend(["Gittins"])

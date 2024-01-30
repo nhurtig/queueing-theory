@@ -16,12 +16,12 @@ for f in sorted(os.listdir(RESULTS)):
     df['Turnaround'] = df.FinishTime - df.ArrivalTime
     _,n,load,i = f.split("_")
     i = i.replace(".csv", "")
-    print(n, load, i)
+    # print(n, load, i)
     # plt.plot(df.Turnaround)
     # plt.savefig(f.replace("csv", "png"))
     # plt.clf()
     T = df.Turnaround.mean()
-    print(f"{f}: mean turnaround {T}")
+    # print(f"{f}: mean turnaround {T}")
 
     mydict = None
     if 'gittins' in f:
