@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="473px" preserveAspectRatio="none" style="width:856px;height:473px;background:#FFFFFF;" version="1.1" viewBox="0 0 856 473" width="856px" zoomAndPan="magnify"><defs/><g><!--MD5=[a74e694bde09a51d0196daf400a3f4f3]
+class DataStore--><g id="elem_DataStore"><rect codeLine="12" fill="#F1F1F1" height="80.5938" id="DataStore" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="284" x="42.5" y="180"/><ellipse cx="145.75" cy="196" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M148.7188,201.6406 Q148.1406,201.9375 147.5,202.0781 Q146.8594,202.2344 146.1563,202.2344 Q143.6563,202.2344 142.3281,200.5938 Q141.0156,198.9375 141.0156,195.8125 Q141.0156,192.6875 142.3281,191.0313 Q143.6563,189.375 146.1563,189.375 Q146.8594,189.375 147.5,189.5313 Q148.1563,189.6875 148.7188,189.9844 L148.7188,192.7031 Q148.0938,192.125 147.5,191.8594 Q146.9063,191.5781 146.2813,191.5781 Q144.9375,191.5781 144.25,192.6563 Q143.5625,193.7188 143.5625,195.8125 Q143.5625,197.9063 144.25,198.9844 Q144.9375,200.0469 146.2813,200.0469 Q146.9063,200.0469 147.5,199.7813 Q148.0938,199.5 148.7188,198.9219 L148.7188,201.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69" x="166.25" y="200.8467">DataStore</text><line style="stroke:#181818;stroke-width:1.5;" x1="43.5" x2="325.5" y1="212" y2="212"/><line style="stroke:#181818;stroke-width:1.5;" x1="43.5" x2="325.5" y1="220" y2="220"/><ellipse cx="53.5" cy="233.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="258" x="62.5" y="236.9951">addJob(Job* job, real finishTime) : void</text><ellipse cx="53.5" cy="249.9453" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="180" x="62.5" y="253.292">toCSV(String fname) : void</text></g><!--MD5=[fe415696a89b57462f1fa143d2d37f04]
+class FinishedJob--><g id="elem_FinishedJob"><rect codeLine="17" fill="#F1F1F1" height="113.1875" id="FinishedJob" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="239" x="7" y="345"/><ellipse cx="82.75" cy="361" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M85.7188,366.6406 Q85.1406,366.9375 84.5,367.0781 Q83.8594,367.2344 83.1563,367.2344 Q80.6563,367.2344 79.3281,365.5938 Q78.0156,363.9375 78.0156,360.8125 Q78.0156,357.6875 79.3281,356.0313 Q80.6563,354.375 83.1563,354.375 Q83.8594,354.375 84.5,354.5313 Q85.1563,354.6875 85.7188,354.9844 L85.7188,357.7031 Q85.0938,357.125 84.5,356.8594 Q83.9063,356.5781 83.2813,356.5781 Q81.9375,356.5781 81.25,357.6563 Q80.5625,358.7188 80.5625,360.8125 Q80.5625,362.9063 81.25,363.9844 Q81.9375,365.0469 83.2813,365.0469 Q83.9063,365.0469 84.5,364.7813 Q85.0938,364.5 85.7188,363.9219 L85.7188,366.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="79" x="103.25" y="365.8467">FinishedJob</text><line style="stroke:#181818;stroke-width:1.5;" x1="8" x2="245" y1="377" y2="377"/><ellipse cx="18" cy="390.6484" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="27" y="393.9951">arrivalTime : real</text><ellipse cx="18" cy="406.9453" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="108" x="27" y="410.292">finishTime : real</text><ellipse cx="18" cy="423.2422" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="27" y="426.5889">serviceReq : real</text><line style="stroke:#181818;stroke-width:1.5;" x1="8" x2="245" y1="433.8906" y2="433.8906"/><ellipse cx="18" cy="447.5391" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="213" x="27" y="450.8857">toCSV(ofstream* stream) : void</text></g><!--MD5=[5730f87057d6fa3697549629e6cf1ab5]
+class Distribution--><g id="elem_Distribution"><rect codeLine="65" fill="#F1F1F1" height="64.2969" id="Distribution" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="123" x="716" y="369.5"/><ellipse cx="736.85" cy="385.5" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M736.9594,380.8438 L735.8031,385.9219 L738.1313,385.9219 L736.9594,380.8438 Z M735.475,378.6094 L738.4594,378.6094 L741.8188,391 L739.3656,391 L738.6,387.9375 L735.3188,387.9375 L734.5688,391 L732.1313,391 L735.475,378.6094 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="78" x="752.15" y="390.3467">Distribution</text><line style="stroke:#181818;stroke-width:1.5;" x1="717" x2="838" y1="401.5" y2="401.5"/><line style="stroke:#181818;stroke-width:1.5;" x1="717" x2="838" y1="409.5" y2="409.5"/><ellipse cx="727" cy="423.1484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="97" x="736" y="426.4951">sample() : real</text></g><!--MD5=[b8e0354e0f3f5cbf52553869b78c0afa]
+class Job--><g id="elem_Job"><rect codeLine="116" fill="#F1F1F1" height="129.4844" id="Job" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="174" x="281.5" y="337"/><ellipse cx="353.75" cy="353" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M356.7188,358.6406 Q356.1406,358.9375 355.5,359.0781 Q354.8594,359.2344 354.1563,359.2344 Q351.6563,359.2344 350.3281,357.5938 Q349.0156,355.9375 349.0156,352.8125 Q349.0156,349.6875 350.3281,348.0313 Q351.6563,346.375 354.1563,346.375 Q354.8594,346.375 355.5,346.5313 Q356.1563,346.6875 356.7188,346.9844 L356.7188,349.7031 Q356.0938,349.125 355.5,348.8594 Q354.9063,348.5781 354.2813,348.5781 Q352.9375,348.5781 352.25,349.6563 Q351.5625,350.7188 351.5625,352.8125 Q351.5625,354.9063 352.25,355.9844 Q352.9375,357.0469 354.2813,357.0469 Q354.9063,357.0469 355.5,356.7813 Q356.0938,356.5 356.7188,355.9219 L356.7188,358.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="21" x="374.25" y="357.8467">Job</text><line style="stroke:#181818;stroke-width:1.5;" x1="282.5" x2="454.5" y1="369" y2="369"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="289.5" y="379.6484"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="301.5" y="385.9951">required : real</text><ellipse cx="292.5" cy="398.9453" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64" x="301.5" y="402.292">age : real</text><ellipse cx="292.5" cy="415.2422" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="301.5" y="418.5889">arrivalTime : real</text><line style="stroke:#181818;stroke-width:1.5;" x1="282.5" x2="454.5" y1="425.8906" y2="425.8906"/><ellipse cx="292.5" cy="439.5391" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="301.5" y="442.8857">nextInterrupt() : real</text><ellipse cx="292.5" cy="455.8359" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="301.5" y="459.1826">serve(real time) : void</text></g><!--MD5=[9445d644bbe92584b3fa45e77778917b]
+class Policy--><g id="elem_Policy"><rect codeLine="136" fill="#F1F1F1" height="64.2969" id="Policy" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="190" x="490.5" y="369.5"/><ellipse cx="561.75" cy="385.5" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M561.8594,380.8438 L560.7031,385.9219 L563.0313,385.9219 L561.8594,380.8438 Z M560.375,378.6094 L563.3594,378.6094 L566.7188,391 L564.2656,391 L563.5,387.9375 L560.2188,387.9375 L559.4688,391 L557.0313,391 L560.375,378.6094 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="39" x="582.25" y="390.3467">Policy</text><line style="stroke:#181818;stroke-width:1.5;" x1="491.5" x2="679.5" y1="401.5" y2="401.5"/><line style="stroke:#181818;stroke-width:1.5;" x1="491.5" x2="679.5" y1="409.5" y2="409.5"/><ellipse cx="501.5" cy="423.1484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="164" x="510.5" y="426.4951">getIndex(Job* job) : real</text></g><!--MD5=[9fb641dd8c9a63a5d5732a2ac93a0920]
+class PolicyManager--><g id="elem_PolicyManager"><rect codeLine="140" fill="#F1F1F1" height="113.1875" id="PolicyManager" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="236" x="390.5" y="164"/><ellipse cx="454.75" cy="180" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M454.8594,175.3438 L453.7031,180.4219 L456.0313,180.4219 L454.8594,175.3438 Z M453.375,173.1094 L456.3594,173.1094 L459.7188,185.5 L457.2656,185.5 L456.5,182.4375 L453.2188,182.4375 L452.4688,185.5 L450.0313,185.5 L453.375,173.1094 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="99" x="475.25" y="184.8467">PolicyManager</text><line style="stroke:#181818;stroke-width:1.5;" x1="391.5" x2="625.5" y1="196" y2="196"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="398.5" y="206.6484"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="210" x="410.5" y="212.9951">queued : priority_queue&lt;Job&gt;</text><line style="stroke:#181818;stroke-width:1.5;" x1="391.5" x2="625.5" y1="220.2969" y2="220.2969"/><ellipse cx="401.5" cy="233.9453" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="410.5" y="237.292">nextInterrupt() : real</text><ellipse cx="401.5" cy="250.2422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="410.5" y="253.5889">addJob(Job job) : void</text><ellipse cx="401.5" cy="266.5391" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="149" x="410.5" y="269.8857">serve(real time) : void</text></g><!--MD5=[d71ee11ede0e83c966e8ef97d9465fe6]
+class Stream--><g id="elem_Stream"><rect codeLine="157" fill="#F1F1F1" height="96.8906" id="Stream" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="174" x="675.5" y="172"/><ellipse cx="733.75" cy="188" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M736.7188,193.6406 Q736.1406,193.9375 735.5,194.0781 Q734.8594,194.2344 734.1563,194.2344 Q731.6563,194.2344 730.3281,192.5938 Q729.0156,190.9375 729.0156,187.8125 Q729.0156,184.6875 730.3281,183.0313 Q731.6563,181.375 734.1563,181.375 Q734.8594,181.375 735.5,181.5313 Q736.1563,181.6875 736.7188,181.9844 L736.7188,184.7031 Q736.0938,184.125 735.5,183.8594 Q734.9063,183.5781 734.2813,183.5781 Q732.9375,183.5781 732.25,184.6563 Q731.5625,185.7188 731.5625,187.8125 Q731.5625,189.9063 732.25,190.9844 Q732.9375,192.0469 734.2813,192.0469 Q734.9063,192.0469 735.5,191.7813 Q736.0938,191.5 736.7188,190.9219 L736.7188,193.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="754.25" y="192.8467">Stream</text><line style="stroke:#181818;stroke-width:1.5;" x1="676.5" x2="848.5" y1="204" y2="204"/><line style="stroke:#181818;stroke-width:1.5;" x1="676.5" x2="848.5" y1="212" y2="212"/><ellipse cx="686.5" cy="225.6484" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="695.5" y="228.9951">popJob(real) : Job</text><ellipse cx="686.5" cy="241.9453" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="695.5" y="245.292">nextInterrupt() : real</text><ellipse cx="686.5" cy="258.2422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="695.5" y="261.5889">serve(real time) : void</text></g><!--MD5=[f8e092794d52bf9a252466252ae7bd1c]
+class System--><g id="elem_System"><rect codeLine="165" fill="#F1F1F1" height="96.8906" id="System" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.5;" width="206" x="405.5" y="7"/><ellipse cx="478.75" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M481.7188,28.6406 Q481.1406,28.9375 480.5,29.0781 Q479.8594,29.2344 479.1563,29.2344 Q476.6563,29.2344 475.3281,27.5938 Q474.0156,25.9375 474.0156,22.8125 Q474.0156,19.6875 475.3281,18.0313 Q476.6563,16.375 479.1563,16.375 Q479.8594,16.375 480.5,16.5313 Q481.1563,16.6875 481.7188,16.9844 L481.7188,19.7031 Q481.0938,19.125 480.5,18.8594 Q479.9063,18.5781 479.2813,18.5781 Q477.9375,18.5781 477.25,19.6563 Q476.5625,20.7188 476.5625,22.8125 Q476.5625,24.9063 477.25,25.9844 Q477.9375,27.0469 479.2813,27.0469 Q479.9063,27.0469 480.5,26.7813 Q481.0938,26.5 481.7188,25.9219 L481.7188,28.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51" x="499.25" y="27.8467">System</text><line style="stroke:#181818;stroke-width:1.5;" x1="406.5" x2="610.5" y1="39" y2="39"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="413.5" y="49.6484"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="107" x="425.5" y="55.9951">k : unsigned int</text><line style="stroke:#181818;stroke-width:1.5;" x1="406.5" x2="610.5" y1="63.2969" y2="63.2969"/><ellipse cx="416.5" cy="76.9453" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="133" x="425.5" y="80.292">run(real time) : void</text><ellipse cx="416.5" cy="93.2422" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="180" x="425.5" y="96.5889">toCSV(String fname) : void</text></g><!--MD5=[a749c2e680d86ae352221feac476dfe3]
+link DataStore to FinishedJob--><g id="link_DataStore_FinishedJob"><path codeLine="222" d="M171.63,261.23 C164.12,284.4 154.49,314.1 146.06,340.12 " fill="none" id="DataStore-to-FinishedJob" style="stroke:#181818;stroke-width:1.5;"/><polygon fill="#181818" points="144.51,344.93,151.0914,337.603,146.0525,340.1739,143.4817,335.135,144.51,344.93" style="stroke:#181818;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="20" lengthAdjust="spacing" textLength="10" x="136.0956" y="332.2041">*</text></g><!--MD5=[57c5d7ed96c0e0b834984d72f95de168]
+link Stream to Distribution--><g id="link_Stream_Distribution"><path codeLine="228" d="M766.52,269.47 C769.01,299.18 772.16,336.73 774.44,364.01 " fill="none" id="Stream-to-Distribution" style="stroke:#181818;stroke-width:1.5;"/><polygon fill="#181818" points="774.89,369.32,778.1288,360.0189,774.4748,364.3373,770.1564,360.6833,774.89,369.32" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[4abefa4634338eedbad921fba632deb3]
+link PolicyManager to Job--><g id="link_PolicyManager_Job"><path codeLine="231" d="M464.97,277.16 C451.24,294.71 435.92,314.3 421.59,332.61 " fill="none" id="PolicyManager-to-Job" style="stroke:#181818;stroke-width:1.5;"/><polygon fill="#181818" points="418.36,336.75,427.0649,332.143,421.4485,332.8179,420.7736,327.2015,418.36,336.75" style="stroke:#181818;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="20" lengthAdjust="spacing" textLength="10" x="412.9862" y="324.4407">*</text></g><!--MD5=[db7a034157c745cae1dc81ecbd3410a3]
+link PolicyManager to Policy--><g id="link_PolicyManager_Policy"><path codeLine="234" d="M532.44,277.16 C544.69,305.63 559.25,339.48 570.01,364.5 " fill="none" id="PolicyManager-to-Policy" style="stroke:#181818;stroke-width:1.5;"/><polygon fill="#181818" points="572.12,369.38,572.2513,359.532,570.1504,364.7843,564.8981,362.6834,572.12,369.38" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[2f0cfe5d8d53497a333a343b483adbbb]
+link System to Stream--><g id="link_System_Stream"><path codeLine="238" d="M582.65,104.08 C614.46,124.5 651.66,148.37 683.94,169.09 " fill="none" id="System-to-Stream" style="stroke:#181818;stroke-width:1.5;"/><polygon fill="#181818" points="688.26,171.86,682.8397,163.6368,684.0499,169.1627,678.5241,170.3729,688.26,171.86" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[98ba4e5d6547e347140c4e995a05820c]
+link System to PolicyManager--><g id="link_System_PolicyManager"><path codeLine="240" d="M508.5,104.08 C508.5,121.18 508.5,140.69 508.5,158.75 " fill="none" id="System-to-PolicyManager" style="stroke:#181818;stroke-width:1.5;"/><polygon fill="#181818" points="508.5,163.8,512.5,154.8,508.5,158.8,504.5,154.8,508.5,163.8" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[b709fdf9081f35a590478141cc16f8aa]
+link System to DataStore--><g id="link_System_DataStore"><path codeLine="242" d="M413.91,104.08 C367.6,127.39 312.33,155.19 267.64,177.67 " fill="none" id="System-to-DataStore" style="stroke:#181818;stroke-width:1.5;"/><polygon fill="#181818" points="263.08,179.97,272.9175,179.4976,267.5464,177.7225,269.3215,172.3514,263.08,179.97" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[d0ce40c3689b3ad61182049998edf394]
+@startuml
+
+skinparam class {
+    'FontName Courier
+    'FontSize 12
+    BorderThickness 1.5
+	ArrowThickness 1.5
+	ArrowFontSize 20
+}
+
+/' Objects '/
+
+class DataStore {
+	+addJob(Job* job, real finishTime) : void
+	+toCSV(String fname) : void
+}
+
+class FinishedJob {
+	+arrivalTime : real
+	+finishTime : real
+	+serviceReq : real
+	+toCSV(ofstream* stream) : void
+}
+
+/'
+class DegenerateDistribution {
+	+DegenerateDistribution(real x)
+	+cdf(real) : real
+	+sample() : real
+	-x : real
+}
+
+
+class DiscreteDistribution {
+	+DiscreteDistribution(std::vector<real> vals, std::vector<real> probs)
+	+cdf(real) : real
+	+sample() : real
+	-probs : std::vector<real>
+	-vals : std::vector<real>
+	-size : unsigned int
+}
+
+
+class DiscreteGittinsPolicy {
+	+DiscreteGittinsPolicy(std::vector<real> vals, std::vector<real> probs)
+	-getIndex(Job* job) : real
+	-timeTil(const Job* job, real bound) : real
+	-timeTilIncrease(const Job* job) : real
+	-probs : std::vector<real>
+	-vals : std::vector<real>
+	-size : unsigned int
+}
+
+
+class DiscreteGittinsSlowdownPolicy {
+	+DiscreteGittinsSlowdownPolicy(std::vector<real> vals, std::vector<real> probs)
+	-getIndex(Job* job) : real
+	-timeTil(const Job* job, real bound) : real
+	-timeTilIncrease(const Job* job) : real
+	-probs : std::vector<real>
+	-vals : std::vector<real>
+	-size : unsigned int
+}
+'/
+
+abstract class Distribution {
+	+{abstract}sample() : real
+}
+
+/'
+class ExponentialDistribution {
+	+ExponentialDistribution(real)
+	+cdf(real) : real
+	-lambda : real
+	+sample() : real
+}
+
+
+class FCFSPolicy {
+	-getIndex(Job* job) : real
+	-timeTil(const Job* job, real bound) : real
+	-timeTilIncrease(const Job* job) : real
+}
+
+
+class FiniteIndepStream {
+	+FiniteIndepStream(Distribution* in, std::vector<Distribution*> serv, std::vector<real> probs)
+	+popJob(real) : Job
+	-classSize : jclass
+	-dists : std::vector<Distribution*>
+	-probs : std::vector<real>
+}
+
+'/
+/'
+abstract class IndepStream {
+	#inDist : Distribution*
+	+reset() : void
+}
+
+
+class IndexedJob {
+	+IndexedJob(Policy* p, Job job)
+	+job : Job
+	-p : Policy*
+	+closeTo(const IndexedJob other) : bool {query}
+	+operator<(const IndexedJob& other) : bool {query}
+	+getRequired() : real {query}
+	+nextInterrupt() : real {query}
+	+rank : real
+	+getID() : unsigned int {query}
+	+serve(real time) : void
+	+show() : void {query}
+}
+
+'/
+class Job {
+	-required : real
+	+age : real
+	+arrivalTime : real
+	+nextInterrupt() : real
+	+serve(real time) : void
+}
+
+/'
+abstract class JobInterface {
+	+done() : bool {query}
+	+operator==(const JobInterface& other) : bool {query}
+	+{abstract} getRequired() : real {query}
+	+{abstract} nextInterrupt() : real {query}
+	+{abstract} getID() : unsigned int {query}
+	+{abstract} serve(real time) : void
+	+{abstract} show() : void {query}
+}
+
+'/
+abstract class Policy {
+	+{abstract} getIndex(Job* job) : real
+}
+
+abstract class PolicyManager {
+	+nextInterrupt() : real
+	-queued : priority_queue<Job>
+	+addJob(Job job) : void
+	+{abstract}serve(real time) : void
+}
+/'
+
+
+class SingleIndepStream {
+	+SingleIndepStream(Distribution* in, Distribution* serv)
+	-dist : Distribution*
+	+popJob(real) : Job
+	+hasJob() : bool
+}
+
+'/
+class Stream {
+	+popJob(real) : Job
+	+nextInterrupt() : real
+	+serve(real time) : void
+}
+/'
+
+'/
+class System {
+	-k : unsigned int
+	+run(real time) : void
+	+toCSV(String fname) : void
+}
+/'
+
+
+class IndexedJob::ReverseComparator {
+	+operator()(const IndexedJob& lhs, const IndexedJob& rhs) : bool {query}
+}
+
+
+class JobInterface::HashFunction {
+	+operator()(const JobInterface& job) : std :: size_t {query}
+}
+'/
+
+
+
+
+/' Inheritance relationships '/
+/'
+.Distribution <|- - .DegenerateDistribution
+
+
+.Distribution <|- - .DiscreteDistribution
+
+
+.Distribution <|- - .ExponentialDistribution
+
+.IndepStream <|- - .FiniteIndepStream
+
+
+.IndepStream <|- - .SingleIndepStream
+
+
+.JobInterface <|- - .IndexedJob
+
+
+.JobInterface <|- - .Job
+
+
+.Policy <|- - .DiscreteGittinsPolicy
+
+
+.Policy <|- - .DiscreteGittinsSlowdownPolicy
+
+
+.Policy <|- - .FCFSPolicy
+
+'/
+
+
+
+/' Aggregation relationships '/
+
+.DataStore - ->"*" .FinishedJob
+
+
+'.FiniteIndepStream o- - .Distribution
+
+
+.Stream - -> .Distribution
+
+
+.PolicyManager - ->"*" .Job
+
+
+.PolicyManager - -> .Policy
+
+
+
+.System - -> .Stream
+
+.System - -> .PolicyManager
+
+.System - -> .DataStore
+
+
+@enduml
+
+@startuml
+
+skinparam class {
+    BorderThickness 1.5
+	ArrowThickness 1.5
+	ArrowFontSize 20
+}
+
+
+class DataStore {
+	+addJob(Job* job, real finishTime) : void
+	+toCSV(String fname) : void
+}
+
+class FinishedJob {
+	+arrivalTime : real
+	+finishTime : real
+	+serviceReq : real
+	+toCSV(ofstream* stream) : void
+}
+
+
+abstract class Distribution {
+	+{abstract}sample() : real
+}
+
+class Job {
+	-required : real
+	+age : real
+	+arrivalTime : real
+	+nextInterrupt() : real
+	+serve(real time) : void
+}
+
+abstract class Policy {
+	+{abstract} getIndex(Job* job) : real
+}
+
+abstract class PolicyManager {
+	+nextInterrupt() : real
+	-queued : priority_queue<Job>
+	+addJob(Job job) : void
+	+{abstract}serve(real time) : void
+}
+class Stream {
+	+popJob(real) : Job
+	+nextInterrupt() : real
+	+serve(real time) : void
+}
+class System {
+	-k : unsigned int
+	+run(real time) : void
+	+toCSV(String fname) : void
+}
+
+
+
+
+
+
+
+
+.DataStore - ->"*" .FinishedJob
+
+
+
+
+.Stream - -> .Distribution
+
+
+.PolicyManager - ->"*" .Job
+
+
+.PolicyManager - -> .Policy
+
+
+
+.System - -> .Stream
+
+.System - -> .PolicyManager
+
+.System - -> .DataStore
+
+
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 13:01:30 EDT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

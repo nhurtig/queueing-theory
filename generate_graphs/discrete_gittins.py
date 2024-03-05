@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-y = [10/17,20/17,30/17]
-p = [6/10,1/10,3/10]
+y = [20/17,40/17,60/17]
+p = [8/10,1/2/10,3/2/10]
 p = np.array(p).astype(float)
 p /= sum(p)
 samples = 1000
@@ -37,14 +37,14 @@ A = np.linspace(0,max(y),samples)[:-1]
 Y = np.vectorize(G)(A)
 
 plt.plot(A,Y)
-plt.ylim(0,10)
-plt.title(f"y={y},p={p.round(2)}")
+plt.ylim(0,3)
+# plt.title(f"y={y},p={p.round(2)}")
 plt.xlabel("a")
-plt.ylabel("G(a)")
+plt.ylabel("Gittins index")
 pts = y[:-1]
 pts.append(0)
 yGittins = np.vectorize(G)(pts)
 plt.scatter(pts,yGittins)
-for i in range(len(pts)):
-    plt.text(pts[i], yGittins[i]+0.3, f'({pts[i]}, {yGittins[i]:.2f})')
-plt.savefig('discrete_gittins.png')
+# for i in range(len(pts)):
+#     plt.text(pts[i], yGittins[i]+0.3, f'({pts[i]}, {yGittins[i]:.2f})')
+plt.savefig('discrete_gittins.png', dpi=1200)

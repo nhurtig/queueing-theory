@@ -1,34 +1,28 @@
 @startuml
 
-
-
-
+skinparam class {
+    'FontName Courier
+    'FontSize 12
+    BorderThickness 1.5
+	ArrowThickness 1.5
+	ArrowFontSize 20
+}
 
 /' Objects '/
 
 class DataStore {
-	+DataStore()
-	+dumpJobs() : std::list<DeadJob>
-	+getJobs() : std::list<DeadJob>
-	-jobs : std::list<DeadJob>
-	+addJob(Job*, real) : void
-	+toCSV(std::string fname) : void
+	+addJob(Job* job, real finishTime) : void
+	+toCSV(String fname) : void
 }
 
-
-class DeadJob {
-	+DeadJob(Job*, real)
+class FinishedJob {
 	+arrivalTime : real
 	+finishTime : real
 	+serviceReq : real
-	+{static} header : static std::string
-	+{static} lineSep : static std::string
-	+{static} sep : static std::string
-	+id : unsigned int
-	+toCSV(std::ofstream* stream) : void
+	+toCSV(ofstream* stream) : void
 }
 
-
+/'
 class DegenerateDistribution {
 	+DegenerateDistribution(real x)
 	+cdf(real) : real
@@ -67,14 +61,13 @@ class DiscreteGittinsSlowdownPolicy {
 	-vals : std::vector<real>
 	-size : unsigned int
 }
-
+'/
 
 abstract class Distribution {
-	+{abstract} cdf(real) : real
-	+{abstract} sample() : real
+	+{abstract}sample() : real
 }
 
-
+/'
 class ExponentialDistribution {
 	+ExponentialDistribution(real)
 	+cdf(real) : real
@@ -98,7 +91,8 @@ class FiniteIndepStream {
 	-probs : std::vector<real>
 }
 
-
+'/
+/'
 abstract class IndepStream {
 	#inDist : Distribution*
 	+reset() : void
@@ -119,22 +113,16 @@ class IndexedJob {
 	+show() : void {query}
 }
 
-
+'/
 class Job {
-	+Job(real age, real required)
+	-required : real
 	+age : real
 	+arrivalTime : real
-	+getRequired() : real {query}
-	+nextInterrupt() : real {query}
-	-required : real
-	+{static} nextID : static unsigned int
-	+getID() : unsigned int {query}
-	+id : unsigned int
+	+nextInterrupt() : real
 	+serve(real time) : void
-	+show() : void {query}
 }
 
-
+/'
 abstract class JobInterface {
 	+done() : bool {query}
 	+operator==(const JobInterface& other) : bool {query}
@@ -145,33 +133,18 @@ abstract class JobInterface {
 	+{abstract} show() : void {query}
 }
 
-
+'/
 abstract class Policy {
 	+{abstract} getIndex(Job* job) : real
-	+{abstract} timeTil(const Job* job, real bound) : real
-	+{abstract} timeTilIncrease(const Job* job) : real
 }
 
-
-class PolicyManager {
-	+PolicyManager(unsigned int k, Policy* policy)
-	+getJob() : Job
-	-policy : Policy*
-	-hasChanged : bool
-	+hasJob() : bool
+abstract class PolicyManager {
 	+nextInterrupt() : real
-	-queued : std::priority_queue<IndexedJob>
-	-serving : std::vector<IndexedJob>
-	-sharedServing : std::vector<IndexedJob>
-	-completedJobs : std::vector<Job>
-	-k : unsigned int
-	+size() : unsigned int {query}
+	-queued : priority_queue<Job>
 	+addJob(Job job) : void
-	-recalculate() : void
-	+serve(real time) : void
-	-serveEach(std::vector<IndexedJob>& toServe, real time) : void
-	-show() : void
+	+{abstract}serve(real time) : void
 }
+/'
 
 
 class SingleIndepStream {
@@ -181,31 +154,21 @@ class SingleIndepStream {
 	+hasJob() : bool
 }
 
-
-abstract class Stream {
-	+{abstract} popJob(real) : Job
-	+{abstract} hasJob() : bool
+'/
+class Stream {
+	+popJob(real) : Job
 	+nextInterrupt() : real
-	#timeLeft : real
-	+{abstract} reset() : void
 	+serve(real time) : void
 }
+/'
 
-
+'/
 class System {
-	+System(Stream* stream, Policy* policy, unsigned int k)
-	-data : DataStore
-	-policyManager : PolicyManager
-	-stream : Stream*
-	-time : real
-	+getData() : std::list<DeadJob>
 	-k : unsigned int
-	-finishQueuedJobs() : void
-	-run(real time, bool record) : void
-	+runFor(real ignore_time, real record_time) : void
-	-runStep(bool record, bool allowArrivals) : void
-	+toCSV(std::string fname) : void
+	+run(real time) : void
+	+toCSV(String fname) : void
 }
+/'
 
 
 class IndexedJob::ReverseComparator {
@@ -216,13 +179,13 @@ class IndexedJob::ReverseComparator {
 class JobInterface::HashFunction {
 	+operator()(const JobInterface& job) : std :: size_t {query}
 }
-
+'/
 
 
 
 
 /' Inheritance relationships '/
-
+/'
 .Distribution <|-- .DegenerateDistribution
 
 
@@ -230,7 +193,6 @@ class JobInterface::HashFunction {
 
 
 .Distribution <|-- .ExponentialDistribution
-
 
 .IndepStream <|-- .FiniteIndepStream
 
@@ -252,63 +214,33 @@ class JobInterface::HashFunction {
 
 .Policy <|-- .FCFSPolicy
 
-
-.Stream <|-- .IndepStream
-
-
+'/
 
 
 
 /' Aggregation relationships '/
 
-.DataStore *-- .DeadJob
+.DataStore -->"*" .FinishedJob
 
 
-.FiniteIndepStream o-- .Distribution
+'.FiniteIndepStream o-- .Distribution
 
 
-.IndepStream o-- .Distribution
+.Stream --> .Distribution
 
 
-.IndexedJob *-- .Job
+.PolicyManager -->"*" .Job
 
 
-.IndexedJob o-- .Policy
-
-
-.PolicyManager "3" *-- .IndexedJob
-
-
-.PolicyManager *-- .Job
-
-
-.PolicyManager o-- .Policy
-
-
-.SingleIndepStream o-- .Distribution
-
-
-.System *-- .DataStore
-
-
-.System *-- .PolicyManager
-
-
-.System o-- .Stream
+.PolicyManager --> .Policy
 
 
 
+.System --> .Stream
 
+.System --> .PolicyManager
 
-
-/' Nested objects '/
-
-.IndexedJob +-- .IndexedJob::ReverseComparator
-
-
-.JobInterface +-- .JobInterface::HashFunction
-
-
+.System --> .DataStore
 
 
 @enduml
