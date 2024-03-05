@@ -98,3 +98,26 @@ real DegenerateDistribution::cdf(real y) {
 real DegenerateDistribution::sample() {
     return x;
 }
+
+UniformDistribution::UniformDistribution(real min, real max) {
+    this->min = min;
+    this->max = max;
+    if (min >= max) {
+        throw std::out_of_range("Min should be less than max!");
+    }
+}
+
+real UniformDistribution::cdf(real val) {
+    if (val <= min) {
+        return 0;
+    } else if (val >= max) {
+        return 1;
+    } else {
+        return (max-val)/(max-min);
+    }
+}
+
+real UniformDistribution::sample() {
+    real x = rand_real();
+    return ((max-min)*x)+min;
+}

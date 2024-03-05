@@ -44,4 +44,14 @@ class DegenerateDistribution: public Distribution {
         real x;
 };
 
+class UniformDistribution: public Distribution {
+    public:
+        UniformDistribution(real min, real max);
+        real cdf(real);
+        real sample();
+    private:
+        real min;
+        real max;
+};
+
 #endif
