@@ -18,8 +18,7 @@ public:
 private:
     bool hasChanged; // whether the served set needs recalculated
     Policy *policy;
-    PreemptJob *serving;
-    std::priority_queue<PreemptJob> queued;
+    std::priority_queue<IndexedJob> queued;
     std::vector<Job> completedJobs;
     void recalculate();
     void show();

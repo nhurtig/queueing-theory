@@ -15,26 +15,58 @@ bool JobInterface::operator==(const JobInterface& other) const {
 
 unsigned int Job::nextID = 0;
 
-Job::Job(real arrivalTime, real required) {
+Job::Job(real arrivalTime, real required, real gamma): gamma{gamma} {
     this->arrivalTime = arrivalTime;
     this->required = required;
     this->age = 0;
     this->id = nextID++;
+    this->preemptTime = gamma;
+    this->inService = false;
     debug_print("job with id %d created\n", id);
 }
 
 real Job::nextInterrupt() const { // TODO: is this a bug?
-    return this->required - this->age;
+    return this->required + this->preemptTime;
+}
+
+void Job::addToService() {
+    this->inService = true;
+}
+
+void Job::removeFromService() {
+    this->inService = false;
+    this->preemptTime = gamma;
 }
 
 void Job::serve(real time) {
-    this->age += time;
-    this->required -= time;
+    if (!inService) {
+        printf("HEY! BAD! NO! don't serve jobs that aren't in service!\n");
+    }
+    // real agebefore = job.age;
+    // real rankbefore = rank;
+    if (this->preemptTime > 0) {
+        time -= this->preemptTime;
+        preemptTime = 0;
+        if (time < 0) {
+            preemptTime -= time;
+        }
+    }
+
+    if (time > 0) {
+        this->age += time;
+        this->required -= time;
+    }
+
     debug_print("id %d: %Lf remaining, done=%d\n", id, required, this->done());
+    return;
 }
 
 real Job::getRequired() const {
     return this->required;
+}
+
+real Job::getArrival() const {
+    return this->arrivalTime;
 }
 
 unsigned int Job::getID() const {

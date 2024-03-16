@@ -7,6 +7,7 @@
 
 class Stream {
 public:
+    Stream(real gamma);
     real nextInterrupt();
     void serve(real time);
     virtual Job popJob(real) = 0;
@@ -14,10 +15,12 @@ public:
     virtual void reset() = 0;
 protected:
     real timeLeft;
+    const real gamma;
 };
 
 class IndepStream: public Stream {
 public:
+    IndepStream(real gamma);
     void reset();
 protected:
     Distribution *inDist;
@@ -25,7 +28,7 @@ protected:
 
 class FiniteIndepStream: public IndepStream {
 public:
-    FiniteIndepStream(Distribution* in, std::vector<Distribution*> serv, std::vector<real> probs);
+    FiniteIndepStream(Distribution* in, std::vector<Distribution*> serv, std::vector<real> probs, real gamma);
     Job popJob(real);
 private:
     std::vector<Distribution*> dists;
@@ -35,7 +38,7 @@ private:
 
 class SingleIndepStream: public IndepStream {
 public:
-    SingleIndepStream(Distribution* in, Distribution* serv);
+    SingleIndepStream(Distribution* in, Distribution* serv, real gamma);
     Job popJob(real);
     bool hasJob();
 private:

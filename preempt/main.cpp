@@ -149,17 +149,17 @@ int main(int argc, char **argv) {
 
     //* Turnaround vs slowdown Gittins, simple example for debugging
     seed_rand(4);
-    std::vector<real> vals { 1.0, 2.0, 3.0 };
-    std::vector<real> probs { 0.6, 0.1, 0.3 }; // mean is 1.3
-    DiscreteDistribution serv(vals, probs);
+    real gamma = 0.0;
+
+    ExponentialDistribution serv(1.0);
     ExponentialDistribution in(1/1.4);
 
-    SingleIndepStream stream(&in, &serv);
+    SingleIndepStream stream(&in, &serv, gamma);
 
-    DiscreteGittinsPolicy policy(vals, probs);
+    SRPTPolicy policy;
     // DiscreteGittinsSlowdownPolicy policy(vals, probs);
 
-    System system(&stream, &policy, 1);
+    System system(&stream, &policy);
 
     // Job j = stream.popJob(0);
     // j.serve(15.0/17.0);

@@ -6,19 +6,18 @@
 
 class IndexedJob : public JobInterface {
 public:
-    IndexedJob(Policy *p, Job job, real gamma);
-    real rank;
+    IndexedJob(Policy *p, Job job);
+    real index;
     Job job;
 
     real nextInterrupt() const;
     real getRequired() const;
     void serve(real time);
     void show() const;
+    real getArrival() const;
 
     void addToService();
     void removeFromService();
-
-    bool closeTo(const IndexedJob other) const;
 
     bool operator<(const IndexedJob& other) const;
     struct ReverseComparator {
@@ -27,9 +26,6 @@ public:
     unsigned int getID() const;
 private:
     Policy *p;
-    bool inService;
-    real preemptTime;
-    const real gamma;
 };
 
 #endif

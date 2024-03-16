@@ -3,15 +3,14 @@
 #include "job.h"
 #include <iostream>
 
-PolicyManager::PolicyManager(Policy *policy, real gamma) : policy(policy) {
-    this->gamma = gamma;
+PolicyManager::PolicyManager(Policy *policy) : policy(policy) {
     this->hasChanged = false;
 }
 
 void PolicyManager::addJob(Job job) {
     // debug_print("addJob start: %d\n", size());
     this->hasChanged = true;
-    this->queued.push(IndexedJob(this->policy, job, gamma));
+    this->queued.push(IndexedJob(this->policy, job));
     // debug_print("addJob end: %d\n", size());
 }
 
@@ -30,9 +29,8 @@ real PolicyManager::nextInterrupt() {
     if (hasChanged) {
         recalculate();
     }
-
-    if (serving != NULL) {
-        return serving->nextInterrupt();
+    if (!queued.empty()) {
+        return queued.top().nextInterrupt();
     }
     return infinity;
 }
@@ -46,12 +44,17 @@ void PolicyManager::serve(real time) {
 
     hasChanged = true; // because the job might finish
 
-    if (serving != NULL) {
-        serving->serve(time);
-        if (serving->done()) {
+    if (!queued.empty()) {
+        // queued.top
+        IndexedJob serving = queued.top();
+        queued.pop();
+        serving.serve(time);
+        // queued.top().serve(time);
+        if (serving.done()) {
             debug_print("job done! id %d\n", serving->getID());
-            completedJobs.push_back(serving);
-            serving = NULL;
+            completedJobs.push_back(serving.job);
+        } else {
+            queued.push(serving);
         }
     }
 
@@ -62,39 +65,21 @@ void PolicyManager::recalculate() {
     // printf("recalc before: %d\n", size());
     show();
     hasChanged = false;
-    if (this->isEmpty()) {
-        return;
-    }
-
-    if (serving != NULL) {
-        queued.push(serving);
-    }
-    serving = std::move(queued.top());
-    queued.pop();
-
+    // everything's in one sorted structure!
     return;
 }
 
 unsigned int PolicyManager::size() const {
-    int servingSize = 0;
-    if (serving != NULL) {
-        servingSize++;
-    }
-    return servingSize + queued.size();
+    return queued.size();
 }
 
 void PolicyManager::show() {
     return;
-    std::cout << "serving: {";
-    if (serving != NULL) {
-        serving.show();
-    }
-    std::cout << "}\n";
-    std::cout << "queued: {";
-    for (const auto& job : queued) {
-        job.show();
-        std::cout << ", ";
-    }
+    std::cout << "queued/serving: {";
+    // for (const auto& job : queued) { // TODO: figure out why this line is red
+    //     job.show();
+    //     std::cout << ", ";
+    // }
     std::cout << "}\n";
     std::cout << "completed: {";
     for (const auto& job : completedJobs) {

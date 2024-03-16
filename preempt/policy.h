@@ -5,25 +5,25 @@
 
 class Policy {
 public:
-    virtual real getIndex(IndexedJob *job) = 0;
+    virtual real getIndex(JobInterface *job) = 0;
 };
 
 class FCFSPolicy: public Policy {
 private:
-    real getIndex(Job *job);
+    real getIndex(JobInterface *job);
 };
 
 class SRPTPolicy : public Policy {
 private:
-    real getIndex(Job *job);
-}
+    real getIndex(JobInterface *job);
+};
 
 class SRPTPreemptPolicy : public Policy {
 public:
     SRPTPreemptPolicy(real alpha);
 private:
     real alpha;
-    real getIndex(Job *job);
-}
+    real getIndex(JobInterface *job);
+};
 
 #endif

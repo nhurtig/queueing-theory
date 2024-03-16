@@ -1,8 +1,8 @@
 #include "system.h"
 #include <algorithm>
 
-System::System(Stream *s, Policy *p, unsigned int k)
-    : stream(s), time(0), data(), policyManager(k, p), k(k) {}
+System::System(Stream *s, Policy *p)
+    : stream(s), time(0), data(), policyManager(p) {}
 
 void System::runFor(real ignore_time, real record_time) {
     this->run(ignore_time, false);

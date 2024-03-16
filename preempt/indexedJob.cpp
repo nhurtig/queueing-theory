@@ -1,40 +1,37 @@
 #include "indexedJob.h"
 #include <iostream>
 
-IndexedJob::IndexedJob(Policy *p, Job job, real gamma): job{job}, p{p} {
-    inService = false;
-    gamma = gamma;
-    preemptTime = gamma;
-    rank = p->getIndex(this);
+IndexedJob::IndexedJob(Policy *p, Job job): job{job}, p{p} {
+    index = p->getIndex(this);
 }
 
 real IndexedJob::getRequired() const {
-    return job.getRequired() + preemptTime;
+    return job.getRequired();
+}
+
+real IndexedJob::getArrival() const {
+    return job.getArrival();
+}
+
+real IndexedJob::nextInterrupt() const {
+    return job.nextInterrupt();
+}
+
+void IndexedJob::removeFromService() {
+    this->job.removeFromService();
+}
+
+void IndexedJob::addToService() {
+    this->job.addToService();
 }
 
 void IndexedJob::serve(real time) {
-    if (!inService) {
-        printf("HEY! BAD! NO! don't serve jobs that aren't in service!\n");
-    }
-    // real agebefore = job.age;
-    // real rankbefore = rank;
-    if (this->preemptTime > 0) {
-        time -= this->preemptTime;
-        preemptTime = 0;
-        if (time < 0) {
-            preemptTime -= time;
-        }
-    }
-
-    if (time > 0) {
-        job.serve(time);
-    }
+    this->job.serve(time);
 
     if (!job.done()) {
-        rank = p->getIndex(this);
+        index = p->getIndex(this);
         // printf("id %d: was age %Lf, rank %Lf, now age %Lf, rank %Lf\n", getID(), agebefore, rankbefore, job.age, rank);
     }
-    return;
 }
 
 unsigned int IndexedJob::getID() const {
@@ -44,24 +41,15 @@ unsigned int IndexedJob::getID() const {
 void IndexedJob::show() const {
     std::cout << "(";
     job.show();
-    std::cout << ", " << rank << ")";
-}
-
-void addToService() {
-    this->inService = true;
-}
-
-void removeFromService() {
-    this->inService = false;
-    this->preemptTime = gamma;
+    std::cout << ", " << index << ")";
 }
 
 bool IndexedJob::operator<(const IndexedJob& other) const {
-    // returns TRUE if I'm less important (higher rank) than other,
+    // returns TRUE if I'm less important (lower index) than other,
     // FALSE if other is more important
-    if (this->rank < other.rank) {
+    if (this->index < other.index) {
         return false;
-    } else if (this->rank > other.rank) {
+    } else if (this->index > other.index) {
         return true;
     } else {
         return this->job.arrivalTime > other.job.arrivalTime;

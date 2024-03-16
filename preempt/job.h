@@ -11,6 +11,10 @@ public:
     bool done() const;
     virtual void serve(real time) = 0;
     virtual void show() const = 0;
+    virtual real getArrival() const = 0;
+
+    virtual void addToService() = 0;
+    virtual void removeFromService() = 0;
 
     struct HashFunction {
         std::size_t operator()(const JobInterface& job) const;
@@ -22,7 +26,7 @@ public:
 class Job : public JobInterface {
 public:
     static unsigned int nextID;
-    Job(real age, real required);
+    Job(real age, real required, real gamma);
     real age;
     real arrivalTime;
     unsigned int id;
@@ -30,9 +34,16 @@ public:
     real getRequired() const;
     void serve(real time);
     void show() const;
+    real getArrival() const;
+
+    void addToService();
+    void removeFromService();
 
     unsigned int getID() const;
 private:
+    bool inService;
+    real preemptTime;
+    real gamma;
     real required;
 };
 

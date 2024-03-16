@@ -11,7 +11,7 @@
 
 class System {
 public:
-    System(Stream *stream, Policy *policy, unsigned int k);
+    System(Stream *stream, Policy *policy);
     void runFor(real ignore_time, real record_time);
     std::list<DeadJob> getData();
     void toCSV(std::string fname);
