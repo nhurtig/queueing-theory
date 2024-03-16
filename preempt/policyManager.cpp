@@ -69,6 +69,7 @@ void PolicyManager::recalculate() {
     } else {
         if (!queued.empty()) {
             if (*serving < queued.top()) { // is serving worse than what we could do?
+                // printf("PREEMPT!\n");
                 IndexedJob best = queued.top();
                 queued.pop();
                 serving->removeFromService();

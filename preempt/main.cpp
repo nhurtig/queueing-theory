@@ -149,12 +149,12 @@ int main(int argc, char **argv) {
 
     //* Turnaround vs slowdown Gittins, simple example for debugging
     seed_rand(4);
-    real gamma = 0.0;
+    real gamma = 0.1;
 
-    // ExponentialDistribution serv(1.0);
-    DegenerateDistribution serv(1.0);
-    // ExponentialDistribution in(0.1);
-    DegenerateDistribution in(0.5);
+    ExponentialDistribution serv(0.9);
+    // DegenerateDistribution serv(0.9);
+    ExponentialDistribution in(0.99);
+    // DegenerateDistribution in(1.2);
 
     SingleIndepStream stream(&in, &serv, gamma);
 
