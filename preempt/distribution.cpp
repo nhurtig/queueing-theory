@@ -24,16 +24,14 @@ ExponentialDistribution::ExponentialDistribution(real lambda) {
     this->lambda = lambda;
 }
 
-// real ExponentialDistribution::pdf(real x) {
-    // return this->lambda*exp(-this->lambda*x);
-// }
-
-real ExponentialDistribution::cdf(real x) {
-    return 1-exp(-this->lambda*x);
-}
-
 real ExponentialDistribution::sample() {
     return -ln(-rand_real()+1)/this->lambda;
+}
+
+AdditiveExponentialDistribution::AdditiveExponentialDistribution(real lambda, real add): ExponentialDistribution(lambda), add{add} {}
+
+real AdditiveExponentialDistribution::sample() {
+    return this->add + ExponentialDistribution::sample();
 }
 
 DiscreteDistribution::DiscreteDistribution(std::vector<real> vals, std::vector<real> probs) {
@@ -57,18 +55,6 @@ DiscreteDistribution::DiscreteDistribution(std::vector<real> vals, std::vector<r
     this->probs = probs;
 }
 
-real DiscreteDistribution::cdf(real x) {
-    real result = 0;
-
-    for (unsigned int i = 0; i < this->size; i++) {
-        if (x < vals[i]) {
-            result += probs[i];
-        }
-    }
-
-    return result;
-}
-
 real DiscreteDistribution::sample() {
     real x = rand_real();
     // debug_print("x=%Lf\n", x);
@@ -85,14 +71,6 @@ real DiscreteDistribution::sample() {
 
 DegenerateDistribution::DegenerateDistribution(real x) {
     this->x = x;
-}
-
-real DegenerateDistribution::cdf(real y) {
-    if (y < x) {
-        return 0;
-    } else {
-        return 1;
-    }
 }
 
 real DegenerateDistribution::sample() {

@@ -10,7 +10,7 @@ void seed_rand(int);
 class Distribution {
 public:
     // virtual real pdf(real) = 0;
-    virtual real cdf(real) = 0;
+    // virtual real cdf(real) = 0;
     virtual real sample() = 0;
 };
 
@@ -18,16 +18,24 @@ class ExponentialDistribution: public Distribution {
     public:
         ExponentialDistribution(real);
         // real pdf(real);
-        real cdf(real);
+        // real cdf(real);
         real sample();
     private:
         real lambda;
 };
 
+class AdditiveExponentialDistribution: public ExponentialDistribution {
+    public:
+        AdditiveExponentialDistribution(real lambda, real add);
+        real sample();
+    private:
+        const real add;
+};
+
 class DiscreteDistribution: public Distribution {
     public:
         DiscreteDistribution(std::vector<real> vals, std::vector<real> probs);
-        real cdf(real);
+        // real cdf(real);
         real sample();
     private:
         unsigned int size;
@@ -38,7 +46,7 @@ class DiscreteDistribution: public Distribution {
 class DegenerateDistribution: public Distribution {
     public:
         DegenerateDistribution(real x);
-        real cdf(real);
+        // real cdf(real);
         real sample();
     private:
         real x;

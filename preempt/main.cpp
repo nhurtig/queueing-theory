@@ -148,40 +148,49 @@ int main(int argc, char **argv) {
 
 //* best alpha for various values of gamma, rho
 unsigned int ignore = 0;
-unsigned int record = 1000;
-unsigned int n = 10;
-unsigned int BASE_SEED = 200;
-unsigned int steps = 5;
-unsigned int gamma_steps = steps;
+unsigned int record = 10000;
+unsigned int n = 300;
+unsigned int BASE_SEED = 20000;
+unsigned int steps = 25;
+unsigned int gamma_steps = 2;
 unsigned int rho_steps = steps;
 unsigned int alpha_steps = steps;
 real gamma_min = 0;
-real gamma_max = 5.0;
-real log_max_slack = -0.152003; // rho=0.1 to start with
-real log_min_slack = -13.2877; // rho=0.999 to end with
-real alpha_internal_min = 0; // 0 maps to 0
-real alpha_internal_max = 1; // 1 maps to infinity (FCFS) via x/(1-x)
-for (unsigned int i = 0; i < n; i++) {
+real gamma_max = 0.1;
+// real log_max_slack = -0.152003; // rho=0.1 to start with
+// real log_min_slack = -13.2877; // rho=0.999 to end with
+// real alpha_internal_min = 0; // 0 maps to 0
+// real alpha_internal_max = 1; // 1 maps to infinity (FCFS) via x/(1-x)
+for (unsigned int i = 200; i < n; i++) {
     for (real gamma = 0; gamma <= gamma_max; gamma += (gamma_max-gamma_min)/(gamma_steps-1)) {
-        for (real log_slack = log_max_slack; log_slack >= log_min_slack; log_slack -= (log_max_slack-log_min_slack)/(rho_steps-1)) {
-            real rho = 1.0 - powl(2.0, log_slack);
-            for (real alpha_internal = alpha_internal_min; alpha_internal <= alpha_internal_max; alpha_internal += (alpha_internal_max-alpha_internal_min)/(alpha_steps-1)) {
+        if (gamma != 0.1) {
+            continue;
+        }
+        for (unsigned int lsi = 0; lsi < rho_steps; lsi++) {
+            // real log_slack = log_max_slack - lsi*(log_max_slack-log_min_slack)/(rho_steps-1);
+            // real rho = 1.0 - powl(2.0, log_slack);
+            real rho = lsi*(1.0/rho_steps);
+            for (unsigned int aii = 0; aii < alpha_steps; aii++) {
+            // for (real alpha_internal = alpha_internal_min; alpha_internal <= alpha_internal_max; alpha_internal += (alpha_internal_max-alpha_internal_min)/(alpha_steps-1)) {
+                real alpha = aii*(2.0/alpha_steps);
+                real alpha_internal = 0.2; // because 0.2 < 1
+                // real alpha_internal = alpha_internal_min + aii*(alpha_internal_max-alpha_internal_min)/(alpha_steps-1);
                 seed_rand(n + BASE_SEED);
                 Policy *policy = NULL;
                 std::ostringstream name;
                 name << "results/alpha_experiment/" << i << "_" << gamma << "_" << rho << "_";
                 if (alpha_internal < 1) {
                     // (modified?) SRPT
-                    real alpha = alpha_internal/(1-alpha_internal);
+                    // real alpha = alpha_internal/(1-alpha_internal);
                     policy = new SRPTPreemptPolicy(alpha);
                     name << alpha;
                 } else {
                     // FCFS
-                    policy = new FCFSPolicy();
+                    policy = new SRPTPreemptPolicy(100000);
                     name << "inf";
                 }
-                name << ".csv";
-                ExponentialDistribution serv(1.0-gamma);
+                name << "_.csv";
+                AdditiveExponentialDistribution serv(2.0, 0.5-gamma);
                 ExponentialDistribution in(rho);
                 SingleIndepStream stream(&in, &serv, gamma);
 
@@ -201,12 +210,12 @@ for (unsigned int i = 0; i < n; i++) {
 
 
     //* Turnaround vs slowdown Gittins, simple example for debugging
-    seed_rand(4);
-    real gamma = 0.1;
+    seed_rand(207);
+    real gamma = 1.25;
 
     ExponentialDistribution serv(0.9);
     // DegenerateDistribution serv(0.9);
-    ExponentialDistribution in(0.99);
+    ExponentialDistribution in(0.907598);
     // DegenerateDistribution in(1.2);
 
     SingleIndepStream stream(&in, &serv, gamma);
