@@ -12,6 +12,8 @@ public:
     virtual void serve(real time) = 0;
     virtual void show() const = 0;
     virtual real getArrival() const = 0;
+    virtual real getPreempt() const = 0;
+    virtual bool isInService() const = 0;
 
     virtual void addToService() = 0;
     virtual void removeFromService() = 0;
@@ -32,9 +34,11 @@ public:
     unsigned int id;
     real nextInterrupt() const;
     real getRequired() const;
+    real getPreempt() const;
     void serve(real time);
     void show() const;
     real getArrival() const;
+    bool isInService() const;
 
     void addToService();
     void removeFromService();

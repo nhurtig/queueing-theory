@@ -2,5 +2,6 @@ main
 *.o
 sim/results/*
 soap/results/*
+preempt/results/*
 doc/*.h
 .vscode

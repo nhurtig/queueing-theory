@@ -19,6 +19,9 @@ public:
     void addToService();
     void removeFromService();
 
+    real getPreempt() const;
+    bool isInService() const;
+
     bool operator<(const IndexedJob& other) const;
     struct ReverseComparator {
         bool operator()(const IndexedJob& lhs, const IndexedJob &rhs) const;

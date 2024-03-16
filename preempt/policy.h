@@ -6,14 +6,10 @@
 class Policy {
 public:
     virtual real getIndex(JobInterface *job) = 0;
+    virtual ~Policy() {};
 };
 
 class FCFSPolicy: public Policy {
-private:
-    real getIndex(JobInterface *job);
-};
-
-class SRPTPolicy : public Policy {
 private:
     real getIndex(JobInterface *job);
 };
@@ -24,6 +20,11 @@ public:
 private:
     real alpha;
     real getIndex(JobInterface *job);
+};
+
+class SRPTPolicy : public SRPTPreemptPolicy {
+public:
+    SRPTPolicy();
 };
 
 #endif

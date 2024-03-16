@@ -71,6 +71,14 @@ real Job::getArrival() const {
     return this->arrivalTime;
 }
 
+real Job::getPreempt() const {
+    return this->preemptTime;
+}
+
+bool Job::isInService() const {
+    return this->inService;
+}
+
 unsigned int Job::getID() const {
     return id;
 }

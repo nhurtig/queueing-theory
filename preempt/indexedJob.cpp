@@ -25,6 +25,14 @@ void IndexedJob::addToService() {
     this->job.addToService();
 }
 
+real IndexedJob::getPreempt() const {
+    return this->job.getPreempt();
+}
+
+bool IndexedJob::isInService() const {
+    return this->job.isInService();
+}
+
 void IndexedJob::serve(real time) {
     this->job.serve(time);
 

@@ -146,6 +146,59 @@ int main(int argc, char **argv) {
     }
 //*/
 
+//* best alpha for various values of gamma, rho
+unsigned int ignore = 0;
+unsigned int record = 1000;
+unsigned int n = 10;
+unsigned int BASE_SEED = 200;
+unsigned int steps = 5;
+unsigned int gamma_steps = steps;
+unsigned int rho_steps = steps;
+unsigned int alpha_steps = steps;
+real gamma_min = 0;
+real gamma_max = 5.0;
+real log_max_slack = -0.152003; // rho=0.1 to start with
+real log_min_slack = -13.2877; // rho=0.999 to end with
+real alpha_internal_min = 0; // 0 maps to 0
+real alpha_internal_max = 1; // 1 maps to infinity (FCFS) via x/(1-x)
+for (unsigned int i = 0; i < n; i++) {
+    for (real gamma = 0; gamma <= gamma_max; gamma += (gamma_max-gamma_min)/(gamma_steps-1)) {
+        for (real log_slack = log_max_slack; log_slack >= log_min_slack; log_slack -= (log_max_slack-log_min_slack)/(rho_steps-1)) {
+            real rho = 1.0 - powl(2.0, log_slack);
+            for (real alpha_internal = alpha_internal_min; alpha_internal <= alpha_internal_max; alpha_internal += (alpha_internal_max-alpha_internal_min)/(alpha_steps-1)) {
+                seed_rand(n + BASE_SEED);
+                Policy *policy = NULL;
+                std::ostringstream name;
+                name << "results/alpha_experiment/" << i << "_" << gamma << "_" << rho << "_";
+                if (alpha_internal < 1) {
+                    // (modified?) SRPT
+                    real alpha = alpha_internal/(1-alpha_internal);
+                    policy = new SRPTPreemptPolicy(alpha);
+                    name << alpha;
+                } else {
+                    // FCFS
+                    policy = new FCFSPolicy();
+                    name << "inf";
+                }
+                name << ".csv";
+                ExponentialDistribution serv(1.0-gamma);
+                ExponentialDistribution in(rho);
+                SingleIndepStream stream(&in, &serv, gamma);
+
+                System system(&stream, policy);
+
+                printf("i=%d, gamma=%Lf, rho=%Lf, alphaInternal=%Lf start\n", i, gamma, rho, alpha_internal);
+                system.runFor(ignore, record);
+
+                system.toCSV(name.str());
+
+                delete policy;
+            }
+        }
+    }
+}
+//*/
+
 
     //* Turnaround vs slowdown Gittins, simple example for debugging
     seed_rand(4);
