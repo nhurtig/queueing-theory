@@ -151,8 +151,10 @@ int main(int argc, char **argv) {
     seed_rand(4);
     real gamma = 0.0;
 
-    ExponentialDistribution serv(1.0);
-    ExponentialDistribution in(1/1.4);
+    // ExponentialDistribution serv(1.0);
+    DegenerateDistribution serv(1.0);
+    // ExponentialDistribution in(0.1);
+    DegenerateDistribution in(0.5);
 
     SingleIndepStream stream(&in, &serv, gamma);
 
@@ -166,7 +168,7 @@ int main(int argc, char **argv) {
     // printf("0->%Lf\n", policy->getIndex(&j));
 
     printf("Experiment start\n");
-    system.runFor(0, 20);
+    system.runFor(0, 200);
     printf("Experiment end\n");
 
     system.toCSV("results/outturn.csv");

@@ -29,14 +29,13 @@ real PolicyManager::nextInterrupt() {
     if (hasChanged) {
         recalculate();
     }
-    if (!queued.empty()) {
-        return queued.top().nextInterrupt();
+    if (serving) {
+        return serving->nextInterrupt();
     }
     return infinity;
 }
 
 void PolicyManager::serve(real time) {
-    // debug_print("serve before: %d\n", size());
     if (hasChanged) {
         printf("NO! BAD! how can the policyManager change without you asking me what my nextinterrupt is?\n");
         recalculate();
@@ -44,17 +43,12 @@ void PolicyManager::serve(real time) {
 
     hasChanged = true; // because the job might finish
 
-    if (!queued.empty()) {
-        // queued.top
-        IndexedJob serving = queued.top();
-        queued.pop();
-        serving.serve(time);
-        // queued.top().serve(time);
-        if (serving.done()) {
+    if (serving) {
+        serving->serve(time);
+        if (serving->done()) {
             debug_print("job done! id %d\n", serving->getID());
-            completedJobs.push_back(serving.job);
-        } else {
-            queued.push(serving);
+            completedJobs.push_back(serving->job);
+            serving.reset();
         }
     }
 
@@ -65,7 +59,26 @@ void PolicyManager::recalculate() {
     // printf("recalc before: %d\n", size());
     show();
     hasChanged = false;
-    // everything's in one sorted structure!
+
+    if (!serving) {
+        if (!queued.empty()) {
+            serving = std::make_unique<IndexedJob>(std::move(queued.top()));
+            queued.pop();
+            serving->addToService();
+        } // else everything is empty
+    } else {
+        if (!queued.empty()) {
+            if (*serving < queued.top()) { // is serving worse than what we could do?
+                IndexedJob best = queued.top();
+                queued.pop();
+                serving->removeFromService();
+                queued.push(*serving);
+                serving = std::make_unique<IndexedJob>(std::move(best));
+                serving->addToService();
+            } // else no swap is needed
+        } // else queued is empty, easy
+    }
+
     return;
 }
 
@@ -77,8 +90,8 @@ void PolicyManager::show() {
     return;
     std::cout << "queued/serving: {";
     // for (const auto& job : queued) { // TODO: figure out why this line is red
-    //     job.show();
-    //     std::cout << ", ";
+        // job.show();
+        // std::cout << ", ";
     // }
     std::cout << "}\n";
     std::cout << "completed: {";

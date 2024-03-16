@@ -44,6 +44,7 @@ void Job::serve(real time) {
     }
     // real agebefore = job.age;
     // real rankbefore = rank;
+    // debug_print("serving for %Lf. Preempt=%Lf, req=%Lf, age=%Lf, id=%d\n", time, preemptTime, required, age, id);
     if (this->preemptTime > 0) {
         time -= this->preemptTime;
         preemptTime = 0;
@@ -51,6 +52,7 @@ void Job::serve(real time) {
             preemptTime -= time;
         }
     }
+    // debug_print("halfway thru serving for %Lf. Preempt=%Lf, req=%Lf, age=%Lf, id=%d\n", time, preemptTime, required, age, id);
 
     if (time > 0) {
         this->age += time;

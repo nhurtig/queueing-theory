@@ -6,7 +6,8 @@ real FCFSPolicy::getIndex(JobInterface *job) {
 }
 
 real SRPTPolicy::getIndex(JobInterface *job) {
-    return 1.0/job->getRequired();
+    // return 1.0/job->getRequired();
+    return 1.0;
 }
 
 real SRPTPreemptPolicy::getIndex(JobInterface *job) {

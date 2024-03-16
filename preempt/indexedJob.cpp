@@ -48,11 +48,11 @@ bool IndexedJob::operator<(const IndexedJob& other) const {
     // returns TRUE if I'm less important (lower index) than other,
     // FALSE if other is more important
     if (this->index < other.index) {
-        return false;
-    } else if (this->index > other.index) {
         return true;
+    } else if (this->index > other.index) {
+        return false;
     } else {
-        return this->job.arrivalTime > other.job.arrivalTime;
+        return this->job.arrivalTime > other.job.arrivalTime; // FCFS if all same
     }
 }
 

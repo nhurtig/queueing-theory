@@ -5,6 +5,7 @@
 #include "policy.h"
 #include "indexedJob.h"
 #include <queue>
+#include <memory>
 
 class PolicyManager {
 public:
@@ -18,6 +19,7 @@ public:
 private:
     bool hasChanged; // whether the served set needs recalculated
     Policy *policy;
+    std::unique_ptr<IndexedJob> serving;
     std::priority_queue<IndexedJob> queued;
     std::vector<Job> completedJobs;
     void recalculate();
