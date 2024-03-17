@@ -34,6 +34,53 @@ real AdditiveExponentialDistribution::sample() {
     return this->add + ExponentialDistribution::sample();
 }
 
+// SuperDistribution::SuperDistribution(std::vector<std::unique_ptr<Distribution>> dists, std::vector<real> probs) {
+//     real sum = std::accumulate(probs.begin(), probs.end(), 0.0);
+//     std::for_each(probs.begin(), probs.end(), [sum](real x){return x/sum;});
+
+//     this->size = dists.size();
+//     if (this->size != probs.size()) {
+//         throw std::invalid_argument("Distribution and probability vectors should be same length!");
+//     }
+
+//     this->dists = dists;
+//     this->probs = probs;
+// }
+
+// real SuperDistribution::sample() {
+//     real x = rand_real();
+//     // debug_print("x=%Lf\n", x);
+//     for (unsigned int i = 0; i < this->size; i++) {
+//         if (x < probs[i]) {
+//             return dists[i]->sample();
+//         }
+//         x -= probs[i];
+//     }
+
+//     // debug_print("after x=%Lf\n", x);
+//     throw std::out_of_range("Did probs not add to 1?");
+// }
+
+std::unique_ptr<Distribution> makeExponentialDistribution(real lambda) {
+    return std::make_unique<ExponentialDistribution>(lambda);
+}
+
+GoergHyperDistribution::GoergHyperDistribution(real w):
+    d1{ExponentialDistribution(1+w)},
+    d2{ExponentialDistribution(1-w)},
+    p{(1+w)/2} {}
+
+real GoergHyperDistribution::sample() {
+    real x = rand_real();
+    if (x < p) {
+        return d1.sample();
+    } else {
+        return d2.sample();
+    }
+}
+
+GoergHyperDistributionCB::GoergHyperDistributionCB(real cb): GoergHyperDistribution((cb-1)/(cb+1)) {}
+
 DiscreteDistribution::DiscreteDistribution(std::vector<real> vals, std::vector<real> probs) {
     real sum = std::accumulate(probs.begin(), probs.end(), 0.0);
     std::for_each(probs.begin(), probs.end(), [sum](real x){return x/sum;});

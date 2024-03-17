@@ -1,6 +1,7 @@
 #ifndef DISTRIBUTION_H
 #define DISTRIBUTION_H
 #include "queue_standard.h"
+#include <memory>
 #include <vector>
 
 real rand_real();
@@ -30,6 +31,31 @@ class AdditiveExponentialDistribution: public ExponentialDistribution {
         real sample();
     private:
         const real add;
+};
+
+// class SuperDistribution: public Distribution {
+//     public:
+//         SuperDistribution(std::vector<std::unique_ptr<Distribution>> dists, std::vector<real> probs);
+//         real sample();
+//     private:
+//         unsigned int size;
+//         std::vector<std::unique_ptr<Distribution>> dists;
+//         std::vector<real> probs;
+// };
+
+class GoergHyperDistribution: public Distribution {
+    public:
+        GoergHyperDistribution(real w);
+        real sample();
+    private:
+        ExponentialDistribution d1;
+        ExponentialDistribution d2;
+        const real p;
+};
+
+class GoergHyperDistributionCB: public GoergHyperDistribution {
+    public:
+        GoergHyperDistributionCB(real cb);
 };
 
 class DiscreteDistribution: public Distribution {

@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
     }
 //*/
 
-//* best alpha for various values of gamma, rho
+/* best alpha for various values of gamma, rho
 unsigned int ignore = 0;
 unsigned int record = 10000;
 unsigned int n = 300;
@@ -208,8 +208,37 @@ for (unsigned int i = 200; i < n; i++) {
 }
 //*/
 
+//* remake fig 6
+real cb = 5;
+real gamma = 0.1;
+unsigned int seed_start = 3278;
+unsigned int n = 1;
+real ignore = 0;
+real time = 100000;
+std::vector<real> alphas({0, 0.1, 0.3, 1, 3, 10, 30, 100});
+real rho_step = 0.01;
+for (unsigned int i = 0; i < n; i++) {
+    printf("step i=%d\n", i);
+    for (real alpha : alphas) {
+        for (real rho = rho_step; rho < 1; rho += rho_step) {
+            seed_rand(seed_start+i);
+            GoergHyperDistributionCB serv(cb);
+            ExponentialDistribution in(rho/1.0);
+            SingleIndepStream stream(&in, &serv, gamma);
+            SRPTPreemptPolicy policy(alpha);
+            System system(&stream, &policy);
 
-    //* Turnaround vs slowdown Gittins, simple example for debugging
+            system.runFor(ignore, time);
+
+            std::ostringstream name;
+            name << "results/fig6/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+            system.toCSV(name.str());
+        }
+    }
+}
+
+
+    /* Turnaround vs slowdown Gittins, simple example for debugging
     seed_rand(207);
     real gamma = 1.25;
 
