@@ -13,7 +13,7 @@
 #endif
 
 typedef long double real;
-#define infinity LDBL_MAX;
+#define infinity LDBL_MAX
 typedef unsigned int jclass;
 #define ln logl
 

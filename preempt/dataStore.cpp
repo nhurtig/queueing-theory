@@ -18,6 +18,10 @@ void DataStore::addJob(Job *job, real finishTime) {
     this->jobs.push_back(DeadJob(job, finishTime));
 }
 
+void DataStore::addUnfinishedJob(Job *job) {
+    this->jobs.push_back(DeadJob(job, infinity));
+}
+
 void DataStore::toCSV(std::string fname) {
     std::ofstream file;
     file.open(fname);

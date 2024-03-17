@@ -8,7 +8,8 @@ void System::runFor(real ignore_time, real record_time) {
     this->run(ignore_time, false);
     // debug_print("now recording\n");
     this->run(record_time, true);
-    this->finishQueuedJobs();
+    // this->finishQueuedJobs();
+    this->recordUnfinishedJobs();
 }
 
 void System::run(real runtime, bool record) {
@@ -23,6 +24,13 @@ void System::run(real runtime, bool record) {
 void System::finishQueuedJobs() {
     while (this->policyManager.size() > 0) {
         runStep(true, false);
+    }
+}
+
+void System::recordUnfinishedJobs() {
+    while (this->policyManager.size() > 0) {
+        Job job = this->policyManager.getUnfinishedJob();
+        this->data.addUnfinishedJob(&job);
     }
 }
 

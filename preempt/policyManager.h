@@ -13,6 +13,7 @@ public:
     void addJob(Job job);
     bool hasJob();
     Job getJob();
+    Job getUnfinishedJob();
     void serve(real time);
     unsigned int size() const;
     real nextInterrupt();

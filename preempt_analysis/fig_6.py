@@ -2,6 +2,8 @@ import numpy as np
 import os
 import pandas as pd
 
+N = 100000
+
 directory = '../preempt/results/fig6/'
 
 # Assuming the format of the filenames is 'w_x_y_z.csv'
@@ -46,9 +48,19 @@ for w, d1 in enumerate(ses[0]):
 def get_ET(fname):
     fname = fname.replace(".0_", "_")
     df = pd.read_csv(fname)
+    for float_col in ["FinishTime", "ServiceTime", "ArrivalTime"]:
+        df[float_col] = df[float_col].astype('float')
+
+    # drop filler
+    df = df[df["ArrivalTime"] < N/2]
+    if df["FinishTime"].max() > N: # something didn't finish
+        print(fname)
+        return np.inf # unstable queue
+
     # if (sum(df["FinishTime"] < df["ArrivalTime"]) > 0):
     if (sum(df["ServiceTime"] <= 0) > 0):
-        print(fname)
+        print(fname) # error check
+        raise IndexError(fname)
     val = (df["FinishTime"] - df["ArrivalTime"]).mean()
     dat = "_".join(fname.split("_")[-3:-1])
     return val

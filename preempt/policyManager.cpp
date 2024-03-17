@@ -24,6 +24,12 @@ Job PolicyManager::getJob() {
     return job;
 }
 
+Job PolicyManager::getUnfinishedJob() {
+    Job job = queued.top().job;
+    queued.pop();
+    return job;
+}
+
 real PolicyManager::nextInterrupt() {
     // debug_print("nI start\n");
     if (hasChanged) {

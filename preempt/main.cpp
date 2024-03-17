@@ -215,15 +215,16 @@ unsigned int seed_start = 3278;
 unsigned int n = 1;
 real ignore = 0;
 real time = 100000;
-std::vector<real> alphas({0, 0.1, 0.3, 1, 3, 10, 30, 100});
+std::vector<real> alphas({0, 0.5, 2.5, 5, 7.5, 10, 25, 100});
 real rho_step = 0.01;
 for (unsigned int i = 0; i < n; i++) {
     printf("step i=%d\n", i);
     for (real alpha : alphas) {
+        printf("alpha=%Lf\n", alpha);
         for (real rho = rho_step; rho < 1; rho += rho_step) {
             seed_rand(seed_start+i);
             GoergHyperDistributionCB serv(cb);
-            ExponentialDistribution in(rho/1.0);
+            ExponentialDistribution in(rho/1.1);
             SingleIndepStream stream(&in, &serv, gamma);
             SRPTPreemptPolicy policy(alpha);
             System system(&stream, &policy);

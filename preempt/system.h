@@ -23,6 +23,7 @@ private:
     unsigned int k;
     void run(real time, bool record);
     void finishQueuedJobs();
+    void recordUnfinishedJobs();
     void runStep(bool record, bool allowArrivals);
 };
 
