@@ -2,9 +2,11 @@ import numpy as np
 import os
 import pandas as pd
 
-N = 100000
+N = 10000
 
-directory = '../preempt/results/fig6/'
+file = '3dplot'
+
+directory = f'../preempt/results/{file}/'
 
 # Assuming the format of the filenames is 'w_x_y_z.csv'
 def extract_coordinates(filename):
@@ -79,4 +81,4 @@ names = array[0,0,:,:]
 # print(mything)
 print(ETs[0,0,:,:])
 
-np.save('fig6', ETs)
+np.save(file, ETs)

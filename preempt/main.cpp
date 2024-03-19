@@ -208,7 +208,7 @@ for (unsigned int i = 200; i < n; i++) {
 }
 //*/
 
-//* remake fig 6
+/* remake fig 6
 real cb = 5;
 real gamma = 0.1;
 unsigned int seed_start = 3278;
@@ -237,6 +237,69 @@ for (unsigned int i = 0; i < n; i++) {
         }
     }
 }
+*/
+
+/* remake fig 7
+real cb = 5;
+real gamma = 0.1;
+unsigned int seed_start = 3278;
+unsigned int n = 1;
+real ignore = 0;
+real time = 100000;
+std::vector<real> rhos({0.7, 0.75, 0.8, 0.85, 0.87, 0.89});
+for (unsigned int i = 0; i < n; i++) {
+    printf("step i=%d\n", i);
+    for (real rho : rhos) {
+        printf("rho=%Lf\n", rho);
+        for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
+            seed_rand(seed_start+i);
+            GoergHyperDistributionCB serv(cb);
+            ExponentialDistribution in(rho/1.0);
+            SingleIndepStream stream(&in, &serv, gamma);
+            real alpha = powl(10, alphalog);
+            SRPTPreemptPolicy policy(alpha);
+            System system(&stream, &policy);
+
+            system.runFor(ignore, time);
+
+            std::ostringstream name;
+            name << "results/fig7/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+            system.toCSV(name.str());
+        }
+    }
+}
+//*/
+
+//* awesome 3d plot
+real cb = 5;
+real gamma = 0.1;
+unsigned int seed_start = 3278;
+unsigned int n = 1;
+real ignore = 0;
+real time = 10000;
+real rhostep = 0.01;
+for (unsigned int i = 0; i < n; i++) { // i, gamma, rho, alpha
+    printf("step i=%d\n", i);
+    for (real rho = rhostep; rho < 1; rho += rhostep) {
+        printf("rho=%Lf\n", rho);
+        for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
+            seed_rand(seed_start+i);
+            GoergHyperDistributionCB serv(cb);
+            ExponentialDistribution in(rho/1.1);
+            SingleIndepStream stream(&in, &serv, gamma);
+            real alpha = powl(10, alphalog);
+            SRPTPreemptPolicy policy(alpha);
+            System system(&stream, &policy);
+
+            system.runFor(ignore, time);
+
+            std::ostringstream name;
+            name << "results/3dplot/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+            system.toCSV(name.str());
+        }
+    }
+}
+//*/
 
 
     /* Turnaround vs slowdown Gittins, simple example for debugging
