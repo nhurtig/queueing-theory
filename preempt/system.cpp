@@ -1,8 +1,10 @@
 #include "system.h"
 #include <algorithm>
 
-System::System(Stream *s, Policy *p)
-    : stream(s), time(0), data(), policyManager(p) {}
+System::System(Stream *s, PolicyManager *p)
+    : stream(s), time(0), data() {
+         this->policyManager = p;
+    }
 
 void System::runFor(real ignore_time, real record_time) {
     this->run(ignore_time, false);
@@ -22,14 +24,14 @@ void System::run(real runtime, bool record) {
 }
 
 void System::finishQueuedJobs() {
-    while (this->policyManager.size() > 0) {
+    while (this->policyManager->size() > 0) {
         runStep(true, false);
     }
 }
 
 void System::recordUnfinishedJobs() {
-    while (this->policyManager.size() > 0) {
-        Job job = this->policyManager.getUnfinishedJob();
+    while (this->policyManager->size() > 0) {
+        Job job = this->policyManager->getUnfinishedJob();
         this->data.addUnfinishedJob(&job);
     }
 }
@@ -42,13 +44,13 @@ void System::runStep(bool record, bool allowArrivals) {
     } else {
         streamInterrupt = infinity;
     }
-    real jobInterrupt = this->policyManager.nextInterrupt();
+    real jobInterrupt = this->policyManager->nextInterrupt();
     // debug_print("stream interrupt: %Lf, job interrupt: %Lf\n", streamInterrupt, jobInterrupt);
     real timeToRun = std::min(streamInterrupt, jobInterrupt);
     // timeToRun = 0.01;
 
     // serve jobs, stream
-    this->policyManager.serve(timeToRun);
+    this->policyManager->serve(timeToRun);
     if (allowArrivals) {
         this->stream->serve(timeToRun);
     }
@@ -56,16 +58,16 @@ void System::runStep(bool record, bool allowArrivals) {
     // manage side effects
     time += timeToRun;
 
-    while(this->policyManager.hasJob()) {
+    while(this->policyManager->hasJob()) {
         // debug_print("collect dead job\n");
-        Job job = this->policyManager.getJob();
+        Job job = this->policyManager->getJob();
         if (record) {
             data.addJob(&job, time);
         }
     }
 
     while(allowArrivals && stream->hasJob()) {
-        this->policyManager.addJob(stream->popJob(time));
+        this->policyManager->addJob(stream->popJob(time));
     }
 }
 

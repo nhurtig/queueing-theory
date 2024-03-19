@@ -270,7 +270,7 @@ for (unsigned int i = 0; i < n; i++) {
 }
 //*/
 
-//* awesome 3d plot
+/* awesome 3d plot
 real cb = 5;
 real gamma = 0.1;
 unsigned int seed_start = 3278;
@@ -289,7 +289,8 @@ for (unsigned int i = 0; i < n; i++) { // i, gamma, rho, alpha
             SingleIndepStream stream(&in, &serv, gamma);
             real alpha = powl(10, alphalog);
             SRPTPreemptPolicy policy(alpha);
-            System system(&stream, &policy);
+            PolicyManagerConcrete pm(&policy);
+            System system(&stream, &pm);
 
             system.runFor(ignore, time);
 
@@ -298,6 +299,52 @@ for (unsigned int i = 0; i < n; i++) { // i, gamma, rho, alpha
             system.toCSV(name.str());
         }
     }
+}
+//*/
+
+//* Goerg vs me
+real cb = 5;
+real gamma = 0.1;
+unsigned int seed_start = 3278;
+unsigned int n = 1;
+real ignore = 0;
+real time = 100000;
+real rho = 0.75;
+for (unsigned int i = 0; i < n; i++) {
+    printf("step i=%d\n", i);
+    printf("rho=%Lf\n", rho);
+    // for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
+    //     seed_rand(seed_start+i);
+    //     GoergHyperDistributionCB serv(cb);
+    //     ExponentialDistribution in(rho/1.0);
+    //     SingleIndepStream stream(&in, &serv, gamma);
+    //     real alpha = powl(10, alphalog);
+    //     GoergAlphaPreemptPolicy policy(alpha);
+    //     PolicyManagerPreempt pm(&policy);
+    //     System system(&stream, &pm);
+
+    //     system.runFor(ignore, time);
+
+    //     std::ostringstream name;
+    //     name << "results/compare_rho0.7/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+    //     system.toCSV(name.str());
+    // }
+
+    // my turn!
+    seed_rand(seed_start + i);
+    GoergHyperDistributionCB serv(cb);
+    real lambda = rho/1.0;
+    ExponentialDistribution in(lambda);
+    SingleIndepStream stream(&in, &serv, gamma);
+    SingleGammaHyperDistributionPreemptPolicy policy(gamma, lambda, cb);
+    PolicyManagerPreempt pm(&policy);
+    System system(&stream, &pm);
+
+    system.runFor(ignore, time);
+
+    std::ostringstream name;
+    name << "results/compare_rho0.7/" << i << "_" << gamma << "_" << "hurtig" << "_" << rho << "_.csv";
+    system.toCSV(name.str());
 }
 //*/
 

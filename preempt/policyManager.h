@@ -3,6 +3,7 @@
 #include "queue_standard.h"
 #include "job.h"
 #include "policy.h"
+#include "preemptPolicy.h"
 #include "indexedJob.h"
 #include <queue>
 #include <memory>
@@ -10,21 +11,38 @@
 class PolicyManager {
 public:
     PolicyManager(Policy *policy);
-    void addJob(Job job);
-    bool hasJob();
-    Job getJob();
-    Job getUnfinishedJob();
-    void serve(real time);
     unsigned int size() const;
+    void addJob(Job job);
+    virtual bool hasJob();
+    virtual Job getJob();
+    virtual Job getUnfinishedJob();
+    void serve(real time);
+    // virtual unsigned int size() const = 0;
     real nextInterrupt();
-private:
-    bool hasChanged; // whether the served set needs recalculated
-    Policy *policy;
+protected:
+    virtual void recalculate() = 0;
+    bool hasChanged;
     std::unique_ptr<IndexedJob> serving;
     std::priority_queue<IndexedJob> queued;
+private:
     std::vector<Job> completedJobs;
+    Policy *policy;
+};
+
+class PolicyManagerConcrete : public PolicyManager {
+public:
+    PolicyManagerConcrete(Policy *policy);
+private:
     void recalculate();
-    void show();
+};
+
+class PolicyManagerPreempt : public PolicyManager {
+public:
+    PolicyManagerPreempt(PreemptPolicy *policy);
+private:
+    void recalculate();
+    const PreemptPolicy *policy;
+    SRPTPolicy srptPolicy;
 };
 
 #endif

@@ -8,10 +8,11 @@
 #include "job.h"
 #include <string>
 #include <map>
+#include <memory>
 
 class System {
 public:
-    System(Stream *stream, Policy *policy);
+    System(Stream *stream, PolicyManager *policy);
     void runFor(real ignore_time, real record_time);
     std::list<DeadJob> getData();
     void toCSV(std::string fname);
@@ -19,7 +20,7 @@ private:
     Stream *stream;
     real time;
     DataStore data;
-    PolicyManager policyManager;
+    PolicyManager *policyManager;
     unsigned int k;
     void run(real time, bool record);
     void finishQueuedJobs();

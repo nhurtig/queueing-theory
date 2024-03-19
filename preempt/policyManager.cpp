@@ -3,9 +3,9 @@
 #include "job.h"
 #include <iostream>
 
-PolicyManager::PolicyManager(Policy *policy) : policy(policy) {
-    this->hasChanged = false;
-}
+PolicyManager::PolicyManager(Policy *policy): hasChanged{false}, policy{policy} {}
+
+PolicyManagerConcrete::PolicyManagerConcrete(Policy *policy): PolicyManager(policy) {}
 
 void PolicyManager::addJob(Job job) {
     // debug_print("addJob start: %d\n", size());
@@ -61,9 +61,8 @@ void PolicyManager::serve(real time) {
     return;
 }
 
-void PolicyManager::recalculate() {
+void PolicyManagerConcrete::recalculate() {
     // printf("recalc before: %d\n", size());
-    show();
     hasChanged = false;
 
     if (!serving) {
@@ -93,18 +92,50 @@ unsigned int PolicyManager::size() const {
     return queued.size();
 }
 
-void PolicyManager::show() {
+PolicyManagerPreempt::PolicyManagerPreempt(PreemptPolicy *policy): 
+    PolicyManager(&this->srptPolicy),
+    policy{policy},
+    srptPolicy{SRPTPolicy()}
+    {}
+
+void PolicyManagerPreempt::recalculate() {
+    hasChanged = false;
+
+    if (!serving) {
+        if (!queued.empty()) { // nobody is serving -- easy!
+            serving = std::make_unique<IndexedJob>(std::move(queued.top()));
+            queued.pop();
+            serving->addToService();
+        } // else everything is empty
+    } else {
+        if (!queued.empty()) {
+            if (*serving < queued.top() && policy->preempt(*serving, queued)) {
+                // PREEMPT!
+                IndexedJob best = queued.top();
+                queued.pop();
+                serving->removeFromService();
+                queued.push(*serving);
+                serving = std::make_unique<IndexedJob>(std::move(best));
+                serving->addToService();
+            }
+        } // else no swap is needed
+    } // else queued is empty, easy
+
     return;
-    std::cout << "queued/serving: {";
-    // for (const auto& job : queued) { // TODO: figure out why this line is red
-        // job.show();
-        // std::cout << ", ";
-    // }
-    std::cout << "}\n";
-    std::cout << "completed: {";
-    for (const auto& job : completedJobs) {
-        job.show();
-        std::cout << ", ";
-    }
-    std::cout << "}\n";
 }
+
+// void PolicyManagerConcrete::show() {
+//     return;
+//     std::cout << "queued/serving: {";
+//     // for (const auto& job : queued) { // TODO: figure out why this line is red
+//         // job.show();
+//         // std::cout << ", ";
+//     // }
+//     std::cout << "}\n";
+//     std::cout << "completed: {";
+//     for (const auto& job : completedJobs) {
+//         job.show();
+//         std::cout << ", ";
+//     }
+//     std::cout << "}\n";
+// }
