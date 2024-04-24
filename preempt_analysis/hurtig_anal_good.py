@@ -2,9 +2,9 @@ import numpy as np
 import os
 import pandas as pd
 
-N = 10000
+N = 100000
 
-file = 'final_compare'
+file = 'compare_rho0.7'
 
 directory = f'../preempt/results/{file}/'
 
@@ -19,7 +19,7 @@ def extract_coordinates(filename):
 
 # Get list of CSV files
 files = os.listdir(directory)
-files = [f for f in files if f.endswith('.csv')]
+files = [f for f in files if f.endswith('.csv') and "hurtig" not in f]
 
 # Get coordinates and sort
 coordinates = [extract_coordinates(f) for f in files]
@@ -39,6 +39,8 @@ max_w, max_x, max_y, max_z = maxes
 
 # Initialize numpy array
 array = np.empty(sizes, dtype=object)
+sizes[2] = 1
+array_hurtig = np.empty(sizes, dtype=object)
 
 # Fill numpy array
 for w, d1 in enumerate(ses[0]):
@@ -46,6 +48,12 @@ for w, d1 in enumerate(ses[0]):
         for y, d3 in enumerate(ses[2]):
             for z, d4 in enumerate(ses[3]):
                 array[w, x, y, z] = f"{directory}{d1}_{d2}_{d3}_{d4}_.csv"
+
+for w, d1 in enumerate(ses[0]): # i
+    for x, d2 in enumerate(ses[1]): # gamma
+        for y, d3 in enumerate(['hurtig']): # alpha
+            for z, d4 in enumerate(ses[3]): # rho
+                array_hurtig[w, x, y, z] = f"{directory}{d1}_{d2}_{d3}_{d4}_.csv"
 
 def get_ET(fname):
     fname = fname.replace(".0_", "_")
@@ -68,17 +76,20 @@ def get_ET(fname):
     return val
     # return f"{val:.2f}_{dat}"
 
-ETs = np.vectorize(get_ET)(array)
+# ETs = np.vectorize(get_ET)(array)
+print(array_hurtig)
+ETs_hurtig = np.vectorize(get_ET)(array_hurtig)
 # print(array)
-print(ETs)
-print(ETs.shape)
+# print(ETs)
+# print(ETs.shape)
 # print(ETs.mean(axis=0))
 # print(ETs.mean(axis=0).shape)
 
 # mything = ETs.mean(axis=0)[0,:,:]
-names = array[0,0,:,:]
+# names = array[0,0,:,:]
 # print(names)
 # print(mything)
-print(ETs[0,0,:,:])
+# print(ETs[0,0,:,:])
 
-np.save(file, ETs)
+# np.save(file, ETs)
+np.save(f"{file}_hurtig", ETs_hurtig)

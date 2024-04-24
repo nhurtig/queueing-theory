@@ -273,77 +273,140 @@ for (unsigned int i = 0; i < n; i++) {
 /* awesome 3d plot
 real cb = 5;
 real gamma = 0.1;
-unsigned int seed_start = 3278;
-unsigned int n = 1;
+unsigned int seed_start = 3280;
+unsigned int n = 10;
 real ignore = 0;
 real time = 10000;
 real rhostep = 0.01;
+real kappastep = 0.02;
 for (unsigned int i = 0; i < n; i++) { // i, gamma, rho, alpha
     printf("step i=%d\n", i);
     for (real rho = rhostep; rho < 1; rho += rhostep) {
         printf("rho=%Lf\n", rho);
-        for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
+        for (real kappa = -1+kappastep; kappa < 1; kappa += kappastep) {
+        // for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
             seed_rand(seed_start+i);
             GoergHyperDistributionCB serv(cb);
-            ExponentialDistribution in(rho/1.1);
+            real lambda = rho/1.0;
+            ExponentialDistribution in(lambda);
             SingleIndepStream stream(&in, &serv, gamma);
-            real alpha = powl(10, alphalog);
-            SRPTPreemptPolicy policy(alpha);
-            PolicyManagerConcrete pm(&policy);
+            // real alpha = powl(10, alphalog);
+            ScalingSingleGammaHyperDistributionPreemptPolicy policy(gamma, lambda, cb, kappa);
+            PolicyManagerPreempt pm(&policy);
             System system(&stream, &pm);
 
             system.runFor(ignore, time);
 
             std::ostringstream name;
-            name << "results/3dplot/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+            name << "results/3dplot_hurtig/" << i << "_" << gamma << "_" << kappa << "_" << rho << "_.csv";
             system.toCSV(name.str());
         }
     }
 }
 //*/
 
-//* Goerg vs me
+/* Goerg vs me
 real cb = 5;
 real gamma = 0.1;
-unsigned int seed_start = 3278;
-unsigned int n = 1;
+// this was the original seed_start
+// unsigned int seed_start = 3278;
+// this is to figure out kappa
+unsigned int seed_start = 3280;
+unsigned int n = 50;
 real ignore = 0;
-real time = 100000;
-real rho = 0.75;
+real time = 10000;
+// real rho = 0.75;
+std::vector<real> rhos({0.7, 0.75, 0.8, 0.85, 0.87, 0.89});
 for (unsigned int i = 0; i < n; i++) {
     printf("step i=%d\n", i);
-    printf("rho=%Lf\n", rho);
-    // for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
-    //     seed_rand(seed_start+i);
-    //     GoergHyperDistributionCB serv(cb);
-    //     ExponentialDistribution in(rho/1.0);
-    //     SingleIndepStream stream(&in, &serv, gamma);
-    //     real alpha = powl(10, alphalog);
-    //     GoergAlphaPreemptPolicy policy(alpha);
-    //     PolicyManagerPreempt pm(&policy);
-    //     System system(&stream, &pm);
+    // for (real rho : rhos) {
+    //     printf("rho=%Lf\n", rho);
+    //     for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
+    //         seed_rand(seed_start+i);
+    //         GoergHyperDistributionCB serv(cb);
+    //         ExponentialDistribution in(rho/1.0);
+    //         SingleIndepStream stream(&in, &serv, gamma);
+    //         real alpha = powl(10, alphalog);
+    //         GoergAlphaPreemptPolicy policy(alpha);
+    //         PolicyManagerPreempt pm(&policy);
+    //         System system(&stream, &pm);
 
-    //     system.runFor(ignore, time);
+    //         system.runFor(ignore, time);
 
-    //     std::ostringstream name;
-    //     name << "results/compare_rho0.7/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
-    //     system.toCSV(name.str());
+    //         std::ostringstream name;
+    //         name << "results/poster/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+    //         system.toCSV(name.str());
+    //     }
     // }
 
     // my turn!
+    real kappastep = 0.02;
+    for (real rho : rhos) {
+        printf("rho=%Lf\n", rho);
+        for (real kappa = -1+kappastep; kappa < 1; kappa += kappastep) {
+            seed_rand(seed_start + i);
+            GoergHyperDistributionCB serv(cb);
+            real lambda = rho/1.0;
+            ExponentialDistribution in(lambda);
+            SingleIndepStream stream(&in, &serv, gamma);
+            ScalingSingleGammaHyperDistributionPreemptPolicy policy(gamma, lambda, cb, kappa);
+            PolicyManagerPreempt pm(&policy);
+            System system(&stream, &pm);
+
+            system.runFor(ignore, time);
+
+            std::ostringstream name;
+            name << "results/myturn/" << i << "_" << gamma << "_" << kappa << "_" << rho << "_.csv";
+            system.toCSV(name.str());
+        }
+    }
+}
+//*/
+
+//* Final fig for the poster
+real cb = 5;
+real gamma = 0.1;
+// this was the original seed_start
+unsigned int seed_start = 5278;
+unsigned int n = 500;
+real ignore = 0;
+real time = 100000;
+// real rho = 0.75;
+for (unsigned int i = 10; i < n; i++) {
+    printf("step i=%d\n", i);
+    real rho = 0.85;
+    for (real alphalog = -2; alphalog < 3.05; alphalog += 0.1) {
+        seed_rand(seed_start+i);
+        GoergHyperDistributionCB serv(cb);
+        ExponentialDistribution in(rho/1.0);
+        SingleIndepStream stream(&in, &serv, gamma);
+        real alpha = powl(10, alphalog);
+        GoergAlphaPreemptPolicy policy(alpha);
+        PolicyManagerPreempt pm(&policy);
+        System system(&stream, &pm);
+
+        system.runFor(ignore, time);
+
+        std::ostringstream name;
+        name << "results/final_compare/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+        system.toCSV(name.str());
+    }
+
+    // my turn!
+    real kappa = 0.58;
     seed_rand(seed_start + i);
     GoergHyperDistributionCB serv(cb);
     real lambda = rho/1.0;
     ExponentialDistribution in(lambda);
     SingleIndepStream stream(&in, &serv, gamma);
-    SingleGammaHyperDistributionPreemptPolicy policy(gamma, lambda, cb);
+    ScalingSingleGammaHyperDistributionPreemptPolicy policy(gamma, lambda, cb, kappa);
     PolicyManagerPreempt pm(&policy);
     System system(&stream, &pm);
 
     system.runFor(ignore, time);
 
     std::ostringstream name;
-    name << "results/compare_rho0.7/" << i << "_" << gamma << "_" << "hurtig" << "_" << rho << "_.csv";
+    name << "results/final_compare_hurtig/" << i << "_" << gamma << "_" << kappa << "_" << rho << "_.csv";
     system.toCSV(name.str());
 }
 //*/

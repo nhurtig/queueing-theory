@@ -33,7 +33,20 @@ def get_ET(fname):
 time_to_beat = 2.9218594123819557
 hurtig_et = get_ET(directory + "0_0.1_hurtig_0.75_.csv")
 # not preempting gets 3.95
-# static gets 3.10445 (worse than alpha=0!!!)
+# bugged static gets 3.10445 (worse than alpha=0!!!)
+# correct static gets 2.97463, not good enough but close
+# kappa=-1 gets 2.9028585440713535, which wins already!
+# kappa=0 gets 2.93213, not good enough???
+# kappa=-1.1 gets 2.9014, even better???
+# kappa=-0.9 is EVEN BETTER???
+# for large kappa (e.g., kappa=3), we're going negative for rhs...
+# that's expected; 3 kappa is too much
+#
+# Should we stop assuming that y is infinetesimally small?
+# Changing from calcing with Z to (Z+y) made the optimal kappa
+# make sense... great!
+#
+# But kappa=-3 with the Z gets 2.893, so something is off still...
 if hurtig_et < time_to_beat:
     print("YOU DID IT!!!")
     print(hurtig_et, time_to_beat)

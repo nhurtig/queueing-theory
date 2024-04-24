@@ -34,4 +34,20 @@ private:
     real relativeLoad(real y) const;
 };
 
+class ScalingSingleGammaHyperDistributionPreemptPolicy: public PreemptPolicy {
+public:
+    ScalingSingleGammaHyperDistributionPreemptPolicy(real gamma, real lambda, real cb, real kappa);
+    bool preempt(IndexedJob y, std::priority_queue<IndexedJob> queue) const;
+private:
+    const real gamma;
+    const real lambda;
+    const real kappa;
+    const real cb;
+    const real p; // rho
+    const real w;
+    real calculateLoad() const;
+    real probabilitySLessThanY(real y) const;
+    real relativeLoad(real y) const;
+};
+
 #endif

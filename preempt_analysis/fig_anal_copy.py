@@ -4,7 +4,7 @@ import pandas as pd
 
 N = 10000
 
-file = 'final_compare'
+file = 'final_compare_hurtig'
 
 directory = f'../preempt/results/{file}/'
 
