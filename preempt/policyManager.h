@@ -29,12 +29,12 @@ private:
     Policy *policy;
 };
 
-class PolicyManagerConcrete : public PolicyManager {
-public:
-    PolicyManagerConcrete(Policy *policy);
-private:
-    void recalculate();
-};
+// class PolicyManagerConcrete : public PolicyManager {
+// public:
+//     PolicyManagerConcrete(Policy *policy);
+// private:
+//     void recalculate();
+// };
 
 class PolicyManagerPreempt : public PolicyManager {
 public:

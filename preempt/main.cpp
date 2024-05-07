@@ -305,7 +305,7 @@ for (unsigned int i = 0; i < n; i++) { // i, gamma, rho, alpha
 }
 //*/
 
-/* Goerg vs me
+//* Goerg vs me, find kappa/alpha
 real cb = 5;
 real gamma = 0.1;
 // this was the original seed_start
@@ -316,7 +316,8 @@ unsigned int n = 50;
 real ignore = 0;
 real time = 10000;
 // real rho = 0.75;
-std::vector<real> rhos({0.7, 0.75, 0.8, 0.85, 0.87, 0.89});
+// std::vector<real> rhos({0.7, 0.75, 0.8, 0.85, 0.87, 0.89});
+std::vector<real> rhos({0.85});
 for (unsigned int i = 0; i < n; i++) {
     printf("step i=%d\n", i);
     // for (real rho : rhos) {
@@ -334,7 +335,7 @@ for (unsigned int i = 0; i < n; i++) {
     //         system.runFor(ignore, time);
 
     //         std::ostringstream name;
-    //         name << "results/poster/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
+    //         name << "results/gorgturn2/" << i << "_" << gamma << "_" << alpha << "_" << rho << "_.csv";
     //         system.toCSV(name.str());
     //     }
     // }
@@ -356,14 +357,14 @@ for (unsigned int i = 0; i < n; i++) {
             system.runFor(ignore, time);
 
             std::ostringstream name;
-            name << "results/myturn/" << i << "_" << gamma << "_" << kappa << "_" << rho << "_.csv";
+            name << "results/myturn2/" << i << "_" << gamma << "_" << kappa << "_" << rho << "_.csv";
             system.toCSV(name.str());
         }
     }
 }
 //*/
 
-//* Final fig for the poster
+/* Final fig for the poster
 real cb = 5;
 real gamma = 0.1;
 // this was the original seed_start

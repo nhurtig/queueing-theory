@@ -26,7 +26,12 @@ Job::Job(real arrivalTime, real required, real gamma): gamma{gamma} {
 }
 
 real Job::nextInterrupt() const { // TODO: is this a bug?
-    return this->required + this->preemptTime;
+    if (this->preemptTime <= 0) {
+        return this->required;
+    } else {
+        return this->preemptTime;
+    }
+    // return this->required + this->preemptTime;
 }
 
 void Job::addToService() {

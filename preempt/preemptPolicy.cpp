@@ -112,7 +112,9 @@ bool ScalingSingleGammaHyperDistributionPreemptPolicy::preempt(IndexedJob y,
     std::priority_queue<IndexedJob> queue) const {
     // unsigned int N = queue.size() + 1;
     real beta = 1 - y.getPreempt() / gamma;
-    // printf("Beta=%Lf\n", beta);
+    if (y.getPreempt() != 0) {
+        printf("BAD Beta=%Lf\n", beta);
+    }
 
     std::priority_queue<IndexedJob> q_copy = queue;
     

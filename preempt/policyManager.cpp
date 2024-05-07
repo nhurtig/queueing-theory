@@ -5,7 +5,7 @@
 
 PolicyManager::PolicyManager(Policy *policy): hasChanged{false}, policy{policy} {}
 
-PolicyManagerConcrete::PolicyManagerConcrete(Policy *policy): PolicyManager(policy) {}
+// PolicyManagerConcrete::PolicyManagerConcrete(Policy *policy): PolicyManager(policy) {}
 
 void PolicyManager::addJob(Job job) {
     // debug_print("addJob start: %d\n", size());
@@ -42,10 +42,10 @@ real PolicyManager::nextInterrupt() {
 }
 
 void PolicyManager::serve(real time) {
-    if (hasChanged) {
-        printf("NO! BAD! how can the policyManager change without you asking me what my nextinterrupt is?\n");
-        recalculate();
-    }
+    // if (hasChanged) {
+    //     printf("NO! BAD! how can the policyManager change without you asking me what my nextinterrupt is?\n");
+    //     recalculate();
+    // }
 
     hasChanged = true; // because the job might finish
 
@@ -61,32 +61,32 @@ void PolicyManager::serve(real time) {
     return;
 }
 
-void PolicyManagerConcrete::recalculate() {
-    // printf("recalc before: %d\n", size());
-    hasChanged = false;
+// void PolicyManagerConcrete::recalculate() {
+//     // printf("recalc before: %d\n", size());
+//     hasChanged = false;
 
-    if (!serving) {
-        if (!queued.empty()) {
-            serving = std::make_unique<IndexedJob>(std::move(queued.top()));
-            queued.pop();
-            serving->addToService();
-        } // else everything is empty
-    } else {
-        if (!queued.empty()) {
-            if (*serving < queued.top()) { // is serving worse than what we could do?
-                // printf("PREEMPT!\n");
-                IndexedJob best = queued.top();
-                queued.pop();
-                serving->removeFromService();
-                queued.push(*serving);
-                serving = std::make_unique<IndexedJob>(std::move(best));
-                serving->addToService();
-            } // else no swap is needed
-        } // else queued is empty, easy
-    }
+//     if (!serving) {
+//         if (!queued.empty()) {
+//             serving = std::make_unique<IndexedJob>(std::move(queued.top()));
+//             queued.pop();
+//             serving->addToService();
+//         } // else everything is empty
+//     } else {
+//         if (!queued.empty()) {
+//             if (*serving < queued.top()) { // is serving worse than what we could do?
+//                 // printf("PREEMPT!\n");
+//                 IndexedJob best = queued.top();
+//                 queued.pop();
+//                 serving->removeFromService();
+//                 queued.push(*serving);
+//                 serving = std::make_unique<IndexedJob>(std::move(best));
+//                 serving->addToService();
+//             } // else no swap is needed
+//         } // else queued is empty, easy
+//     }
 
-    return;
-}
+//     return;
+// }
 
 unsigned int PolicyManager::size() const {
     return queued.size();
@@ -109,14 +109,18 @@ void PolicyManagerPreempt::recalculate() {
         } // else everything is empty
     } else {
         if (!queued.empty()) {
-            if (*serving < queued.top() && policy->preempt(*serving, queued)) {
-                // PREEMPT!
-                IndexedJob best = queued.top();
-                queued.pop();
-                serving->removeFromService();
-                queued.push(*serving);
-                serving = std::make_unique<IndexedJob>(std::move(best));
-                serving->addToService();
+            if (serving->getPreempt() > 0) {
+                this->hasChanged = true;
+            } else {
+                if (*serving < queued.top() && policy->preempt(*serving, queued)) {
+                    // PREEMPT!
+                    IndexedJob best = queued.top();
+                    queued.pop();
+                    serving->removeFromService();
+                    queued.push(*serving);
+                    serving = std::make_unique<IndexedJob>(std::move(best));
+                    serving->addToService();
+                }
             }
         } // else no swap is needed
     } // else queued is empty, easy
