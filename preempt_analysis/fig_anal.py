@@ -4,7 +4,7 @@ import pandas as pd
 
 N = 10000
 
-file = 'final_compare'
+file = 'gorgturn2'
 
 directory = f'../preempt/results/{file}/'
 

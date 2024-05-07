@@ -2,9 +2,9 @@ import numpy as np
 import os
 import pandas as pd
 
-N = 100000
+N = 10000
 
-file = 'compare_rho0.7'
+file = 'myturn2'
 
 directory = f'../preempt/results/{file}/'
 

@@ -36,15 +36,17 @@ def G(a):
 A = np.linspace(0,max(y),samples)[:-1]
 Y = np.vectorize(G)(A)
 
-plt.plot(A,Y)
+plt.figure(figsize=(4,3))
+plt.plot(A,Y, color="#32006e")
 plt.ylim(0,3)
 # plt.title(f"y={y},p={p.round(2)}")
-plt.xlabel("a")
-plt.ylabel("Gittins index")
+plt.xlabel("Job age $a$")
+plt.ylabel("Gittins index $r(a)$")
 pts = y[:-1]
 pts.append(0)
 yGittins = np.vectorize(G)(pts)
-plt.scatter(pts,yGittins)
+plt.scatter(pts,yGittins, color="#32006e")
 # for i in range(len(pts)):
 #     plt.text(pts[i], yGittins[i]+0.3, f'({pts[i]}, {yGittins[i]:.2f})')
-plt.savefig('discrete_gittins.png', dpi=1200)
+plt.tight_layout()
+plt.savefig('discrete_gittins.pdf')
