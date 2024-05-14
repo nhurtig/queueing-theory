@@ -2,7 +2,6 @@
 #define SYSTEM_H
 #include "queue_standard.h"
 #include "dataStore.h"
-#include "policy.h"
 #include "policyManager.h"
 #include "stream.h"
 #include "job.h"

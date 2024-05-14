@@ -109,9 +109,11 @@ void PolicyManagerPreempt::recalculate() {
         } // else everything is empty
     } else {
         if (!queued.empty()) {
+            #ifdef PREEMPTION_UNINTERRUPTIBLE
             if (serving->getPreempt() > 0) {
                 this->hasChanged = true;
             } else {
+            #endif
                 if (*serving < queued.top() && policy->preempt(*serving, queued)) {
                     // PREEMPT!
                     IndexedJob best = queued.top();
@@ -121,7 +123,9 @@ void PolicyManagerPreempt::recalculate() {
                     serving = std::make_unique<IndexedJob>(std::move(best));
                     serving->addToService();
                 }
+            #ifdef PREEMPTION_UNINTERRUPTIBLE
             }
+            #endif
         } // else no swap is needed
     } // else queued is empty, easy
 

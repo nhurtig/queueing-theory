@@ -25,13 +25,16 @@ Job::Job(real arrivalTime, real required, real gamma): gamma{gamma} {
     debug_print("job with id %d created\n", id);
 }
 
-real Job::nextInterrupt() const { // TODO: is this a bug?
+real Job::nextInterrupt() const {
+    #ifdef PREEMPTION_UNINTERRUPTIBLE
     if (this->preemptTime <= 0) {
         return this->required;
     } else {
         return this->preemptTime;
     }
-    // return this->required + this->preemptTime;
+    #else
+    return this->required + this->preemptTime;
+    #endif
 }
 
 void Job::addToService() {

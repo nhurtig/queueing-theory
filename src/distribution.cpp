@@ -79,7 +79,7 @@ real GoergHyperDistribution::sample() {
     }
 }
 
-GoergHyperDistributionCB::GoergHyperDistributionCB(real cb): GoergHyperDistribution((cb-1)/(cb+1)) {}
+GoergHyperDistributionCB::GoergHyperDistributionCB(real cb): GoergHyperDistribution((cb*cb-1)/(cb*cb+1)) {}
 
 DiscreteDistribution::DiscreteDistribution(std::vector<real> vals, std::vector<real> probs) {
     real sum = std::accumulate(probs.begin(), probs.end(), 0.0);

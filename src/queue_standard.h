@@ -12,6 +12,8 @@
 #define debug_print(...)
 #endif
 
+// #define PREEMPTION_UNINTERRUPTIBLE
+
 typedef long double real;
 #define infinity LDBL_MAX
 typedef unsigned int jclass;

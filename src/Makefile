@@ -11,10 +11,10 @@ memcheck: main
 	valgrind ./main
 
 clean:
-	rm *.o main
+	rm -f *.o main
 
-main: main.o distribution.o job.o indexedJob.o dataStore.o stream.o policy.o system.o policyManager.o preemptPolicy.o
-	$(CC) $(CFLAGS) -o main main.o distribution.o job.o indexedJob.o dataStore.o stream.o policy.o system.o policyManager.o preemptPolicy.o
+main: main.o distribution.o job.o indexedJob.o dataStore.o stream.o policy.o system.o policyManager.o preemptPolicy.o scenarios.o
+	$(CC) $(CFLAGS) -o main main.o distribution.o job.o indexedJob.o dataStore.o stream.o policy.o system.o policyManager.o preemptPolicy.o scenarios.o
 
 main.o: distribution.h job.h main.cpp queue_standard.h dataStore.h
 	$(CC) $(CFLAGS) -c main.cpp
@@ -45,3 +45,6 @@ preemptPolicy.o: queue_standard.h indexedJob.h job.h preemptPolicy.cpp
 
 system.o: system.h queue_standard.h job.h stream.h policy.h dataStore.h system.cpp
 	$(CC) $(CFLAGS) -c system.cpp
+
+scenarios.o: scenarios.h queue_standard.h preemptPolicy.h policyManager.h system.h distribution.h scenarios.cpp
+	$(CC) $(CFLAGS) -c scenarios.cpp

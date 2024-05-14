@@ -2,9 +2,7 @@
 #define POLICY_MANAGER_H
 #include "queue_standard.h"
 #include "job.h"
-#include "policy.h"
 #include "preemptPolicy.h"
-#include "indexedJob.h"
 #include <queue>
 #include <memory>
 

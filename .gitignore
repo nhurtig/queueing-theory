@@ -1,7 +1,8 @@
 main
 *.o
-sim/results/*
-soap/results/*
-preempt/results/*
+results/*/*
+analyzed/*
+src/results/*
+plots/*
 doc/*.h
 .vscode
