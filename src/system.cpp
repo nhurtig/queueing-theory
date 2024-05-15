@@ -7,7 +7,6 @@ System::System(Stream *s, PolicyManager *p)
     }
 
 void System::runFor(real ignore_time, real record_time) {
-    this->stream->reset();
     this->run(ignore_time, false);
     // debug_print("now recording\n");
     this->run(record_time, true);

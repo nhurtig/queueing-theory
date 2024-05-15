@@ -11,8 +11,10 @@ secondary_color = '#e93cac'
 def main():
     explore_plot("analyzed/explore_gorg.npy", "plots/explore_gorg", True)
     explore_plot("analyzed/explore_ours.npy", "plots/explore_ours", False)
+    print("thru exp")
 
     dat_ratio = compare("analyzed/compare_ours.npy", "analyzed/compare_gorg.npy")
+
     
     compare_plot(dat_ratio, "plots/compare")
     box_whisker_plot(dat_ratio, "plots/box_whisker")
@@ -20,15 +22,14 @@ def main():
 def explore_plot(dat_name, out, is_gorg):
     dat = np.load(dat_name)
     print(dat.shape)
-    print(dat)
     rhos = [0.7, 0.75, 0.8, 0.85, 0.87, 0.89]
-    rhos = [0.85]
+    # rhos = [0.85]
 
     dat = np.median(dat, axis=0)[0] # dims are hyperparam, rho
 
     hyperparams = None
     if is_gorg:
-        hyperparamlogs = np.arange(-2, 3.02, 0.5)
+        hyperparamlogs = np.arange(-2, 3.02, 0.3)
         hyperparams = np.power(10, hyperparamlogs)
     else:
         kappastep = 0.2
@@ -63,7 +64,7 @@ def explore_plot(dat_name, out, is_gorg):
     # for each rho...
     for i in range(dat.shape[1]):
         plt.plot(hyperparams, dat[:,i], color=colors[i])
-    
+
     plt.legend(rhos, title=r'Load $\rho$')
     if is_gorg:
         plt.xlabel(r'Preemption gap $\alpha$')
@@ -106,7 +107,7 @@ def compare(base_name, comp_name):
     return dat_ratio
 
 def compare_plot(dat_ratio, out):
-    alphalogs = np.arange(-2, 3.02, 0.05)
+    alphalogs = np.arange(-2, 3.02, 0.3)
     alphas = np.power(10, alphalogs)
 
     plt.figure(figsize=figsize)

@@ -4,7 +4,7 @@ echo "removing previous data and plots..."
 
 find "results" -mindepth 2 -maxdepth 2 -type f -exec rm -f {} +
 
-rm -f plot/*
+rm -f plots/*
 
 ( cd src && make clean && make run )
 
