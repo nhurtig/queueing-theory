@@ -25,22 +25,22 @@ int main(int argc, char **argv) {
     }
 
     std::vector<real> kappas;
-    real kappastep = 0.02;
+    real kappastep = 0.04;
     for (real kappa = -1 + kappastep; kappa < 1; kappa += kappastep) {
         kappas.push_back(kappa);
     }
 
     // explore a few load values across all hyperparameters
     // gorg
-    compute(rhos_many, time, num_runs, seed_start, cv, gamma, true, alphas, "../results/explore_gorg/");
+    // compute(rhos_many, time, num_runs, seed_start, cv, gamma, true, alphas, "../results/explore_gorg/");
     // ours
-    compute(rhos_many, time, num_runs, seed_start, cv, gamma, false, kappas, "../results/explore_ours/");
+    // compute(rhos_many, time, num_runs, seed_start, cv, gamma, false, kappas, "../results/explore_ours/");
 
     // compute many results for just one load, one kappa, and many alphas
-    std::vector<real> best_kappa({0.58});
+    std::vector<real> best_kappa({0.84}); // .58 for sqrt(5), .84 for 5
     std::vector<real> one_rho({0.85});
     seed_start = 5278;
-    time = 10;
+    time = 100000;
     num_runs = 500;
     // gorg
     compute(one_rho, time, num_runs, seed_start, cv, gamma, true, alphas, "../results/compare_gorg/");

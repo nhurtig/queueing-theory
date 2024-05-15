@@ -67,7 +67,7 @@ def get_N(experiment):
     if "explore" in experiment and "compare" not in experiment:
         return 10000
     elif "compare" in experiment:
-        return 10
+        return 100000
     else:
         print(f"unrecognized experiment {experiment}")
         return 0
