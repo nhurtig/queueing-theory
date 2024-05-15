@@ -15,17 +15,17 @@ int main(int argc, char **argv) {
     real time = 10000;
     unsigned int num_runs = 50;
     unsigned int seed_start = 3280;
-    real cv = 2.2360679775; // this recreates the incorrect distribution
+    real cv = 5; // this recreates the incorrect distribution
     real gamma = 0.1;
 
     // hyperparameters for each policy
     std::vector<real> alphas;
-    for (real alphalog = -2; alphalog < 3.02; alphalog += 0.3) {
+    for (real alphalog = -2; alphalog < 3.02; alphalog += 0.1) {
         alphas.push_back(powl(10, alphalog));
     }
 
     std::vector<real> kappas;
-    real kappastep = 0.2;
+    real kappastep = 0.02;
     for (real kappa = -1 + kappastep; kappa < 1; kappa += kappastep) {
         kappas.push_back(kappa);
     }
@@ -39,10 +39,9 @@ int main(int argc, char **argv) {
     // compute many results for just one load, one kappa, and many alphas
     std::vector<real> best_kappa({0.58});
     std::vector<real> one_rho({0.85});
-    // seed_start += num_runs;
     seed_start = 5278;
-    time = 10000;
-    num_runs = 1;
+    time = 10;
+    num_runs = 500;
     // gorg
     compute(one_rho, time, num_runs, seed_start, cv, gamma, true, alphas, "../results/compare_gorg/");
     // ours

@@ -21,18 +21,16 @@ def main():
 
 def explore_plot(dat_name, out, is_gorg):
     dat = np.load(dat_name)
-    print(dat.shape)
     rhos = [0.7, 0.75, 0.8, 0.85, 0.87, 0.89]
-    # rhos = [0.85]
 
     dat = np.median(dat, axis=0)[0] # dims are hyperparam, rho
 
     hyperparams = None
     if is_gorg:
-        hyperparamlogs = np.arange(-2, 3.02, 0.3)
+        hyperparamlogs = np.arange(-2, 3.02, 0.1)
         hyperparams = np.power(10, hyperparamlogs)
     else:
-        kappastep = 0.2
+        kappastep = 0.02
         hyperparams = np.arange(-1+kappastep, 1, kappastep)
         best_kappa_indices = np.argmin(dat[:,rhos.index(0.85)])
         print(f"best kappa is {hyperparams[best_kappa_indices]}")
@@ -107,7 +105,7 @@ def compare(base_name, comp_name):
     return dat_ratio
 
 def compare_plot(dat_ratio, out):
-    alphalogs = np.arange(-2, 3.02, 0.3)
+    alphalogs = np.arange(-2, 3.02, 0.1)
     alphas = np.power(10, alphalogs)
 
     plt.figure(figsize=figsize)
@@ -128,7 +126,7 @@ def compare_plot(dat_ratio, out):
     plt.savefig(out+".png", dpi=800)
 
 def box_whisker_plot(dat_ratio, out):
-    alphalogs = np.arange(-2, 3.02, 0.05)
+    alphalogs = np.arange(-2, 3.02, 0.1)
     alphas = np.power(10, alphalogs)
 
     plt.figure(figsize=figsize)
