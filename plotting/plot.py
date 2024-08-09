@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import matplotlib.patches as patches
 
-figsize = (6,4.5)
+figsize = [x*1.3 for x in (4,3)]
 primary_color = '#32006e'
 primary_light = '#D9CEEE'
 secondary_color = '#e93cac'
@@ -28,7 +28,7 @@ def explore_plot(dat_name, out, is_gorg):
         hyperparamlogs = np.arange(-2, 3.02, 0.1)
         hyperparams = np.power(10, hyperparamlogs)
     else:
-        kappastep = 0.04
+        kappastep = 0.02
         hyperparams = np.arange(-1+kappastep, 1, kappastep)
         best_kappa_indices = np.argmin(dat[:,rhos.index(0.85)])
         print(f"best kappa is {hyperparams[best_kappa_indices]}")
@@ -72,6 +72,7 @@ def explore_plot(dat_name, out, is_gorg):
     
     plt.yscale('log')
     plt.ylim(1, 100)
+    plt.ylabel("Median $\mathbf{E}[T]$")
 
     plt.tight_layout()
     plt.savefig(out+".pdf")
@@ -114,7 +115,7 @@ def compare_plot(dat_ratio, out):
     plt.xlim(10**-2,10**3)
 
     plt.xlabel(r'Preemption gap $\alpha$')
-    plt.ylabel(r'Görg 1986: $\mathbf{E}[T]$ over $\kappa=0.84$')
+    plt.ylabel(r'SRPT-$\alpha$: $\mathbf{E}[T]$ over $\kappa=0.84$')
 
     plt.yscale('log')
     plt.ylim(1)
@@ -162,7 +163,8 @@ def box_whisker_plot(dat_ratio, out):
         right=False,         # ticks along the top edge are off
         labelleft=False) # labels along the bottom edge are off
 
-    plt.xlabel(r'Görg 1986 $\alpha=???$: $\mathbf{E}[T]$ over $\kappa=0.84$'.replace("???", f"{alphas[best_alpha_index]:.2f}"))
+    plt.xlabel(r'SRPT-$\alpha$, $\alpha=???$: $\mathbf{E}[T]$ over $\kappa=0.84$'.replace("???", f"{alphas[best_alpha_index]:.2f}"))
+    # plt.xlim(1)
 
     plt.tight_layout()
     plt.savefig(out+".pdf")
